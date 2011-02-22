@@ -1,0 +1,8 @@
+bettertime.lo: /root/bettertime/bettertime.c
+	$(LIBTOOL) --mode=compile $(CC)  -I. -I/root/bettertime $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)  -c /root/bettertime/bettertime.c -o bettertime.lo 
+$(phplibdir)/bettertime.la: ./bettertime.la
+	$(LIBTOOL) --mode=install cp ./bettertime.la $(phplibdir)
+
+./bettertime.la: $(shared_objects_bettertime) $(BETTERTIME_SHARED_DEPENDENCIES)
+	$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_bettertime) $(BETTERTIME_SHARED_LIBADD)
+

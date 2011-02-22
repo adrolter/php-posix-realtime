@@ -1,0 +1,192 @@
+/*
+	Copyright 2011 Adrian Guenter	<adrianguenter@gmail.com>
+	
+	This file is part of the bettertime PHP extension and licensed
+	under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+		
+		http://www.apache.org/licenses/LICENSE-2.0
+		
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+*/
+ 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include "php.h"
+#include "php_ini.h"
+#include "ext/standard/info.h"
+#include "php_bettertime.h"
+
+/* If you declare any globals in php_bettertime.h uncomment this:
+ZEND_DECLARE_MODULE_GLOBALS(bettertime)
+*/
+
+/* True global resources - no need for thread safety here */
+static int le_bettertime;
+
+/* {{{ bettertime_functions[]
+ *
+ * Every user visible function must have an entry in bettertime_functions[].
+ */
+const zend_function_entry bettertime_functions[] = {
+	PHP_FE(clock_gettime,	NULL)
+	{NULL, NULL, NULL}	/* Must be the last line in bettertime_functions[] */
+};
+/* }}} */
+
+/* {{{ bettertime_module_entry
+ */
+zend_module_entry bettertime_module_entry = {
+#if ZEND_MODULE_API_NO >= 20010901
+	STANDARD_MODULE_HEADER,
+#endif
+	"bettertime",
+	bettertime_functions,
+	PHP_MINIT(bettertime),
+	PHP_MSHUTDOWN(bettertime),
+	PHP_RINIT(bettertime),		/* Replace with NULL if there's nothing to do at request start */
+	PHP_RSHUTDOWN(bettertime),	/* Replace with NULL if there's nothing to do at request end */
+	PHP_MINFO(bettertime),
+#if ZEND_MODULE_API_NO >= 20010901
+	"0.1", /* Replace with version number for your extension */
+#endif
+	STANDARD_MODULE_PROPERTIES
+};
+/* }}} */
+
+#ifdef COMPILE_DL_BETTERTIME
+ZEND_GET_MODULE(bettertime)
+#endif
+
+/* {{{ PHP_INI
+ */
+/* Remove comments and fill if you need to have entries in php.ini
+PHP_INI_BEGIN()
+    STD_PHP_INI_ENTRY("bettertime.global_value",      "42", PHP_INI_ALL, OnUpdateLong, global_value, zend_bettertime_globals, bettertime_globals)
+    STD_PHP_INI_ENTRY("bettertime.global_string", "foobar", PHP_INI_ALL, OnUpdateString, global_string, zend_bettertime_globals, bettertime_globals)
+PHP_INI_END()
+*/
+/* }}} */
+
+/* {{{ php_bettertime_init_globals
+ */
+/* Uncomment this function if you have INI entries
+static void php_bettertime_init_globals(zend_bettertime_globals *bettertime_globals)
+{
+	bettertime_globals->global_value = 0;
+	bettertime_globals->global_string = NULL;
+}
+*/
+/* }}} */
+
+/* {{{ PHP_MINIT_FUNCTION
+ */
+PHP_MINIT_FUNCTION(bettertime)
+{
+	/* If you have INI entries, uncomment these lines 
+	REGISTER_INI_ENTRIES();
+	*/
+	REGISTER_LONG_CONSTANT("CLOCK_REALTIME", CLOCK_REALTIME, CONST_CS | CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("CLOCK_MONOTONIC", CLOCK_MONOTONIC, CONST_CS | CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("CLOCK_PROCESS_CPUTIME_ID", CLOCK_PROCESS_CPUTIME_ID, CONST_CS | CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("CLOCK_THREAD_CPUTIME_ID", CLOCK_THREAD_CPUTIME_ID, CONST_CS | CONST_PERSISTENT);
+	
+	return SUCCESS;
+}
+/* }}} */
+
+/* {{{ PHP_MSHUTDOWN_FUNCTION
+ */
+PHP_MSHUTDOWN_FUNCTION(bettertime)
+{
+	/* uncomment this line if you have INI entries
+	UNREGISTER_INI_ENTRIES();
+	*/
+	return SUCCESS;
+}
+/* }}} */
+
+/* Remove if there's nothing to do at request start */
+/* {{{ PHP_RINIT_FUNCTION
+ */
+PHP_RINIT_FUNCTION(bettertime)
+{
+	return SUCCESS;
+}
+/* }}} */
+
+/* Remove if there's nothing to do at request end */
+/* {{{ PHP_RSHUTDOWN_FUNCTION
+ */
+PHP_RSHUTDOWN_FUNCTION(bettertime)
+{
+	return SUCCESS;
+}
+/* }}} */
+
+/* {{{ PHP_MINFO_FUNCTION
+ */
+PHP_MINFO_FUNCTION(bettertime)
+{
+	php_info_print_table_start();
+	php_info_print_table_header(2, "bettertime support", "enabled");
+	php_info_print_table_end();
+
+	/* Remove comments if you have entries in php.ini
+	DISPLAY_INI_ENTRIES();
+	*/
+}
+/* }}} */
+
+/* {{{ proto double clock_gettime()
+   clk_id) Get the current time of a clock */
+PHP_FUNCTION(clock_gettime)
+{
+	int clkId;
+	struct timespec currTime;
+	double dResult;
+	
+	if (ZEND_NUM_ARGS() != 1) {
+		WRONG_PARAM_COUNT;
+	}
+	
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &clkId) == FAILURE) {
+		return;
+	}
+	
+	if (clock_gettime(clkId, &currTime) == -1) {
+		
+		if (errno == EINVAL) {
+			
+			php_error_docref(NULL TSRMLS_CC, E_ERROR, "the 'clk_id' %ld is not supported on this system", clkId);
+			
+			return;
+		}
+		else if (errno == EFAULT) {
+			
+			return;
+		}
+	}
+	
+	dResult = currTime.tv_sec + (double) currTime.tv_nsec / 1000000000.0;
+	
+	RETURN_DOUBLE(dResult);
+}
+/* }}} */
+
+
+/*
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * End:
+ * vim600: noet sw=4 ts=4 fdm=marker
+ * vim<600: noet sw=4 ts=4
+ */
