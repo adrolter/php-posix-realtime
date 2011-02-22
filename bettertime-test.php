@@ -16,9 +16,15 @@
 	limitations under the License.
 */
 
+echo "Clock times:\n";
 echo "CLOCK_REALTIME           " . clock_gettime(CLOCK_REALTIME) . "\n";
 echo "CLOCK_MONOTONIC          " . clock_gettime(CLOCK_MONOTONIC) . "\n";
 echo "CLOCK_PROCESS_CPUTIME_ID " . clock_gettime(CLOCK_PROCESS_CPUTIME_ID) . "\n";
 echo "CLOCK_THREAD_CPUTIME_ID  " . clock_gettime(CLOCK_THREAD_CPUTIME_ID) . "\n";
 
+echo "\nClock resolutions:\n";
+echo "CLOCK_REALTIME           " . clock_getres(CLOCK_REALTIME) . "\n";
+echo "CLOCK_MONOTONIC          " . clock_getres(CLOCK_MONOTONIC) . "\n";
+echo "CLOCK_PROCESS_CPUTIME_ID " . clock_getres(CLOCK_PROCESS_CPUTIME_ID) . "\n";
+echo "CLOCK_THREAD_CPUTIME_ID  " . clock_getres(CLOCK_THREAD_CPUTIME_ID) . "\n";
 ?>

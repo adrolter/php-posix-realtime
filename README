@@ -3,12 +3,15 @@ http://us3.php.net/manual/en/function.microtime.php#101628
 http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-time
 
 
-Description
+Function Descriptions
 --------------------------------------------------------------------------------------
- float clock_gettime (int $clock_id_flag)
+ float clock_gettime (int $clock_id_flag) -
+ 	Provides an interface to the POSIX clock_gettime function.
+ 	Returns the float value of the clock's current time.
  
- Provides an interface to the POSIX clock_gettime(2) function.
-
+ float clock_getres (int $clock_id_flag) -
+ 	Provides an interface to the POSIX clock_getres function.
+	Returns the float value of the clock's resolution.
 
 Parameters
 --------------------------------------------------------------------------------------
@@ -28,11 +31,6 @@ Parameters
 	and the effect on timers is unspecified.
 
 
-Return Values
---------------------------------------------------------------------------------------
- The float value of the clock's current time.
-
-
 Installation
 --------------------------------------------------------------------------------------
  > cd extension-source-path
@@ -41,10 +39,8 @@ Installation
  > make install
 
  It might be necessary to add the line
-
  extension=bettertime.so
-
- to your php.ini(s) in the Dynamic Extensions section
+ to your php.ini(s) in the Dynamic Extensions section.
 
  If you have PHP-CLI you can test with
  > php -f bettertime-test.php

@@ -37,6 +37,7 @@ static int le_bettertime;
  */
 const zend_function_entry bettertime_functions[] = {
 	PHP_FE(clock_gettime,	NULL)
+	PHP_FE(clock_getres,	NULL)
 	{NULL, NULL, NULL}	/* Must be the last line in bettertime_functions[] */
 };
 /* }}} */
@@ -165,7 +166,7 @@ PHP_FUNCTION(clock_gettime)
 		
 		if (errno == EINVAL) {
 			
-			php_error_docref(NULL TSRMLS_CC, E_ERROR, "the 'clk_id' %ld is not supported on this system", clkId);
+			php_error_docref(NULL TSRMLS_CC, E_ERROR, "the 'clk_id' %ld is not supported on this system", (long) clkId);
 			
 			return;
 		}
@@ -176,6 +177,42 @@ PHP_FUNCTION(clock_gettime)
 	}
 	
 	dResult = currTime.tv_sec + (double) currTime.tv_nsec / 1000000000.0;
+	
+	RETURN_DOUBLE(dResult);
+}
+/* }}} */
+
+/* {{{ proto double clock_getres()
+   clk_id) Get the resolution of a clock */
+PHP_FUNCTION(clock_getres)
+{
+	int clkId;
+	struct timespec res;
+	double dResult;
+	
+	if (ZEND_NUM_ARGS() != 1) {
+		WRONG_PARAM_COUNT;
+	}
+	
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &clkId) == FAILURE) {
+		return;
+	}
+	
+	if (clock_getres(clkId, &res) == -1) {
+		
+		if (errno == EINVAL) {
+			
+			php_error_docref(NULL TSRMLS_CC, E_ERROR, "the 'clk_id' %ld is not supported on this system", (long) clkId);
+			
+			return;
+		}
+		else if (errno == EFAULT) {
+			
+			return;
+		}
+	}
+	
+	dResult = res.tv_sec + (double) res.tv_nsec / 1000000000.0;
 	
 	RETURN_DOUBLE(dResult);
 }

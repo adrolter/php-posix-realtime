@@ -39,8 +39,8 @@ PHP_RINIT_FUNCTION(bettertime);
 PHP_RSHUTDOWN_FUNCTION(bettertime);
 PHP_MINFO_FUNCTION(bettertime);
 
-PHP_FUNCTION(confirm_bettertime_compiled);	/* For testing, remove later. */
 PHP_FUNCTION(clock_gettime);
+PHP_FUNCTION(clock_getres);
 
 /* 
   	Declare any global variables you may need between the BEGIN
