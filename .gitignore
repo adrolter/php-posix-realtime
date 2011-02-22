@@ -1,2 +1,8 @@
 Makefile
+Makefile.objects
 config.log
+config.status
+*.la
+*.lo
+.libs/
+modules/
