@@ -150,7 +150,7 @@ PHP_MINFO_FUNCTION(bettertime)
    clk_id) Get the current time of a clock */
 PHP_FUNCTION(clock_gettime)
 {
-	int clkId;
+	long clkId;
 	struct timespec currTime;
 	double dResult;
 	
@@ -186,7 +186,7 @@ PHP_FUNCTION(clock_gettime)
    clk_id) Get the resolution of a clock */
 PHP_FUNCTION(clock_getres)
 {
-	int clkId;
+	long clkId;
 	struct timespec res;
 	double dResult;
 	
@@ -218,6 +218,7 @@ PHP_FUNCTION(clock_getres)
 }
 /* }}} */
 
+// WinNT support via GetTickCount/GetTickCount64?
 
 /*
  * Local variables:
