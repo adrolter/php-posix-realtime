@@ -219,8 +219,6 @@ PHP_FUNCTION(posix_clock_getres)
 }
 /* }}} */
 
-// WinNT support via GetTickCount/GetTickCount64?
-
 /*
  * Local variables:
  * tab-width: 4
