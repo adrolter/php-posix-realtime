@@ -52,8 +52,8 @@ zend_module_entry bettertime_module_entry = {
 	bettertime_functions,
 	PHP_MINIT(bettertime),
 	PHP_MSHUTDOWN(bettertime),
-	PHP_RINIT(bettertime),		/* Replace with NULL if there's nothing to do at request start */
-	PHP_RSHUTDOWN(bettertime),	/* Replace with NULL if there's nothing to do at request end */
+	PHP_RINIT(NULL),		/* Replace with NULL if there's nothing to do at request start */
+	PHP_RSHUTDOWN(NULL),	/* Replace with NULL if there's nothing to do at request end */
 	PHP_MINFO(bettertime),
 #if ZEND_MODULE_API_NO >= 20010901
 	"0.1", /* Replace with version number for your extension */
@@ -110,24 +110,6 @@ PHP_MSHUTDOWN_FUNCTION(bettertime)
 	/* uncomment this line if you have INI entries
 	UNREGISTER_INI_ENTRIES();
 	*/
-	return SUCCESS;
-}
-/* }}} */
-
-/* Remove if there's nothing to do at request start */
-/* {{{ PHP_RINIT_FUNCTION
- */
-PHP_RINIT_FUNCTION(bettertime)
-{
-	return SUCCESS;
-}
-/* }}} */
-
-/* Remove if there's nothing to do at request end */
-/* {{{ PHP_RSHUTDOWN_FUNCTION
- */
-PHP_RSHUTDOWN_FUNCTION(bettertime)
-{
 	return SUCCESS;
 }
 /* }}} */
