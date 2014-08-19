@@ -163,7 +163,7 @@ PHP_FUNCTION(posix_clock_gettime)
 	struct timespec currTime;
 	double dResult;
 	
-	if (ZEND_NUM_ARGS() == 0) {
+	if (ZEND_NUM_ARGS() > 1) {
 		WRONG_PARAM_COUNT;
 	}
 	
@@ -199,7 +199,7 @@ PHP_FUNCTION(posix_clock_getres)
 	struct timespec res;
 	double dResult;
 	
-	if (ZEND_NUM_ARGS() != 1) {
+	if (ZEND_NUM_ARGS() > 1) {
 		WRONG_PARAM_COUNT;
 	}
 	
