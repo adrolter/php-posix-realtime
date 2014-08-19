@@ -27,4 +27,3 @@ echo "CLOCK_REALTIME           " . clock_getres(CLOCK_REALTIME) . "\n";
 echo "CLOCK_MONOTONIC          " . clock_getres(CLOCK_MONOTONIC) . "\n";
 echo "CLOCK_PROCESS_CPUTIME_ID " . clock_getres(CLOCK_PROCESS_CPUTIME_ID) . "\n";
 echo "CLOCK_THREAD_CPUTIME_ID  " . clock_getres(CLOCK_THREAD_CPUTIME_ID) . "\n";
-?>
