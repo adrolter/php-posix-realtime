@@ -52,8 +52,8 @@ zend_module_entry bettertime_module_entry = {
 	bettertime_functions,
 	PHP_MINIT(bettertime),
 	PHP_MSHUTDOWN(bettertime),
-	PHP_RINIT(NULL),		/* Replace with NULL if there's nothing to do at request start */
-	PHP_RSHUTDOWN(NULL),	/* Replace with NULL if there's nothing to do at request end */
+	NULL,		/* PHP_RINIT (request init) */
+	NULL,	/* PHP_RSHUTDOWN (request shutdown) */
 	PHP_MINFO(bettertime),
 #if ZEND_MODULE_API_NO >= 20010901
 	"0.1", /* Replace with version number for your extension */
@@ -94,7 +94,10 @@ PHP_MINIT_FUNCTION(bettertime)
 	/* If you have INI entries, uncomment these lines 
 	REGISTER_INI_ENTRIES();
 	*/
-	REGISTER_LONG_CONSTANT("CLOCK_REALTIME", CLOCK_REALTIME, CONST_CS | CONST_PERSISTENT);
+	#ifdef CLOCK_REALTIME
+    REGISTER_LONG_CONSTANT("POSIX_CLOCK_REALTIME", CLOCK_REALTIME, CONST_CS | CONST_PERSISTENT);
+  #endif
+
 	REGISTER_LONG_CONSTANT("CLOCK_MONOTONIC", CLOCK_MONOTONIC, CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("CLOCK_PROCESS_CPUTIME_ID", CLOCK_PROCESS_CPUTIME_ID, CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("CLOCK_THREAD_CPUTIME_ID", CLOCK_THREAD_CPUTIME_ID, CONST_CS | CONST_PERSISTENT);
