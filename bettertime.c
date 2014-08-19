@@ -172,20 +172,16 @@ PHP_FUNCTION(posix_clock_gettime)
 	}
 	
 	if (clock_gettime(clkId, &currTime) == -1) {
-		
 		if (errno == EINVAL) {
-			
-			php_error_docref(NULL TSRMLS_CC, E_ERROR, "The POSIX clock id '%ld' is not supported on this system", clkId);
-			
+			php_error_docref(NULL TSRMLS_CC, E_ERROR, "The POSIX clock ID '%ld' is not supported on this system", clkId);
 			return;
 		}
 		else if (errno == EFAULT) {
-			
 			return;
 		}
 	}
 	
-	dResult = currTime.tv_sec + (double) currTime.tv_nsec / 1000000000.0;
+	dResult = currTime.tv_sec + currTime.tv_nsec / 1000000000.0;
 	
 	RETURN_DOUBLE(dResult);
 }
@@ -208,20 +204,16 @@ PHP_FUNCTION(posix_clock_getres)
 	}
 	
 	if (clock_getres(clkId, &res) == -1) {
-		
 		if (errno == EINVAL) {
-			
 			php_error_docref(NULL TSRMLS_CC, E_ERROR, "The POSIX clock ID '%ld' is not supported on this system", clkId);
-			
 			return;
 		}
 		else if (errno == EFAULT) {
-			
 			return;
 		}
 	}
 	
-	dResult = res.tv_sec + (double) res.tv_nsec / 1000000000.0;
+	dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
 	
 	RETURN_DOUBLE(dResult);
 }
