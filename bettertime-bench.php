@@ -22,9 +22,9 @@ echo "=================================\n";
 // Number of times to run each function
 define('ITERATIONS', 1000000);
 
-// clock_gettime()
+// posix_clock_gettime()
 $start = microtime(true);
-for ($i = 0; $i < ITERATIONS; $i++) { $x = clock_gettime(CLOCK_MONOTONIC); }
+for ($i = 0; $i < ITERATIONS; $i++) { $x = posix_clock_gettime(CLOCK_MONOTONIC); }
 $gtTotal = (microtime(true) - $start);
 
 // Take a break...
@@ -37,13 +37,13 @@ $mtTotal = (microtime(true) - $start);
 
 
 // Output
-echo " clock_gettime:\t" . $gtTotal . "\n";
+echo " posix_clock_gettime:\t" . $gtTotal . "\n";
 echo " microtime:\t" . $mtTotal . "\n";
 echo "---------------------------------\n";
 
 if ($gtTotal < $mtTotal) {
 	$pcnt = round((($mtTotal / $gtTotal) * 100) - 100, 3);
-	echo " clock_gettime was {$pcnt}% faster\n";
+	echo " posix_clock_gettime was {$pcnt}% faster\n";
 }
 else {
 	$pcnt = round((($gtTotal / $mtTotal) * 100) - 100, 3);

@@ -36,8 +36,8 @@ static int le_bettertime;
  * Every user visible function must have an entry in bettertime_functions[].
  */
 const zend_function_entry bettertime_functions[] = {
-	PHP_FE(clock_gettime,	NULL)
-	PHP_FE(clock_getres,	NULL)
+	PHP_FE(posix_clock_gettime,	NULL)
+	PHP_FE(posix_clock_getres,	NULL)
 	{NULL, NULL, NULL}	/* Must be the last line in bettertime_functions[] */
 };
 /* }}} */
@@ -128,9 +128,9 @@ PHP_MINFO_FUNCTION(bettertime)
 }
 /* }}} */
 
-/* {{{ proto double clock_gettime()
+/* {{{ proto double posix_clock_gettime()
    clk_id) Get the current time of a clock */
-PHP_FUNCTION(clock_gettime)
+PHP_FUNCTION(posix_clock_gettime)
 {
 	long clkId;
 	struct timespec currTime;
@@ -164,9 +164,9 @@ PHP_FUNCTION(clock_gettime)
 }
 /* }}} */
 
-/* {{{ proto double clock_getres()
+/* {{{ proto double posix_clock_getres()
    clk_id) Get the resolution of a clock */
-PHP_FUNCTION(clock_getres)
+PHP_FUNCTION(posix_clock_getres)
 {
 	long clkId;
 	struct timespec res;

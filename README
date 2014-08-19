@@ -5,11 +5,11 @@ http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-ti
 
 Function Descriptions
 --------------------------------------------------------------------------------------
- float clock_gettime (int $clock_id_flag) -
+ float posix_clock_gettime (int $clock_id_flag) -
  	Provides an interface to the POSIX clock_gettime function.
  	Returns the float value of the clock's current time.
  
- float clock_getres (int $clock_id_flag) -
+ float posix_clock_getres (int $clock_id_flag) -
  	Provides an interface to the POSIX clock_getres function.
 	Returns the float value of the clock's resolution.
 

@@ -62,7 +62,7 @@ function posix_clock_available($clock_id) {}
 /**
  * Retrieves the value (time) of the specified clock.
  * @param int $clock_id
- * @return float
+ * @return float|string
  */
 function posix_clock_gettime($clock_id = POSIX_CLOCK_REALTIME) {}
 
