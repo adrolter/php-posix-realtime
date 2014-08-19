@@ -175,7 +175,7 @@ PHP_FUNCTION(posix_clock_gettime)
 		
 		if (errno == EINVAL) {
 			
-			php_error_docref(NULL TSRMLS_CC, E_ERROR, "the 'clk_id' %ld is not supported on this system", (long) clkId);
+			php_error_docref(NULL TSRMLS_CC, E_ERROR, "The POSIX clock id '%ld' is not supported on this system", clkId);
 			
 			return;
 		}
@@ -211,7 +211,7 @@ PHP_FUNCTION(posix_clock_getres)
 		
 		if (errno == EINVAL) {
 			
-			php_error_docref(NULL TSRMLS_CC, E_ERROR, "the 'clk_id' %ld is not supported on this system", (long) clkId);
+			php_error_docref(NULL TSRMLS_CC, E_ERROR, "The POSIX clock ID '%ld' is not supported on this system", clkId);
 			
 			return;
 		}
