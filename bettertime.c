@@ -159,15 +159,15 @@ PHP_MINFO_FUNCTION(bettertime)
    clk_id) Get the current time of a clock */
 PHP_FUNCTION(posix_clock_gettime)
 {
-	long clkId;
+	long clkId = 0;
 	struct timespec currTime;
 	double dResult;
 	
-	if (ZEND_NUM_ARGS() != 1) {
+	if (ZEND_NUM_ARGS() == 0) {
 		WRONG_PARAM_COUNT;
 	}
 	
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &clkId) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|l", &clkId) != SUCCESS) {
 		return;
 	}
 	
@@ -195,7 +195,7 @@ PHP_FUNCTION(posix_clock_gettime)
    clk_id) Get the resolution of a clock */
 PHP_FUNCTION(posix_clock_getres)
 {
-	long clkId;
+	long clkId = 0;
 	struct timespec res;
 	double dResult;
 	
@@ -203,7 +203,7 @@ PHP_FUNCTION(posix_clock_getres)
 		WRONG_PARAM_COUNT;
 	}
 	
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &clkId) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|l", &clkId) != SUCCESS) {
 		return;
 	}
 	
