@@ -50,7 +50,7 @@ define('POSIX_CLOCK_MONOTONIC_COARSE', 6);
  * any time that the system is suspended. This allows applications to get
  * a suspend-aware monotonic clock.
  */
-define ('CLOCK_BOOTTIME', 7);
+define ('POSIX_CLOCK_BOOTTIME', 7);
 
 /**
  * Determines whether or not the specified clock is supported on the system.
@@ -64,11 +64,11 @@ function posix_clock_available($clock_id) {}
  * @param int $clock_id
  * @return float
  */
-function posix_clock_gettime($clock_id = CLOCK_REALTIME) {}
+function posix_clock_gettime($clock_id = POSIX_CLOCK_REALTIME) {}
 
 /**
  * Retrieves the resolution (precision) of the specified clock.
  * @param int $clock_id
  * @return float
  */
-function posix_clock_getres($clock_id = CLOCK_REALTIME) {}
+function posix_clock_getres($clock_id = POSIX_CLOCK_REALTIME) {}
