@@ -60,11 +60,11 @@ http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-ti
 -----
 
 * double **posix_clock_gettime** ( int _$clock_id_ = _POSIX_CLOCK_REALTIME_ )
-    - Provides an interface to `clock_gettime(2)`
+    - Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/man2/clock_gettime.2.html)
     - Returns a double representing the clock's current value
  
 * double **posix_clock_getres** ( int _$clock_id_ = _POSIX_CLOCK_REALTIME_ )
-    - Provides an interface to `clock_getres(2)`
+    - Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man2/clock_getres.2.html)
     - Returns a double representing the clock's resolution/precision
 
 The supported clocks are implementation specific, except the system-wide realtime
