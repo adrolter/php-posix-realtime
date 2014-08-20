@@ -4,6 +4,7 @@ This project provides an interface to the real-time, monotonic, CPU-time,
 and various other clocks available on systems that implement the POSIX.1b
 standard (e.g., Linux, BSD, Solaris, OS X, etc)
 
+
 <br>
 ## Installation
 ---
@@ -28,7 +29,7 @@ sudo php5enmod posixclocks
 Add the line `extension=posixclocks.so` to your php.ini
 
 
-<br><br>
+<br>
 ### But, what's wrong with `microtime()`, you ask?
 ---
 
@@ -58,7 +59,7 @@ http://us3.php.net/manual/en/function.microtime.php#101628
 http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-time
 
 
-<br><br>
+<br>
 ## Interface
 ---
 
