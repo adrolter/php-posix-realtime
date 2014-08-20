@@ -73,6 +73,9 @@ PHP_MSHUTDOWN_FUNCTION(posixclocks)
 PHP_MINFO_FUNCTION(posixclocks)
 {
   char isSupported[4];
+  struct timespec currTime;
+  double dResult;
+  char precision[50];
 
   php_info_print_table_start();
   php_info_print_table_row(2, "POSIX Clocks Support", "enabled");
@@ -84,10 +87,13 @@ PHP_MINFO_FUNCTION(posixclocks)
 
   #ifdef CLOCK_MONOTONIC
   strcpy(isSupported, "Yes");
+  clock_getres(CLOCK_MONOTONIC, &res);
+  dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
+  snprintf(precision, 50, "%Lf", dResult);
   #else
   strcpy(isSupported, "No");
   #endif
-  php_info_print_table_row(2, "CLOCK_MONOTONIC", &isSupported);
+  php_info_print_table_row(3, "CLOCK_MONOTONIC", &isSupported);
 
   #ifdef CLOCK_PROCESS_CPUTIME_ID
   strcpy(isSupported, "Yes");
