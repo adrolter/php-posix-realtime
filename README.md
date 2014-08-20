@@ -1,4 +1,4 @@
-# POSIX Clocks Interface for PHP
+# POSIX Clocks for PHP
 
 This project provides an interface to the real-time, monotonic, CPU-time,
 and various other clocks available on systems that implement the POSIX.1b
