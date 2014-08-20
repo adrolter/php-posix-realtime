@@ -5,10 +5,10 @@ and various other clocks available on systems that implement the POSIX.1b
 standard (e.g., Linux, BSD, Solaris, OS X, etc)
 
 ---
-### But, what's wrong with `microtime()`, you ask?
+### Why not `microtime()`, you ask?
 ---
 
-Nothing really, if need a timestamp and can live with microsecond
+Sure, if need a timestamp and can live with microsecond
 resolution. The problem arises when you need to accurately measure
 differences (deltas) in time, especially over relatively long periods.
 Say, for example, you need to measure the amount of time a large script takes
