@@ -201,7 +201,7 @@ PHP_FUNCTION(posix_clock_gettime)
       object_init(obj);
       add_property_long(obj, "tv_sec", clockVal.tv_sec);
       add_property_long(obj, "tv_nsec", clockVal.tv_nsec);
-      RETURN_OBJECT(obj);
+      RETURN_ZVAL(obj, 1, 1);
       break;
     }
     case PHP_POSIXCLOCKS_RETTYPE_FLOAT:
