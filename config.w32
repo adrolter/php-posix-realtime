@@ -1,9 +1,8 @@
 // $Id$
 // vim:ft=javascript
 
-WARNING("This exension can only be installed on POSIX systems.");
+ERROR("This exension can only be compiled and used on POSIX systems");
 
 if (PHP_POSIXCLOCKS != "no") {
   // EXTENSION("posixclocks", "posixclocks.c");
 }
-
