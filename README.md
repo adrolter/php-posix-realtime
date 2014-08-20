@@ -50,6 +50,7 @@ often with _nanosecond_ (10e-9) resolution. See below for a list of common clock
 and their PHP constants.
 
 _**More info:**_
+
 http://us3.php.net/manual/en/function.microtime.php#101628
 
 http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-time
