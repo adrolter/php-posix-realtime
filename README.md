@@ -77,15 +77,14 @@ kernel support the following clocks:
 
 Clock ID | Description
 ---------|------------
-POSIX_CLOCK_REALTIME | System-wide clock that measures real (i.e., wall-clock) \
-time. This clock is affected by discontinuous jumps in the system time (e.g., \
-manual clock updates, NTP clock updates, etc).
+POSIX_CLOCK_REALTIME | System-wide clock that measures real (i.e., wall-clock) time. This clock is affected by discontinuous jumps in the system time (e.g., manual clock updates, NTP clock updates, etc).
 POSIX_CLOCK_MONOTONIC | Clock that cannot be set and represents monotonic time since some unspecified starting point. This clock is not affected by discontinuous jumps in the system time.
-
-
-* POSIX_CLOCK_PROCESS_CPUTIME_ID - High-resolution per-process timer from the CPU.
-
-* POSIX_CLOCK_THREAD_CPUTIME_ID - Thread-specific CPU-time clock.
+POSIX_CLOCK_PROCESS_CPUTIME_ID | Per-process CPU-time clock (measures CPU time consumed by all threads in the process).
+POSIX_CLOCK_THREAD_CPUTIME_ID | Thread-specific CPU-time clock.
+POSIX_CLOCK_MONOTONIC_RAW | `Linux >= 2.6.28` Similar to CLOCK_MONOTONIC, but provides access to a raw hardware-based time that is not subject to NTP adjustments or the incremental adjustments performed by adjtime.
+POSIX_CLOCK_REALTIME_COARSE | `Linux >= 2.6.32` A faster but less precise version of CLOCK_REALTIME. Use when you need very fast, but not fine-grained timestamps.
+POSIX_CLOCK_MONOTONIC_COARSE | `Linux >= 2.6.32` A faster but less precise version of CLOCK_MONOTONIC. Use when you need very fast, but not fine-grained timestamps.
+POSIX_CLOCK_BOOTTIME | `Linux >= 2.6.39` Identical to CLOCK_MONOTONIC, except it also includes any time that the system is suspended. This allows applications to get a suspend-aware monotonic clock.
 
 More clocks may be implemented by the system, and can be used by passing the corresponding
 integer ID in place of a predefined constant. If a clock ID does not exist on the compiling
