@@ -75,9 +75,11 @@ clock_gettime(2) support. Sufficiently recent versions of GNU libc and the Linux
 kernel support the following clocks:
 
 
-Clock | Description
-------|------------
-POSIX_CLOCK_REALTIME | System-wide clock that measures real (i.e., wall-clock) time. This clock is affected by discontinuous jumps in the system time (e.g., manual clock updates, NTP clock updates, etc).
+Clock ID | Description
+---------|------------
+POSIX_CLOCK_REALTIME | System-wide clock that measures real (i.e., wall-clock)
+time. This clock is affected by discontinuous jumps in the system time (e.g., 
+manual clock updates, NTP clock updates, etc).
 POSIX_CLOCK_MONOTONIC | Clock that cannot be set and represents monotonic time since some unspecified starting point. This clock is not affected by discontinuous jumps in the system time.
 
 
