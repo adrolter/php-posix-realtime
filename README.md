@@ -32,7 +32,7 @@ Add the line `extension=posixclocks.so` to your php.ini
 
 Nothing really, if need a timestamp and can live with microsecond (10e-6)
 resolution. The problem arises when you need to accurately measure
-_differences_ (deltas) in time, especially over relatively long periods.
+differences (deltas) in time, especially over relatively long periods.
 Say, for example, you need to measure the amount of time a large script takes
 to execute.
 
@@ -46,7 +46,7 @@ In this case you need access to your system's _monotonic_ clock, or better yet,
 its _raw_ monotonic clock, if available.
 
 This extension provides access to **all** the clocks supported by your system,
-often with _nanosecond_ (10e-9) resolution. See below for a list of common clocks
+often with nanosecond (10e-9) resolution. See below for a list of common clocks
 and their PHP constants.
 
 **More info:**
@@ -60,13 +60,13 @@ http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-ti
 -----
 
 ### Functions
-* float posix_clock_gettime(int $clock_id) -
-   Provides an interface to the POSIX clock_gettime function.
-   Returns the float value of the clock's current time.
+* double **posix_clock_gettime**(int _$clock_id_)
+    - Provides an interface to the POSIX clock_gettime function.
+    - Returns a double of the clock's current time.
  
-* float posix_clock_getres(int $clock_id) -
-   Provides an interface to the POSIX clock_getres function.
-  Returns the float value of the clock's resolution.
+* double **posix_clock_getres**(int _$clock_id_)
+    - Provides an interface to the POSIX clock_getres function.
+    - Returns a double of the clock's resolution.
 
 ### Parameters
 * clock_id - 
