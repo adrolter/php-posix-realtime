@@ -30,8 +30,22 @@ Add the line `extension=posixclocks.so` to your php.ini
 ### But, what's wrong with `microtime()`, you ask? :confused:
 -----
 
-Nothing really, if you're using it to get timestamps and don't need anything
-more than microsecond (10e-6) resolution.
+Nothing really, if need a timestamp and can live with microsecond (10e-6)
+resolution. The problem arises when you need to accurately measure
+_differences_ (deltas) in time, especially over relatively long periods.
+Say, for example, you need to measure the amount of time a large script takes
+to execute.
+
+Or maybe you need a timestamp with _nanosecond_ (10e-9) resolution?
+
+The `microtime()` PHP function relies on the `gettimeofday(2)` system call,
+which is quite useful for pinpointing a certain moment in Earthling history.
+But, if this realtime system clock is adjusted (maybe by [NTP](https://en.wikipedia.org/wiki/Network_Time_Protocol),
+or maybe by your local sysadmin's grubby fingers :neckbeard::fu:) while you're trying
+to _measure time_...well, you're gonna have a bad...yeah.
+
+You catch the...drift. Sorry.
+
 
 http://us3.php.net/manual/en/function.microtime.php#101628
 
