@@ -5,7 +5,7 @@ and various other clocks available on systems that implement the POSIX.1b
 standard (e.g., Linux, BSD, Solaris, OS X, etc)
 
 
-<br><br>
+<br>
 ## Installation
 ---
 
