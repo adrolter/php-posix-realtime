@@ -1,5 +1,36 @@
-Why this is useful:
+# POSIX Clocks Interface for PHP
+
+This project provides an interface to the real-time, monotonic, CPU-time,
+and various other clocks available on systems that implement the POSIX.1b
+standard (e.g., Linux, BSD, Solaris, OS X, etc).
+
+## Installation
+-----
+
+~~~
+$ git clone https://github.com/adrianguenter/php-posix-clocks.git
+$ cd php-posix-clocks
+$ phpize
+$ ./configure
+$ make && make test
+$ sudo make install
+~~~
+
+### Debian:
+
+~~~
+$ sudo cp posixclocks.deb.ini /etc/php5/mods-available/posixclocks.ini
+$ sudo php5enmod posixclocks
+~~~
+
+### Other:
+
+Add the line `extension=posixclocks.so` to your php.ini
+
+## Why you should use it
+
 http://us3.php.net/manual/en/function.microtime.php#101628
+
 http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-time
 
 
