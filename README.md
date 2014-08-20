@@ -40,15 +40,15 @@ make && make test
 sudo make install
 ```
 
-##### Debian/Ubuntu:
 ---
+##### Debian/Ubuntu:
 ```
 sudo cp posixclocks.deb.ini /etc/php5/mods-available/posixclocks.ini
 sudo php5enmod posixclocks
 ```
 
-##### Other:
 ---
+##### Other:
 Add the line `extension=posixclocks.so` to your php.ini
 
 
