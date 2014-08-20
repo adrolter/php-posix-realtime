@@ -94,7 +94,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   strcpy(isSupported, "Yes");
   clock_getres(CLOCK_MONOTONIC, &res);
   //dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
-  snprintf(precision, 50, "%lld.%.9ld", (long long)ts.tv_sec, ts.tv_nsec);
+  snprintf(precision, 50, "%lld.%.9ld", (long long)res.tv_sec, res.tv_nsec);
   #else
   strcpy(isSupported, "No");
   #endif
