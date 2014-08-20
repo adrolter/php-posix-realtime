@@ -153,7 +153,7 @@ zend_module_entry posixclocks_module_entry = {
   posixclocks_functions,
   PHP_MINIT(posixclocks),
   PHP_MSHUTDOWN(posixclocks),
-  NULL,    /* PHP_RINIT */
+  NULL,  /* PHP_RINIT */
   NULL,  /* PHP_RSHUTDOWN */
   PHP_MINFO(posixclocks),
   PHP_POSIXCLOCKS_VERSION,
