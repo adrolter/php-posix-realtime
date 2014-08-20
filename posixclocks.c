@@ -82,7 +82,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   php_info_print_table_end();
 
   php_info_print_table_start();
-  php_info_print_table_header(2, "Clock", "Supported", "Precision");
+  php_info_print_table_header(3, "Clock", "Supported", "Precision");
 
 
   clock_getres(CLOCK_REALTIME, &res);
