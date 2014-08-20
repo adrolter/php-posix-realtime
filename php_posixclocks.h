@@ -21,7 +21,7 @@
 extern zend_module_entry posixclocks_module_entry;
 #define phpext_posixclocks_ptr &posixclocks_module_entry
 
-#define PHP_POSIXCLOCKS_VERSION "1.0.0"
+// #define PHP_POSIXCLOCKS_VERSION "1.0.0"
 
 
 #ifdef PHP_WIN32

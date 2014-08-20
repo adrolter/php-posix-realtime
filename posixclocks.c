@@ -78,6 +78,7 @@ PHP_MINFO_FUNCTION(posixclocks)
 
   php_info_print_table_start();
   php_info_print_table_row(2, "POSIX Clocks Support", "enabled");
+  php_info_print_table_row(2, "Version", PHP_POSIXCLOCKS_VERSION);
   php_info_print_table_end();
 
   php_info_print_table_start();
