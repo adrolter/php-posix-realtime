@@ -80,7 +80,7 @@ PHP_MINFO_FUNCTION(posixclocks)
 
   php_info_print_table_start();
   php_info_print_table_header(2, "Clock", "Supported");
-  php_info_print_table_row(2, "CLOCK_REALTIME", "true");
+  php_info_print_table_row(2, "CLOCK_REALTIME", "Yes");
 
   #ifdef CLOCK_MONOTONIC
   strcpy(isSupported, "Yes");
