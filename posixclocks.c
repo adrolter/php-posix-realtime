@@ -200,7 +200,7 @@ PHP_FUNCTION(posix_clock_gettime)
       break;
     case PHP_POSIXCLOCKS_RETTYPE_FLOAT:
       retVal = clockVal.tv_sec + clockVal.tv_nsec / 1000000000.0;
-      RETURN_DOUBLE(clockVal);
+      RETURN_DOUBLE(retVal);
       break;
     case PHP_POSIXCLOCKS_RETTYPE_STRING:
       //
