@@ -75,33 +75,61 @@ PHP_MINFO_FUNCTION(posixclocks)
   char isSupported[4];
 
   php_info_print_table_start();
-  php_info_print_table_header(2, "posixclocks support", "enabled");
+  php_info_print_table_row(2, "POSIX Clocks Support", "enabled");
+  php_info_print_table_end();
+
+  php_info_print_table_start();
+  php_info_print_table_header(2, "Clock", "Supported");
   php_info_print_table_row(2, "CLOCK_REALTIME", "true");
 
   #ifdef CLOCK_MONOTONIC
-  strcpy(isSupported, "yes");
+  strcpy(isSupported, "Yes");
   #else
-  strcpy(isSupported, "no");
+  strcpy(isSupported, "No");
   #endif
   php_info_print_table_row(2, "CLOCK_MONOTONIC", &isSupported);
 
   #ifdef CLOCK_PROCESS_CPUTIME_ID
+  strcpy(isSupported, "Yes");
+  #else
+  strcpy(isSupported, "No");
   #endif
+  php_info_print_table_row(2, "CLOCK_PROCESS_CPUTIME_ID", &isSupported);
 
   #ifdef CLOCK_THREAD_CPUTIME_ID
+  strcpy(isSupported, "Yes");
+  #else
+  strcpy(isSupported, "No");
   #endif
+  php_info_print_table_row(2, "CLOCK_THREAD_CPUTIME_ID", &isSupported);
 
   #ifdef CLOCK_MONOTONIC_RAW
+  strcpy(isSupported, "Yes");
+  #else
+  strcpy(isSupported, "No");
   #endif
+  php_info_print_table_row(2, "CLOCK_MONOTONIC_RAW", &isSupported);
 
   #ifdef CLOCK_REALTIME_COARSE
+  strcpy(isSupported, "Yes");
+  #else
+  strcpy(isSupported, "No");
   #endif
+  php_info_print_table_row(2, "CLOCK_REALTIME_COARSE", &isSupported);
 
   #ifdef CLOCK_MONOTONIC_COARSE
+  strcpy(isSupported, "Yes");
+  #else
+  strcpy(isSupported, "No");
   #endif
+  php_info_print_table_row(2, "CLOCK_MONOTONIC_COARSE", &isSupported);
 
   #ifdef CLOCK_BOOTTIME
+  strcpy(isSupported, "Yes");
+  #else
+  strcpy(isSupported, "No");
   #endif
+  php_info_print_table_row(2, "CLOCK_BOOTTIME", &isSupported);
 
   php_info_print_table_end();
 }
