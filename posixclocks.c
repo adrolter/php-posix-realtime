@@ -74,7 +74,6 @@ PHP_MINFO_FUNCTION(posixclocks)
 {
   char isSupported[4];
   struct timespec res;
-  double dResult;
   char precision[50];
 
   php_info_print_table_start();
@@ -86,15 +85,13 @@ PHP_MINFO_FUNCTION(posixclocks)
 
 
   clock_getres(CLOCK_REALTIME, &res);
-  dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
-  snprintf(precision, 50, "%e", dResult);
+  snprintf(precision, 50, "%.0e", res.tv_sec + res.tv_nsec / 1000000000.0);
   php_info_print_table_row(3, "CLOCK_REALTIME", "Yes", precision);
 
   #ifdef CLOCK_MONOTONIC
   strcpy(isSupported, "Yes");
   clock_getres(CLOCK_MONOTONIC, &res);
-  //dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
-  snprintf(precision, 50, "%lld.%.9ld", (long long)res.tv_sec, res.tv_nsec);
+  snprintf(precision, 50, "%.0e", res.tv_sec + res.tv_nsec / 1000000000.0);
   #else
   strcpy(isSupported, "No");
   #endif
@@ -103,8 +100,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   #ifdef CLOCK_PROCESS_CPUTIME_ID
   strcpy(isSupported, "Yes");
   clock_getres(CLOCK_PROCESS_CPUTIME_ID, &res);
-  dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
-  snprintf(precision, 50, "%e", dResult);
+  snprintf(precision, 50, "%.0e", res.tv_sec + res.tv_nsec / 1000000000.0);
   #else
   strcpy(isSupported, "No");
   #endif
@@ -113,8 +109,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   #ifdef CLOCK_THREAD_CPUTIME_ID
   strcpy(isSupported, "Yes");
   clock_getres(CLOCK_THREAD_CPUTIME_ID, &res);
-  dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
-  snprintf(precision, 50, "%e", dResult);
+  snprintf(precision, 50, "%.0e", res.tv_sec + res.tv_nsec / 1000000000.0);
   #else
   strcpy(isSupported, "No");
   #endif
@@ -123,8 +118,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   #ifdef CLOCK_MONOTONIC_RAW
   strcpy(isSupported, "Yes");
   clock_getres(CLOCK_MONOTONIC_RAW, &res);
-  dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
-  snprintf(precision, 50, "%e", dResult);
+  snprintf(precision, 50, "%.0e", res.tv_sec + res.tv_nsec / 1000000000.0);
   #else
   strcpy(isSupported, "No");
   #endif
@@ -133,9 +127,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   #ifdef CLOCK_REALTIME_COARSE
   strcpy(isSupported, "Yes");
   clock_getres(CLOCK_REALTIME_COARSE, &res);
-  //dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
-  //snprintf(precision, 50, "%e", dResult);
-  snprintf(precision, 50, "%lld.%.9ld", (long long)res.tv_sec, res.tv_nsec);
+  snprintf(precision, 50, "%.0e", res.tv_sec + res.tv_nsec / 1000000000.0);
   #else
   strcpy(isSupported, "No");
   #endif
@@ -144,8 +136,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   #ifdef CLOCK_MONOTONIC_COARSE
   strcpy(isSupported, "Yes");
   clock_getres(CLOCK_MONOTONIC_COARSE, &res);
-  dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
-  snprintf(precision, 50, "%.0e", dResult);
+  snprintf(precision, 50, "%.0e", res.tv_sec + res.tv_nsec / 1000000000.0);
   #else
   strcpy(isSupported, "No");
   #endif
@@ -154,8 +145,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   #ifdef CLOCK_BOOTTIME
   strcpy(isSupported, "Yes");
   clock_getres(CLOCK_BOOTTIME, &res);
-  dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
-  snprintf(precision, 50, "%.0e", dResult);
+  snprintf(precision, 50, "%.0e", res.tv_sec + res.tv_nsec / 1000000000.0);
   #else
   strcpy(isSupported, "No");
   #endif
