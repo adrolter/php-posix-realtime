@@ -1,40 +1,27 @@
 dnl $Id$
 dnl config.m4 for extension posixclocks
 
-dnl Comments in this file start with the string 'dnl'.
-dnl Remove where necessary. This file will not work
-dnl without editing.
-
-dnl If your extension references something external, use with:
-
-dnl PHP_ARG_WITH(posixclocks, for posixclocks support,
-dnl Make sure that the comment is aligned:
-dnl [  --with-posixclocks             Include posixclocks support])
-
-dnl Otherwise use enable:
-
-PHP_ARG_ENABLE(posixclocks, whether to enable posixclocks support,
-dnl Make sure that the comment is aligned:
-[  --enable-posixclocks           Enable posixclocks support])
+PHP_ARG_WITH(posixclocks, for posixclocks support,
+[  --with-posixclocks             Include POSIX clock_gettime support])
 
 if test "$PHP_POSIXCLOCKS" != "no"; then
   dnl Write more examples of tests here...
 
-  dnl # --with-posixclocks -> check with-path
-  dnl SEARCH_PATH="/usr/local /usr"     # you might want to change this
-  dnl SEARCH_FOR="/include/posixclocks.h"  # you most likely want to change this
-  dnl if test -r $PHP_POSIXCLOCKS/$SEARCH_FOR; then # path given as parameter
-  dnl   POSIXCLOCKS_DIR=$PHP_POSIXCLOCKS
-  dnl else # search default path list
-  dnl   AC_MSG_CHECKING([for posixclocks files in default path])
-  dnl   for i in $SEARCH_PATH ; do
-  dnl     if test -r $i/$SEARCH_FOR; then
-  dnl       POSIXCLOCKS_DIR=$i
-  dnl       AC_MSG_RESULT(found in $i)
-  dnl     fi
-  dnl   done
-  dnl fi
-  dnl
+  # --with-posixclocks -> check with-path
+  SEARCH_PATH="/usr/local /usr"
+  SEARCH_FOR="/include/time.h"
+  if test -r $PHP_POSIXCLOCKS/$SEARCH_FOR; then # path given as parameter
+    POSIXCLOCKS_DIR=$PHP_POSIXCLOCKS
+  else # search default path list
+    AC_MSG_CHECKING([for posixclocks files in default path])
+    for i in $SEARCH_PATH ; do
+      if test -r $i/$SEARCH_FOR; then
+        POSIXCLOCKS_DIR=$i
+        AC_MSG_RESULT(found in $i)
+      fi
+    done
+  fi
+
   dnl if test -z "$POSIXCLOCKS_DIR"; then
   dnl   AC_MSG_RESULT([not found])
   dnl   AC_MSG_ERROR([Please reinstall the posixclocks distribution])

@@ -1,13 +1,9 @@
 // $Id$
 // vim:ft=javascript
 
-// If your extension references something external, use ARG_WITH
-// ARG_WITH("posixclocks", "for posixclocks support", "no");
-
-// Otherwise, use ARG_ENABLE
-// ARG_ENABLE("posixclocks", "enable posixclocks support", "no");
+WARNING("This exension can only be installed on POSIX systems.");
 
 if (PHP_POSIXCLOCKS != "no") {
-  EXTENSION("posixclocks", "posixclocks.c");
+  // EXTENSION("posixclocks", "posixclocks.c");
 }
 
