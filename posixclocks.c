@@ -151,6 +151,15 @@ PHP_MINFO_FUNCTION(posixclocks)
   #endif
   php_info_print_table_row(3, "CLOCK_BOOTTIME", &isSupported, precision);
 
+  #ifdef CLOCK_BOOTTIMER
+  strcpy(isSupported, "Yes");
+  clock_getres(CLOCK_BOOTTIMER, &res);
+  snprintf(precision, 50, "%.0e", res.tv_sec + res.tv_nsec / 1000000000.0);
+  #else
+  strcpy(isSupported, "No");
+  #endif
+  php_info_print_table_row(3, "CLOCK_BOOTTIMER", &isSupported, precision);
+
   php_info_print_table_end();
 }
 
