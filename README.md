@@ -5,6 +5,7 @@ and various other clocks available on systems that implement the POSIX.1b
 standard (e.g., Linux, BSD, Solaris, OS X, etc)
 
 
+-----
 ## Installation
 -----
 
@@ -27,8 +28,8 @@ sudo php5enmod posixclocks
 ##### Other:
 Add the line `extension=posixclocks.so` to your php.ini
 
------
 
+-----
 ### But, what's wrong with `microtime()`, you ask?
 -----
 
@@ -58,6 +59,7 @@ http://us3.php.net/manual/en/function.microtime.php#101628
 http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-time
 
 
+-----
 ## Interface
 -----
 
