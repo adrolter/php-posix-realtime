@@ -38,7 +38,7 @@ $mtTotal = (posix_clock_gettime(POSIX_CLOCK_MONOTONIC) - $start);
 
 // Output
 echo " posix_clock_gettime:\t" . $gtTotal . "\n";
-echo " microtime:\t" . $mtTotal . "\n";
+echo " microtime:\t\t" . $mtTotal . "\n";
 echo "---------------------------------\n";
 
 if ($gtTotal < $mtTotal) {
