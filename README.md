@@ -41,7 +41,7 @@ Or maybe you need a timestamp with _nanosecond_ (10e-9) resolution?
 The `microtime()` PHP function relies on the `gettimeofday(2)` system call,
 which is quite useful for pinpointing a certain moment in Earthling history.
 But, if this realtime system clock is adjusted (maybe by [NTP](https://en.wikipedia.org/wiki/Network_Time_Protocol),
-or maybe by your local sysadmin's grubby fingers :fu::neckbeard::fu:) while you're trying
+or maybe by your local sysadmin :fu::neckbeard::fu:) while you're trying
 to _measure time_...well, you're gonna have a bad...you catch the......drift.
 
 
