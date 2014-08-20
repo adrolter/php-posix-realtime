@@ -81,10 +81,10 @@ REALTIME | System-wide clock that measures real (i.e., wall-clock) time. This cl
 MONOTONIC | Clock that cannot be set and represents monotonic time since some unspecified starting point. This clock is not affected by discontinuous jumps in the system time.
 PROCESS_CPUTIME_ID | Per-process CPU-time clock (measures CPU time consumed by all threads in the process).
 THREAD_CPUTIME_ID | Thread-specific CPU-time clock.
-MONOTONIC_RAW | `Linux >= 2.6.28` Similar to CLOCK_MONOTONIC, but provides access to a raw hardware-based time that is not subject to NTP adjustments or the incremental adjustments performed by adjtime.
-REALTIME_COARSE | `Linux >= 2.6.32` A faster but less precise version of CLOCK_REALTIME. Use when you need very fast, but not fine-grained timestamps.
-MONOTONIC_COARSE | `Linux >= 2.6.32` A faster but less precise version of CLOCK_MONOTONIC. Use when you need very fast, but not fine-grained timestamps.
-BOOTTIME | `Linux >= 2.6.39` Identical to CLOCK_MONOTONIC, except it also includes any time that the system is suspended. This allows applications to get a suspend-aware monotonic clock.
+MONOTONIC_RAW | `Linux >= 2.6.28` Similar to MONOTONIC, but provides access to a raw hardware-based time that is not subject to NTP adjustments or the incremental adjustments performed by adjtime.
+REALTIME_COARSE | `Linux >= 2.6.32` A faster but less precise version of REALTIME. Use when you need very fast, but not fine-grained timestamps.
+MONOTONIC_COARSE | `Linux >= 2.6.32` A faster but less precise version of MONOTONIC. Use when you need very fast, but not fine-grained timestamps.
+BOOTTIME | `Linux >= 2.6.39` Identical to MONOTONIC, except it also includes any time that the system is suspended. This allows applications to get a suspend-aware monotonic clock.
 
 More clocks may be implemented by the system, and can be used by passing the corresponding
 integer ID in place of a predefined constant. If a clock ID does not exist on the compiling
