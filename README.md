@@ -40,7 +40,7 @@ make && make test
 sudo make install
 ```
 
-##### Debian:
+##### Debian/Ubuntu:
 
 ```
 sudo cp posixclocks.deb.ini /etc/php5/mods-available/posixclocks.ini
