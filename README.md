@@ -8,7 +8,7 @@ standard (e.g., Linux, BSD, Solaris, OS X, etc)
 ### Why not `microtime()`, you ask?
 ---
 
-Sure, if need a timestamp and can live with microsecond
+Sure, it's fine if you need a timestamp and can live with microsecond
 resolution. The problem arises when you need to accurately measure
 differences (deltas) in time, especially over relatively long periods.
 Say, for example, you need to measure the amount of time a large script takes
