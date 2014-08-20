@@ -3,7 +3,9 @@ Makefile.objects
 config.log
 config.nice
 config.status
+.deps
 *.la
 *.lo
+.idea/
 .libs/
 modules/
