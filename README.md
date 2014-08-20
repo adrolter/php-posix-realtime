@@ -16,7 +16,7 @@ The `microtime()` PHP function relies on the `gettimeofday(2)` system call,
 which is quite useful for pinpointing a certain moment in Earthling history.
 But, if this realtime system clock is adjusted (maybe by [NTP](https://en.wikipedia.org/wiki/Network_Time_Protocol),
 or maybe by your friendly neighborhood sysadmin) while you're trying
-to _measure time_...well, you're gonna have a bad...you catch the drift.
+to _measure time_...well, [you're gonna have a bad...you catch the drift](http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-time).
 
 In this case you need access to your system's _monotonic_ clock, or better yet,
 its _raw_ monotonic clock, if available.
