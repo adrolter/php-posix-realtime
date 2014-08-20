@@ -1,5 +1,5 @@
 /*
-	Copyright 2011 Adrian Guenter	<adrianguenter@gmail.com>
+	Copyright 2014 Adrian Guenter	<adrianguenter@gmail.com>
 	
 	This file is part of php_posixclocks and licensed
 	under the Apache License, Version 2.0 (the "License");
@@ -24,76 +24,12 @@
 #include "ext/standard/info.h"
 #include "php_posixclocks.h"
 
-/* If you declare any globals in php_posixclocks.h uncomment this:
-ZEND_DECLARE_MODULE_GLOBALS(posixclocks)
-*/
 
-/* True global resources - no need for thread safety here */
 static int le_posixclocks;
 
-/* {{{ posixclocks_functions[]
- *
- * Every user visible function must have an entry in posixclocks_functions[].
- */
-const zend_function_entry posixclocks_functions[] = {
-	PHP_FE(posix_clock_gettime,	NULL)
-	PHP_FE(posix_clock_getres,	NULL)
-	{NULL, NULL, NULL}	/* Must be the last line in posixclocks_functions[] */
-};
-/* }}} */
 
-/* {{{ posixclocks_module_entry
- */
-zend_module_entry posixclocks_module_entry = {
-#if ZEND_MODULE_API_NO >= 20010901
-	STANDARD_MODULE_HEADER,
-#endif
-	"posixclocks",
-	posixclocks_functions,
-	PHP_MINIT(posixclocks),
-	PHP_MSHUTDOWN(posixclocks),
-	NULL,		/* PHP_RINIT (request init) */
-	NULL,	/* PHP_RSHUTDOWN (request shutdown) */
-	PHP_MINFO(posixclocks),
-#if ZEND_MODULE_API_NO >= 20010901
-	"0.1", /* Replace with version number for your extension */
-#endif
-	STANDARD_MODULE_PROPERTIES
-};
-/* }}} */
-
-#ifdef COMPILE_DL_POSIXCLOCKS
-ZEND_GET_MODULE(posixclocks)
-#endif
-
-/* {{{ PHP_INI
- */
-/* Remove comments and fill if you need to have entries in php.ini
-PHP_INI_BEGIN()
-    STD_PHP_INI_ENTRY("posixclocks.global_value",      "42", PHP_INI_ALL, OnUpdateLong, global_value, zend_posixclocks_globals, posixclocks_globals)
-    STD_PHP_INI_ENTRY("posixclocks.global_string", "foobar", PHP_INI_ALL, OnUpdateString, global_string, zend_posixclocks_globals, posixclocks_globals)
-PHP_INI_END()
-*/
-/* }}} */
-
-/* {{{ php_posixclocks_init_globals
- */
-/* Uncomment this function if you have INI entries
-static void php_posixclocks_init_globals(zend_posixclocks_globals *posixclocks_globals)
-{
-	posixclocks_globals->global_value = 0;
-	posixclocks_globals->global_string = NULL;
-}
-*/
-/* }}} */
-
-/* {{{ PHP_MINIT_FUNCTION
- */
 PHP_MINIT_FUNCTION(posixclocks)
 {
-	/* If you have INI entries, uncomment these lines 
-	REGISTER_INI_ENTRIES();
-	*/
 	#ifdef CLOCK_REALTIME
     REGISTER_LONG_CONSTANT("POSIX_CLOCK_REALTIME", CLOCK_REALTIME, CONST_CS | CONST_PERSISTENT);
   #endif
@@ -125,38 +61,25 @@ PHP_MINIT_FUNCTION(posixclocks)
   #ifdef CLOCK_BOOTTIME
     REGISTER_LONG_CONSTANT("POSIX_CLOCK_BOOTTIME", CLOCK_BOOTTIME, CONST_CS | CONST_PERSISTENT);
   #endif
-	
+
 	return SUCCESS;
 }
-/* }}} */
 
-/* {{{ PHP_MSHUTDOWN_FUNCTION
- */
+
 PHP_MSHUTDOWN_FUNCTION(posixclocks)
 {
-	/* uncomment this line if you have INI entries
-	UNREGISTER_INI_ENTRIES();
-	*/
 	return SUCCESS;
 }
-/* }}} */
 
-/* {{{ PHP_MINFO_FUNCTION
- */
+
 PHP_MINFO_FUNCTION(posixclocks)
 {
 	php_info_print_table_start();
 	php_info_print_table_header(2, "posixclocks support", "enabled");
 	php_info_print_table_end();
-
-	/* Remove comments if you have entries in php.ini
-	DISPLAY_INI_ENTRIES();
-	*/
 }
-/* }}} */
 
-/* {{{ proto double posix_clock_gettime()
-   clk_id) Get the current time of a clock */
+
 PHP_FUNCTION(posix_clock_gettime)
 {
 	long clkId = 0;
@@ -185,10 +108,8 @@ PHP_FUNCTION(posix_clock_gettime)
 	
 	RETURN_DOUBLE(dResult);
 }
-/* }}} */
 
-/* {{{ proto double posix_clock_getres()
-   clk_id) Get the resolution of a clock */
+
 PHP_FUNCTION(posix_clock_getres)
 {
 	long clkId = 0;
@@ -217,7 +138,32 @@ PHP_FUNCTION(posix_clock_getres)
 	
 	RETURN_DOUBLE(dResult);
 }
-/* }}} */
+
+
+const zend_function_entry posixclocks_functions[] = {
+	PHP_FE(posix_clock_gettime,	NULL)
+	PHP_FE(posix_clock_getres,	NULL)
+	PHP_FE_END
+};
+
+
+zend_module_entry posixclocks_module_entry = {
+	STANDARD_MODULE_HEADER,
+	"posixclocks",
+	posixclocks_functions,
+	PHP_MINIT(posixclocks),
+	PHP_MSHUTDOWN(posixclocks),
+	NULL,		/* PHP_RINIT */
+	NULL,	/* PHP_RSHUTDOWN */
+	PHP_MINFO(posixclocks),
+	PHP_POSIXCLOCKS_VERSION,
+	STANDARD_MODULE_PROPERTIES
+};
+
+
+#ifdef COMPILE_DL_POSIXCLOCKS
+ZEND_GET_MODULE(posixclocks)
+#endif
 
 /*
  * Local variables:
