@@ -4,10 +4,10 @@ This project provides an interface to the real-time, monotonic, CPU-time,
 and various other clocks available on systems that implement the POSIX.1b
 standard (e.g., Linux, BSD, Solaris, OS X, etc)
 
-#### Why not `microtime()`, you ask?
+#### But we already have `microtime()`, you say...
 
-Sure, it's fine if you need a timestamp and can live with microsecond
-resolution. The problem arises when you need to accurately measure
+Using microtime is perfectly fine if you need a timestamp and can live with
+microsecond resolution. The problem arises when you need to accurately measure
 differences (deltas) in time, especially over relatively long periods.
 Say, for example, you need to measure the amount of time a large script takes
 to execute.
