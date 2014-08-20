@@ -85,6 +85,7 @@ More clocks may be implemented by the system, and can be used by passing the cor
 integer ID in place of a predefined constant. If a clock ID does not exist on the compiling
 system, its PHP POSIX_CLOCK_* equivalent will be undefined within the extension.
 
+<br>
 ---
 
 http://man7.org/linux/man-pages/man2/clock_gettime.2.html
