@@ -26,8 +26,12 @@ $ sudo php5enmod posixclocks
 Add the line `extension=posixclocks.so` to your php.ini
 
 
-### So, what's wrong with `microtime()` :neckbeard:?
+### But, what's wrong with `microtime()`, you ask? :confused:
 -----
+
+Nothing really, if you're just using it to get timestamps and microsecond
+resolution suffices.
+
 http://us3.php.net/manual/en/function.microtime.php#101628
 
 http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-time
