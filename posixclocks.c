@@ -72,16 +72,16 @@ PHP_MSHUTDOWN_FUNCTION(posixclocks)
 
 PHP_MINFO_FUNCTION(posixclocks)
 {
-  char *isSupported = new char[4];
+  char isSupported[4];
 
   php_info_print_table_start();
   php_info_print_table_header(2, "posixclocks support", "enabled");
   php_info_print_table_row(2, "CLOCK_REALTIME", "true");
 
   #ifdef CLOCK_MONOTONIC
-  isSupported = "yes";
+  strcpy(isSupported, "yes");
   #else
-  isSupported = "no";
+  strcpy(isSupported, "no");
   #endif
   php_info_print_table_row(2, "CLOCK_MONOTONIC", &isSupported);
 
