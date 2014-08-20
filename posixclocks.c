@@ -158,7 +158,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   #endif
   php_info_print_table_row(3, "CLOCK_BOOTTIME", &isSupported, precision);
 
-  strcpy(precision, "&mdash;");
+  strcpy(precision, "—");
   #ifdef CLOCK_BOOTTIMER
   strcpy(isSupported, "Yes");
   clock_getres(CLOCK_BOOTTIMER, &res);
