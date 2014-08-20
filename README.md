@@ -49,7 +49,7 @@ This extension provides access to **all** the clocks supported by your system,
 often with _nanosecond_ (10e-9) resolution. See below for a list of common clocks
 and their PHP constants.
 
-_**More info:**_
+**More info:**
 
 http://us3.php.net/manual/en/function.microtime.php#101628
 
