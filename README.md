@@ -28,7 +28,7 @@ and their PHP constants.
 
 <br>
 ---
-## Compile & Install
+## Installation
 ---
 
 ```
@@ -40,20 +40,13 @@ make && make test
 sudo make install
 ```
 
-
----
-### Enable
----
-
-##### Debian/Ubuntu:
+##### Enabling on Debian/Ubuntu:
 ```
 sudo cp posixclocks.deb.ini /etc/php5/mods-available/posixclocks.ini
 sudo php5enmod posixclocks
 ```
 
----
-
-##### Other:
+##### Enabling everywhere else:
 Add the line `extension=posixclocks.so` to your php.ini
 
 
