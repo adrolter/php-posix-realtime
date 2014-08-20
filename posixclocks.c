@@ -72,8 +72,37 @@ PHP_MSHUTDOWN_FUNCTION(posixclocks)
 
 PHP_MINFO_FUNCTION(posixclocks)
 {
+  char isSupported[4];
+
   php_info_print_table_start();
   php_info_print_table_header(2, "posixclocks support", "enabled");
+  php_info_print_table_row(2, "CLOCK_REALTIME", "true");
+
+  #ifdef CLOCK_MONOTONIC
+  isSupported = "yes";
+  #else
+  isSupported = "no";
+  #endif
+  php_info_print_table_row(2, "CLOCK_MONOTONIC", &isSupported);
+
+  #ifdef CLOCK_PROCESS_CPUTIME_ID
+  #endif
+
+  #ifdef CLOCK_THREAD_CPUTIME_ID
+  #endif
+
+  #ifdef CLOCK_MONOTONIC_RAW
+  #endif
+
+  #ifdef CLOCK_REALTIME_COARSE
+  #endif
+
+  #ifdef CLOCK_MONOTONIC_COARSE
+  #endif
+
+  #ifdef CLOCK_BOOTTIME
+  #endif
+
   php_info_print_table_end();
 }
 
