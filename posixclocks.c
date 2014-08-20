@@ -72,7 +72,7 @@ PHP_MSHUTDOWN_FUNCTION(posixclocks)
 
 PHP_MINFO_FUNCTION(posixclocks)
 {
-  char isSupported[4];
+  char *isSupported = new char[4];
 
   php_info_print_table_start();
   php_info_print_table_header(2, "posixclocks support", "enabled");
