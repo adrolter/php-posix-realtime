@@ -32,7 +32,7 @@ Add the line `extension=posixclocks.so` to your php.ini
 ### But, what's wrong with `microtime()`, you ask?
 -----
 
-Nothing really, if need a timestamp and can live with microsecond (10e-6)
+Nothing really, if need a timestamp and can live with microsecond
 resolution. The problem arises when you need to accurately measure
 differences (deltas) in time, especially over relatively long periods.
 Say, for example, you need to measure the amount of time a large script takes
@@ -48,7 +48,7 @@ In this case you need access to your system's _monotonic_ clock, or better yet,
 its _raw_ monotonic clock, if available.
 
 This extension provides access to **all** the clocks supported by your system,
-often with nanosecond (10e-9) resolution. See below for a list of common clocks
+often with nanosecond resolution. See below for a list of common clocks
 and their PHP constants.
 
 **More info:**
