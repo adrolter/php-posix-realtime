@@ -193,14 +193,19 @@ PHP_FUNCTION(posix_clock_gettime)
     }
   }
 
-  double retVal;
   switch (returnType) {
     case PHP_POSIXCLOCKS_RETTYPE_TIMESPEC:
-      //
+    {
+      zval *obj;
+      MAKE_STD_ZVAL(obj);
+      object_init(obj);
+      add_property_long(obj, "tv_sec", clockVal.tv_sec);
+      add_property_long(obj, "tv_nsec", clockVal.tv_nsec);
+      RETURN_OBJECT(obj);
       break;
+    }
     case PHP_POSIXCLOCKS_RETTYPE_FLOAT:
-      retVal = clockVal.tv_sec + clockVal.tv_nsec / 1000000000.0;
-      RETURN_DOUBLE(retVal);
+      RETURN_DOUBLE(clockVal.tv_sec + clockVal.tv_nsec / 1000000000.0);
       break;
     case PHP_POSIXCLOCKS_RETTYPE_STRING:
       //
