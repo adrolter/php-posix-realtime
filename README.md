@@ -68,15 +68,19 @@ http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-ti
     - Returns a double representing the clock's resolution/precision
 
 The supported clocks are implementation specific, except the system-wide realtime
-  clock (POSIX_CLOCK_REALTIME) which is guaranteed to be supported on all systems with
-  clock_gettime(2) support. Sufficiently recent versions of GNU libc and the Linux
-  kernel support the following clocks:
-  
-  * POSIX_CLOCK_REALTIME - System-wide realtime clock.
-  * POSIX_CLOCK_MONOTONIC - Clock that cannot be set and represents monotonic time since
-     some unspecified starting point.
-  * POSIX_CLOCK_PROCESS_CPUTIME_ID - High-resolution per-process timer from the CPU.
-  * POSIX_CLOCK_THREAD_CPUTIME_ID - Thread-specific CPU-time clock.
+clock (POSIX_CLOCK_REALTIME) which is guaranteed to be supported on all systems with
+clock_gettime(2) support. Sufficiently recent versions of GNU libc and the Linux
+kernel support the following clocks:
+
+---
+POSIX_CLOCK_REALTIME | System-wide clock that measures real (i.e., wall-clock) time. This clock is affected by discontinuous jumps in the system time (e.g., manual clock updates, NTP clock updates, etc).
+---
+POSIX_CLOCK_MONOTONIC | Clock that cannot be set and represents monotonic time since some unspecified starting point. This clock is not affected by discontinuous jumps in the system time.
+---
+
+* POSIX_CLOCK_PROCESS_CPUTIME_ID - High-resolution per-process timer from the CPU.
+
+* POSIX_CLOCK_THREAD_CPUTIME_ID - Thread-specific CPU-time clock.
 
 More clocks may be implemented by the system, and can be used by passing the corresponding
 integer ID in place of a predefined constant. If a clock ID does not exist on the compiling
