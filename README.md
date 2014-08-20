@@ -6,6 +6,7 @@ standard (e.g., Linux, BSD, Solaris, OS X, etc)
 
 
 <br>
+---
 ## Installation
 ---
 
@@ -30,6 +31,7 @@ Add the line `extension=posixclocks.so` to your php.ini
 
 
 <br>
+---
 ### But, what's wrong with `microtime()`, you ask?
 ---
 
@@ -60,6 +62,7 @@ http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-ti
 
 
 <br>
+---
 ## Interface
 ---
 
