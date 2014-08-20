@@ -59,11 +59,11 @@ http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-ti
 ## Interface
 -----
 
-* double **posix_clock_gettime**(int _$clock_id_)
+* double **posix_clock_gettime** ( int _$clock_id_ )
     - Provides an interface to the POSIX clock_gettime function.
     - Returns a double of the clock's current time.
  
-* double **posix_clock_getres**(int _$clock_id_)
+* double **posix_clock_getres** ( int _$clock_id_ )
     - Provides an interface to the POSIX clock_getres function.
     - Returns a double of the clock's resolution.
 
