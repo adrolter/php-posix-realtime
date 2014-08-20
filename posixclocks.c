@@ -83,7 +83,12 @@ PHP_MINFO_FUNCTION(posixclocks)
 
   php_info_print_table_start();
   php_info_print_table_header(2, "Clock", "Supported");
-  php_info_print_table_row(2, "CLOCK_REALTIME", "Yes");
+
+
+  clock_getres(CLOCK_REALTIME, &res);
+  dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
+  snprintf(precision, 50, "%e", dResult);
+  php_info_print_table_row(2, "CLOCK_REALTIME", "Yes", precision);
 
   #ifdef CLOCK_MONOTONIC
   strcpy(isSupported, "Yes");
@@ -97,45 +102,63 @@ PHP_MINFO_FUNCTION(posixclocks)
 
   #ifdef CLOCK_PROCESS_CPUTIME_ID
   strcpy(isSupported, "Yes");
+  clock_getres(CLOCK_PROCESS_CPUTIME_ID, &res);
+  dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
+  snprintf(precision, 50, "%e", dResult);
   #else
   strcpy(isSupported, "No");
   #endif
-  php_info_print_table_row(2, "CLOCK_PROCESS_CPUTIME_ID", &isSupported);
+  php_info_print_table_row(2, "CLOCK_PROCESS_CPUTIME_ID", &isSupported, precision);
 
   #ifdef CLOCK_THREAD_CPUTIME_ID
   strcpy(isSupported, "Yes");
+  clock_getres(CLOCK_THREAD_CPUTIME_ID, &res);
+  dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
+  snprintf(precision, 50, "%e", dResult);
   #else
   strcpy(isSupported, "No");
   #endif
-  php_info_print_table_row(2, "CLOCK_THREAD_CPUTIME_ID", &isSupported);
+  php_info_print_table_row(2, "CLOCK_THREAD_CPUTIME_ID", &isSupported, precision);
 
   #ifdef CLOCK_MONOTONIC_RAW
   strcpy(isSupported, "Yes");
+  clock_getres(CLOCK_MONOTONIC_RAW, &res);
+  dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
+  snprintf(precision, 50, "%e", dResult);
   #else
   strcpy(isSupported, "No");
   #endif
-  php_info_print_table_row(2, "CLOCK_MONOTONIC_RAW", &isSupported);
+  php_info_print_table_row(2, "CLOCK_MONOTONIC_RAW", &isSupported, precision);
 
   #ifdef CLOCK_REALTIME_COARSE
   strcpy(isSupported, "Yes");
+  clock_getres(CLOCK_REALTIME_COARSE, &res);
+  dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
+  snprintf(precision, 50, "%e", dResult);
   #else
   strcpy(isSupported, "No");
   #endif
-  php_info_print_table_row(2, "CLOCK_REALTIME_COARSE", &isSupported);
+  php_info_print_table_row(2, "CLOCK_REALTIME_COARSE", &isSupported, precision);
 
   #ifdef CLOCK_MONOTONIC_COARSE
   strcpy(isSupported, "Yes");
+  clock_getres(CLOCK_MONOTONIC_COARSE, &res);
+  dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
+  snprintf(precision, 50, "%e", dResult);
   #else
   strcpy(isSupported, "No");
   #endif
-  php_info_print_table_row(2, "CLOCK_MONOTONIC_COARSE", &isSupported);
+  php_info_print_table_row(2, "CLOCK_MONOTONIC_COARSE", &isSupported, precision);
 
   #ifdef CLOCK_BOOTTIME
   strcpy(isSupported, "Yes");
+  clock_getres(CLOCK_BOOTTIME, &res);
+  dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
+  snprintf(precision, 50, "%e", dResult);
   #else
   strcpy(isSupported, "No");
   #endif
-  php_info_print_table_row(2, "CLOCK_BOOTTIME", &isSupported);
+  php_info_print_table_row(2, "CLOCK_BOOTTIME", &isSupported, precision);
 
   php_info_print_table_end();
 }
