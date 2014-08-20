@@ -82,13 +82,13 @@ PHP_MINFO_FUNCTION(posixclocks)
   php_info_print_table_end();
 
   php_info_print_table_start();
-  php_info_print_table_header(2, "Clock", "Supported");
+  php_info_print_table_header(2, "Clock", "Supported", "Precision");
 
 
   clock_getres(CLOCK_REALTIME, &res);
   dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
   snprintf(precision, 50, "%e", dResult);
-  php_info_print_table_row(2, "CLOCK_REALTIME", "Yes", precision);
+  php_info_print_table_row(3, "CLOCK_REALTIME", "Yes", precision);
 
   #ifdef CLOCK_MONOTONIC
   strcpy(isSupported, "Yes");
@@ -108,7 +108,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   #else
   strcpy(isSupported, "No");
   #endif
-  php_info_print_table_row(2, "CLOCK_PROCESS_CPUTIME_ID", &isSupported, precision);
+  php_info_print_table_row(3, "CLOCK_PROCESS_CPUTIME_ID", &isSupported, precision);
 
   #ifdef CLOCK_THREAD_CPUTIME_ID
   strcpy(isSupported, "Yes");
@@ -118,7 +118,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   #else
   strcpy(isSupported, "No");
   #endif
-  php_info_print_table_row(2, "CLOCK_THREAD_CPUTIME_ID", &isSupported, precision);
+  php_info_print_table_row(3, "CLOCK_THREAD_CPUTIME_ID", &isSupported, precision);
 
   #ifdef CLOCK_MONOTONIC_RAW
   strcpy(isSupported, "Yes");
@@ -128,7 +128,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   #else
   strcpy(isSupported, "No");
   #endif
-  php_info_print_table_row(2, "CLOCK_MONOTONIC_RAW", &isSupported, precision);
+  php_info_print_table_row(3, "CLOCK_MONOTONIC_RAW", &isSupported, precision);
 
   #ifdef CLOCK_REALTIME_COARSE
   strcpy(isSupported, "Yes");
@@ -138,7 +138,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   #else
   strcpy(isSupported, "No");
   #endif
-  php_info_print_table_row(2, "CLOCK_REALTIME_COARSE", &isSupported, precision);
+  php_info_print_table_row(3, "CLOCK_REALTIME_COARSE", &isSupported, precision);
 
   #ifdef CLOCK_MONOTONIC_COARSE
   strcpy(isSupported, "Yes");
@@ -148,7 +148,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   #else
   strcpy(isSupported, "No");
   #endif
-  php_info_print_table_row(2, "CLOCK_MONOTONIC_COARSE", &isSupported, precision);
+  php_info_print_table_row(3, "CLOCK_MONOTONIC_COARSE", &isSupported, precision);
 
   #ifdef CLOCK_BOOTTIME
   strcpy(isSupported, "Yes");
@@ -158,7 +158,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   #else
   strcpy(isSupported, "No");
   #endif
-  php_info_print_table_row(2, "CLOCK_BOOTTIME", &isSupported, precision);
+  php_info_print_table_row(3, "CLOCK_BOOTTIME", &isSupported, precision);
 
   php_info_print_table_end();
 }
