@@ -8,7 +8,7 @@ standard (e.g., Linux, BSD, Solaris, OS X, etc)
 ## Installation
 -----
 
-```shell
+```bash
 git clone https://github.com/adrianguenter/php-posix-clocks.git
 cd php-posix-clocks
 phpize
@@ -19,7 +19,7 @@ sudo make install
 
 ##### Debian:
 
-```shell
+```bash
 sudo cp posixclocks.deb.ini /etc/php5/mods-available/posixclocks.ini
 sudo php5enmod posixclocks
 ```
