@@ -16,24 +16,24 @@
   limitations under the License.
 */
 
-echo "\n     PHP_POSIXCLOCKS BENCHMARK    \n";
+echo "\n     POSIXCLOCKS BENCHMARK    \n";
 echo "=================================\n";
 
 // Number of times to run each function
 define('ITERATIONS', 1000000);
 
 // posix_clock_gettime()
-$start = microtime(true);
-for ($i = 0; $i < ITERATIONS; $i++) { $x = posix_clock_gettime(CLOCK_MONOTONIC); }
-$gtTotal = (microtime(true) - $start);
+$start = posix_clock_gettime(POSIX_CLOCK_MONOTONIC);
+for ($i = 0; $i < ITERATIONS; $i++) { $x = posix_clock_gettime(POSIX_CLOCK_MONOTONIC); }
+$gtTotal = (posix_clock_gettime(POSIX_CLOCK_MONOTONIC) - $start);
 
 // Take a break...
-sleep(1);
+sleep(3);
 
 // microtime()
-$start = microtime(true);
+$start = posix_clock_gettime(POSIX_CLOCK_MONOTONIC);
 for ($i = 0; $i < ITERATIONS; $i++) { $x = microtime(true); }
-$mtTotal = (microtime(true) - $start);
+$mtTotal = (posix_clock_gettime(POSIX_CLOCK_MONOTONIC) - $start);
 
 
 // Output
