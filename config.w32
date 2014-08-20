@@ -8,6 +8,6 @@
 // ARG_ENABLE("posixclocks", "enable posixclocks support", "no");
 
 if (PHP_POSIXCLOCKS != "no") {
-	EXTENSION("posixclocks", "posixclocks.c");
+  EXTENSION("posixclocks", "posixclocks.c");
 }
 
