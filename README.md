@@ -7,31 +7,6 @@ standard (e.g., Linux, BSD, Solaris, OS X, etc)
 
 <br>
 ---
-## Installation
----
-
-```
-git clone https://github.com/adrianguenter/php-posix-clocks.git
-cd php-posix-clocks
-phpize
-./configure
-make && make test
-sudo make install
-```
-
-##### Debian:
-
-```
-sudo cp posixclocks.deb.ini /etc/php5/mods-available/posixclocks.ini
-sudo php5enmod posixclocks
-```
-
-##### Other:
-Add the line `extension=posixclocks.so` to your php.ini
-
-
-<br>
----
 ### But, what's wrong with `microtime()`, you ask?
 ---
 
@@ -59,6 +34,31 @@ and their PHP constants.
 http://us3.php.net/manual/en/function.microtime.php#101628
 
 http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-time
+
+
+<br>
+---
+## Installation
+---
+
+```
+git clone https://github.com/adrianguenter/php-posix-clocks.git
+cd php-posix-clocks
+phpize
+./configure
+make && make test
+sudo make install
+```
+
+##### Debian:
+
+```
+sudo cp posixclocks.deb.ini /etc/php5/mods-available/posixclocks.ini
+sudo php5enmod posixclocks
+```
+
+##### Other:
+Add the line `extension=posixclocks.so` to your php.ini
 
 
 <br>
