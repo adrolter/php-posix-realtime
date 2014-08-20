@@ -2,7 +2,7 @@
 
 This project provides an interface to the real-time, monotonic, CPU-time,
 and various other clocks available on systems that implement the POSIX.1b
-standard (e.g., Linux, BSD, Solaris, OS X, etc).
+standard (e.g., Linux, BSD, Solaris, OS X, etc)
 
 
 ## Installation
@@ -26,7 +26,7 @@ $ sudo php5enmod posixclocks
 Add the line `extension=posixclocks.so` to your php.ini
 
 
-## What advantages does this provide over the built-in `microtime()` function?
+## Why can't I just use `microtime()`?
 -----
 http://us3.php.net/manual/en/function.microtime.php#101628
 
