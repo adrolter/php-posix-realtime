@@ -73,7 +73,7 @@ PHP_MSHUTDOWN_FUNCTION(posixclocks)
 PHP_MINFO_FUNCTION(posixclocks)
 {
   char isSupported[4];
-  struct timespec currTime;
+  struct timespec res;
   double dResult;
   char precision[50];
 
