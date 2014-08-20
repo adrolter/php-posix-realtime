@@ -23,6 +23,7 @@
 #include "php_ini.h"
 #include "ext/standard/info.h"
 #include "php_posixclocks.h"
+#include "posixclocks_ver.h"
 
 
 static int le_posixclocks;
