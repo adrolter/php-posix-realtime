@@ -7,7 +7,7 @@ standard (e.g., Linux, BSD, Solaris, OS X, etc)
 
 
 ## Installation
------
+---
 
 ```
 git clone https://github.com/adrianguenter/php-posix-clocks.git
@@ -29,9 +29,9 @@ sudo php5enmod posixclocks
 Add the line `extension=posixclocks.so` to your php.ini
 
 
-
+<br><br>
 ### But, what's wrong with `microtime()`, you ask?
------
+---
 
 Nothing really, if need a timestamp and can live with microsecond
 resolution. The problem arises when you need to accurately measure
@@ -61,7 +61,7 @@ http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-ti
 
 
 ## Interface
------
+---
 
 * double **posix_clock_gettime** ( int _$clock_id_ = _POSIX_CLOCK_REALTIME_ )
     - Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/man2/clock_gettime.2.html)
@@ -78,7 +78,7 @@ kernel support the following clocks:
 
 
 Clock ID (POSIX_CLOCK_*) | Description
----------|------------
+:-------:|------------
 REALTIME | System-wide clock that measures real (i.e., wall-clock) time. This clock is affected by discontinuous jumps in the system time (e.g., manual clock updates, NTP clock updates, etc).
 MONOTONIC | Clock that cannot be set and represents monotonic time since some unspecified starting point. This clock is not affected by discontinuous jumps in the system time.
 PROCESS_CPUTIME_ID | Per-process CPU-time clock (measures CPU time consumed by all threads in the process).
