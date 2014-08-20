@@ -29,8 +29,8 @@ Add the line `extension=posixclocks.so` to your php.ini
 ### But, what's wrong with `microtime()`, you ask? :confused:
 -----
 
-Nothing really, if you're just using it to get timestamps and microsecond
-resolution suffices.
+Nothing really, if you're using it to get timestamps and don't need anything
+more than microsecond (10e-6) resolution.
 
 http://us3.php.net/manual/en/function.microtime.php#101628
 
