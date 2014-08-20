@@ -69,7 +69,7 @@ clock_gettime(2) support. Sufficiently recent versions of GNU libc and the Linux
 kernel support the following clocks:
 
 
-Clock ID (POSIX_CLOCK_<ID>) | Description
+Clock ID (POSIX_CLOCK_&lt;ID&gt;) | Description
 :-------:|------------
 REALTIME | System-wide clock that measures real (i.e., wall-clock) time. This clock is affected by discontinuous jumps in the system time (e.g., manual clock updates, NTP clock updates, etc).
 MONOTONIC | Clock that cannot be set and represents monotonic time since some unspecified starting point. This clock is not affected by discontinuous jumps in the system time.
@@ -82,7 +82,7 @@ BOOTTIME | `Linux >= 2.6.39` Identical to `MONOTONIC`, except it also includes a
 
 More clocks may be implemented by the system, and can be used by passing the corresponding
 integer ID in place of a predefined constant. If a clock ID does not exist on the compiling
-system, its equivalent PHP constant (POSIX_CLOCK_<ID>) will be undefined.
+system, its equivalent PHP constant (POSIX_CLOCK_&lt;ID&gt;) will be undefined.
 
 <br>
 ---
