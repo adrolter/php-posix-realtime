@@ -93,7 +93,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   #else
   strcpy(isSupported, "No");
   #endif
-  php_info_print_table_row(3, "CLOCK_MONOTONIC", &isSupported);
+  php_info_print_table_row(3, "CLOCK_MONOTONIC", &isSupported, precision);
 
   #ifdef CLOCK_PROCESS_CPUTIME_ID
   strcpy(isSupported, "Yes");
