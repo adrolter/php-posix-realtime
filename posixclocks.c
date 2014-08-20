@@ -179,11 +179,11 @@ PHP_FUNCTION(posix_clock_gettime)
     WRONG_PARAM_COUNT;
   }
 
-  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|ll", &clockId, &retunType) != SUCCESS) {
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|ll", &clockId, &returnType) != SUCCESS) {
     return;
   }
 
-  if (clock_gettime(clockId, &currTime) == -1) {
+  if (clock_gettime(clockId, &clockVal) == -1) {
     if (errno == EINVAL) {
       php_error_docref(NULL TSRMLS_CC, E_ERROR, "The POSIX clock ID '%ld' is not supported on this system", clockId);
       return;
@@ -193,15 +193,17 @@ PHP_FUNCTION(posix_clock_gettime)
     }
   }
 
+  double retVal;
   switch (returnType) {
     case PHP_POSIXCLOCKS_RETTYPE_TIMESPEC:
+      //
       break;
     case PHP_POSIXCLOCKS_RETTYPE_FLOAT:
-      double retVal;
       retVal = clockVal.tv_sec + clockVal.tv_nsec / 1000000000.0;
       RETURN_DOUBLE(clockVal);
       break;
     case PHP_POSIXCLOCKS_RETTYPE_STRING:
+      //
       break;
     default:
       php_error_docref(NULL TSRMLS_CC, E_ERROR, "Return type must be one of: POSIX_CLOCK_RET_TIMESPEC, "
