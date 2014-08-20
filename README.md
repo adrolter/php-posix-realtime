@@ -4,7 +4,7 @@ This project provides an interface to the real-time, monotonic, CPU-time,
 and various other clocks available on systems that implement the POSIX.1b
 standard (e.g., Linux, BSD, Solaris, OS X, etc)
 
-#### But we already have `microtime()`, you say...
+#### How is this an improvement on the `microtime()` built-in?
 
 Using microtime is perfectly fine if you need a timestamp and can live with
 microsecond resolution. The problem arises when you need to accurately measure
