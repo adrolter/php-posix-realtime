@@ -28,7 +28,7 @@ and their PHP constants.
 
 <br>
 ---
-## Compile
+## Compile & Install
 ---
 
 ```
@@ -41,9 +41,8 @@ sudo make install
 ```
 
 
-<br>
 ---
-## Install
+### Enable
 ---
 
 ##### Debian/Ubuntu:
