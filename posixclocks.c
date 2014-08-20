@@ -1,7 +1,7 @@
 /*
 	Copyright 2011 Adrian Guenter	<adrianguenter@gmail.com>
 	
-	This file is part of php_bettertime and licensed
+	This file is part of php_posixclocks and licensed
 	under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
 	You may obtain a copy of the License at
@@ -22,39 +22,39 @@
 #include "php.h"
 #include "php_ini.h"
 #include "ext/standard/info.h"
-#include "php_bettertime.h"
+#include "php_posixclocks.h"
 
-/* If you declare any globals in php_bettertime.h uncomment this:
-ZEND_DECLARE_MODULE_GLOBALS(bettertime)
+/* If you declare any globals in php_posixclocks.h uncomment this:
+ZEND_DECLARE_MODULE_GLOBALS(posixclocks)
 */
 
 /* True global resources - no need for thread safety here */
-static int le_bettertime;
+static int le_posixclocks;
 
-/* {{{ bettertime_functions[]
+/* {{{ posixclocks_functions[]
  *
- * Every user visible function must have an entry in bettertime_functions[].
+ * Every user visible function must have an entry in posixclocks_functions[].
  */
-const zend_function_entry bettertime_functions[] = {
+const zend_function_entry posixclocks_functions[] = {
 	PHP_FE(posix_clock_gettime,	NULL)
 	PHP_FE(posix_clock_getres,	NULL)
-	{NULL, NULL, NULL}	/* Must be the last line in bettertime_functions[] */
+	{NULL, NULL, NULL}	/* Must be the last line in posixclocks_functions[] */
 };
 /* }}} */
 
-/* {{{ bettertime_module_entry
+/* {{{ posixclocks_module_entry
  */
-zend_module_entry bettertime_module_entry = {
+zend_module_entry posixclocks_module_entry = {
 #if ZEND_MODULE_API_NO >= 20010901
 	STANDARD_MODULE_HEADER,
 #endif
-	"bettertime",
-	bettertime_functions,
-	PHP_MINIT(bettertime),
-	PHP_MSHUTDOWN(bettertime),
+	"posixclocks",
+	posixclocks_functions,
+	PHP_MINIT(posixclocks),
+	PHP_MSHUTDOWN(posixclocks),
 	NULL,		/* PHP_RINIT (request init) */
 	NULL,	/* PHP_RSHUTDOWN (request shutdown) */
-	PHP_MINFO(bettertime),
+	PHP_MINFO(posixclocks),
 #if ZEND_MODULE_API_NO >= 20010901
 	"0.1", /* Replace with version number for your extension */
 #endif
@@ -62,34 +62,34 @@ zend_module_entry bettertime_module_entry = {
 };
 /* }}} */
 
-#ifdef COMPILE_DL_BETTERTIME
-ZEND_GET_MODULE(bettertime)
+#ifdef COMPILE_DL_POSIXCLOCKS
+ZEND_GET_MODULE(posixclocks)
 #endif
 
 /* {{{ PHP_INI
  */
 /* Remove comments and fill if you need to have entries in php.ini
 PHP_INI_BEGIN()
-    STD_PHP_INI_ENTRY("bettertime.global_value",      "42", PHP_INI_ALL, OnUpdateLong, global_value, zend_bettertime_globals, bettertime_globals)
-    STD_PHP_INI_ENTRY("bettertime.global_string", "foobar", PHP_INI_ALL, OnUpdateString, global_string, zend_bettertime_globals, bettertime_globals)
+    STD_PHP_INI_ENTRY("posixclocks.global_value",      "42", PHP_INI_ALL, OnUpdateLong, global_value, zend_posixclocks_globals, posixclocks_globals)
+    STD_PHP_INI_ENTRY("posixclocks.global_string", "foobar", PHP_INI_ALL, OnUpdateString, global_string, zend_posixclocks_globals, posixclocks_globals)
 PHP_INI_END()
 */
 /* }}} */
 
-/* {{{ php_bettertime_init_globals
+/* {{{ php_posixclocks_init_globals
  */
 /* Uncomment this function if you have INI entries
-static void php_bettertime_init_globals(zend_bettertime_globals *bettertime_globals)
+static void php_posixclocks_init_globals(zend_posixclocks_globals *posixclocks_globals)
 {
-	bettertime_globals->global_value = 0;
-	bettertime_globals->global_string = NULL;
+	posixclocks_globals->global_value = 0;
+	posixclocks_globals->global_string = NULL;
 }
 */
 /* }}} */
 
 /* {{{ PHP_MINIT_FUNCTION
  */
-PHP_MINIT_FUNCTION(bettertime)
+PHP_MINIT_FUNCTION(posixclocks)
 {
 	/* If you have INI entries, uncomment these lines 
 	REGISTER_INI_ENTRIES();
@@ -132,7 +132,7 @@ PHP_MINIT_FUNCTION(bettertime)
 
 /* {{{ PHP_MSHUTDOWN_FUNCTION
  */
-PHP_MSHUTDOWN_FUNCTION(bettertime)
+PHP_MSHUTDOWN_FUNCTION(posixclocks)
 {
 	/* uncomment this line if you have INI entries
 	UNREGISTER_INI_ENTRIES();
@@ -143,10 +143,10 @@ PHP_MSHUTDOWN_FUNCTION(bettertime)
 
 /* {{{ PHP_MINFO_FUNCTION
  */
-PHP_MINFO_FUNCTION(bettertime)
+PHP_MINFO_FUNCTION(posixclocks)
 {
 	php_info_print_table_start();
-	php_info_print_table_header(2, "bettertime support", "enabled");
+	php_info_print_table_header(2, "posixclocks support", "enabled");
 	php_info_print_table_end();
 
 	/* Remove comments if you have entries in php.ini

@@ -34,15 +34,15 @@ Parameters
 Installation
 --------------------------------------------------------------------------------------
  > cd extension-source-path
- > ./configure --enable-bettertime
+ > ./configure --enable-posixclocks
  > make
  > make install
 
  It might be necessary to add the line
- extension=bettertime.so
+ extension=posixclocks.so
  to your php.ini(s) in the Dynamic Extensions section.
 
  If you have PHP-CLI you can test with
- > php -f bettertime-test.php
+ > php -f posixclocks-test.php
  and benchmark with
- > php -f bettertime-bench.php
+ > php -f posixclocks-bench.php

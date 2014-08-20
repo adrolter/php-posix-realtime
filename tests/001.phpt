@@ -1,10 +1,10 @@
 --TEST--
-Check for bettertime presence
+Check for posixclocks presence
 --SKIPIF--
-<?php if (!extension_loaded("bettertime")) print "skip"; ?>
+<?php if (!extension_loaded("posixclocks")) print "skip"; ?>
 --FILE--
 <?php 
-echo "bettertime extension is available";
+echo "posixclocks extension is available";
 /*
 	you can add regression tests for your extension here
 
@@ -18,4 +18,4 @@ echo "bettertime extension is available";
 */
 ?>
 --EXPECT--
-bettertime extension is available
+posixclocks extension is available

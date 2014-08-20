@@ -2,7 +2,7 @@
 /*
 	Copyright 2011 Adrian Guenter	<adrianguenter@gmail.com>
 	
-	This file is part of php_bettertime and licensed
+	This file is part of php_posixclocks and licensed
 	under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
 	You may obtain a copy of the License at

@@ -1,7 +1,7 @@
 /* config.h.in.  Generated from configure.in by autoheader.  */
 
-/* Whether to build bettertime as dynamic module */
-#undef COMPILE_DL_BETTERTIME
+/* Whether to build posixclocks as dynamic module */
+#undef COMPILE_DL_POSIXCLOCKS
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H

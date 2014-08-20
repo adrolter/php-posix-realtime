@@ -831,7 +831,7 @@ ac_user_opts='
 enable_option_checking
 with_libdir
 with_php_config
-enable_bettertime
+enable_posixclocks
 enable_shared
 enable_static
 with_pic
@@ -1462,7 +1462,7 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
-  --enable-bettertime           Enable bettertime support
+  --enable-posixclocks           Enable posixclocks support
   --enable-shared[=PKGS]  build shared libraries [default=yes]
   --enable-static[=PKGS]  build static libraries [default=yes]
   --enable-fast-install[=PKGS]
@@ -3963,19 +3963,19 @@ $as_echo "no" >&6; }
 
 
 
-php_enable_bettertime=no
+php_enable_posixclocks=no
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to enable bettertime support" >&5
-$as_echo_n "checking whether to enable bettertime support... " >&6; }
-# Check whether --enable-bettertime was given.
-if test "${enable_bettertime+set}" = set; then :
-  enableval=$enable_bettertime; PHP_BETTERTIME=$enableval
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to enable posixclocks support" >&5
+$as_echo_n "checking whether to enable posixclocks support... " >&6; }
+# Check whether --enable-posixclocks was given.
+if test "${enable_posixclocks+set}" = set; then :
+  enableval=$enable_posixclocks; PHP_POSIXCLOCKS=$enableval
 else
 
-  PHP_BETTERTIME=no
+  PHP_POSIXCLOCKS=no
 
   if test "$PHP_ENABLE_ALL" && test "yes" = "yes"; then
-    PHP_BETTERTIME=$PHP_ENABLE_ALL
+    PHP_POSIXCLOCKS=$PHP_ENABLE_ALL
   fi
 
 fi
@@ -3984,12 +3984,12 @@ fi
 
 ext_output="yes, shared"
 ext_shared=yes
-case $PHP_BETTERTIME in
+case $PHP_POSIXCLOCKS in
 shared,*)
-  PHP_BETTERTIME=`echo "$PHP_BETTERTIME"|$SED 's/^shared,//'`
+  PHP_POSIXCLOCKS=`echo "$PHP_POSIXCLOCKS"|$SED 's/^shared,//'`
   ;;
 shared)
-  PHP_BETTERTIME=yes
+  PHP_POSIXCLOCKS=yes
   ;;
 no)
   ext_output=no
@@ -4004,7 +4004,7 @@ esac
 
   ext_output="yes, shared"
   ext_shared=yes
-  test "$PHP_BETTERTIME" = "no" && PHP_BETTERTIME=yes
+  test "$PHP_POSIXCLOCKS" = "no" && PHP_POSIXCLOCKS=yes
 
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ext_output" >&5
@@ -4013,7 +4013,7 @@ $as_echo "$ext_output" >&6; }
 
 
 
-if test "$PHP_BETTERTIME" != "no"; then
+if test "$PHP_POSIXCLOCKS" != "no"; then
 
 
 
@@ -4026,7 +4026,7 @@ if test "$PHP_BETTERTIME" != "no"; then
   ac_extra=
 
   if test "$ext_shared" != "shared" && test "$ext_shared" != "yes" && test "" != "cli"; then
-    PHP_BETTERTIME_SHARED=no
+    PHP_POSIXCLOCKS_SHARED=no
 
 
   case "" in
@@ -4047,7 +4047,7 @@ if test "$PHP_BETTERTIME" != "no"; then
 
 
   old_IFS=$IFS
-  for ac_src in bettertime.c; do
+  for ac_src in posixclocks.c; do
 
       IFS=.
       set $ac_src
@@ -4070,13 +4070,13 @@ EOF
   done
 
 
-    EXT_STATIC="$EXT_STATIC bettertime"
+    EXT_STATIC="$EXT_STATIC posixclocks"
     if test "$ext_shared" != "nocli"; then
-      EXT_CLI_STATIC="$EXT_CLI_STATIC bettertime"
+      EXT_CLI_STATIC="$EXT_CLI_STATIC posixclocks"
     fi
   else
     if test "$ext_shared" = "shared" || test "$ext_shared" = "yes"; then
-      PHP_BETTERTIME_SHARED=yes
+      PHP_POSIXCLOCKS_SHARED=yes
 
   case "" in
   "") ac_srcdir="$abs_srcdir/"; unset ac_bdir; ac_inc="-I. -I$abs_srcdir" ;;
@@ -4096,14 +4096,14 @@ EOF
 
 
   old_IFS=$IFS
-  for ac_src in bettertime.c; do
+  for ac_src in posixclocks.c; do
 
       IFS=.
       set $ac_src
       ac_obj=$1
       IFS=$old_IFS
 
-      shared_objects_bettertime="$shared_objects_bettertime $ac_bdir$ac_obj.lo"
+      shared_objects_posixclocks="$shared_objects_posixclocks $ac_bdir$ac_obj.lo"
 
       case $ac_src in
         *.c) ac_comp="$b_c_pre $ac_extra $ac_inc $b_c_meta -c $ac_srcdir$ac_src -o $ac_bdir$ac_obj.$b_lo $b_c_post" ;;
@@ -4126,31 +4126,31 @@ EOF
   case $host_alias in
     *aix*)
       suffix=so
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -Wl,-G -o '$ext_builddir'/phpbettertime.la -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_bettertime) $(PHPBETTERTIME_SHARED_LIBADD) && mv -f '$ext_builddir'/.libs/phpbettertime.so '$ext_builddir'/phpbettertime.so'
+      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -Wl,-G -o '$ext_builddir'/phpposixclocks.la -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_posixclocks) $(PHPPOSIXCLOCKS_SHARED_LIBADD) && mv -f '$ext_builddir'/.libs/phpposixclocks.so '$ext_builddir'/phpposixclocks.so'
       ;;
     *netware*)
       suffix=nlm
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -shared -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_bettertime) -L$(top_builddir)/netware -lphp5lib $(BETTERTIME_SHARED_LIBADD)'
+      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -shared -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_posixclocks) -L$(top_builddir)/netware -lphp5lib $(POSIXCLOCKS_SHARED_LIBADD)'
       ;;
     *)
       suffix=la
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_bettertime) $(PHPBETTERTIME_SHARED_LIBADD)'
+      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_posixclocks) $(PHPPOSIXCLOCKS_SHARED_LIBADD)'
       ;;
   esac
 
   if test "x" = "xyes"; then
-    PHP_ZEND_EX="$PHP_ZEND_EX \$(phplibdir)/phpbettertime.$suffix"
+    PHP_ZEND_EX="$PHP_ZEND_EX \$(phplibdir)/phpposixclocks.$suffix"
   else
-    PHP_MODULES="$PHP_MODULES \$(phplibdir)/phpbettertime.$suffix"
+    PHP_MODULES="$PHP_MODULES \$(phplibdir)/phpposixclocks.$suffix"
   fi
 
-  PHP_VAR_SUBST="$PHP_VAR_SUBST shared_objects_bettertime"
+  PHP_VAR_SUBST="$PHP_VAR_SUBST shared_objects_posixclocks"
 
   cat >>Makefile.objects<<EOF
-\$(phplibdir)/phpbettertime.$suffix: $ext_builddir/phpbettertime.$suffix
-	\$(LIBTOOL) --mode=install cp $ext_builddir/phpbettertime.$suffix \$(phplibdir)
+\$(phplibdir)/phpposixclocks.$suffix: $ext_builddir/phpposixclocks.$suffix
+	\$(LIBTOOL) --mode=install cp $ext_builddir/phpposixclocks.$suffix \$(phplibdir)
 
-$ext_builddir/phpbettertime.$suffix: \$(shared_objects_bettertime) \$(PHPBETTERTIME_SHARED_DEPENDENCIES)
+$ext_builddir/phpposixclocks.$suffix: \$(shared_objects_posixclocks) \$(PHPPOSIXCLOCKS_SHARED_DEPENDENCIES)
 	$link_cmd
 
 EOF
@@ -4163,31 +4163,31 @@ EOF
   case $host_alias in
     *aix*)
       suffix=so
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -Wl,-G -o '$ext_builddir'/bettertime.la -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_bettertime) $(BETTERTIME_SHARED_LIBADD) && mv -f '$ext_builddir'/.libs/bettertime.so '$ext_builddir'/bettertime.so'
+      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -Wl,-G -o '$ext_builddir'/posixclocks.la -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_posixclocks) $(POSIXCLOCKS_SHARED_LIBADD) && mv -f '$ext_builddir'/.libs/posixclocks.so '$ext_builddir'/posixclocks.so'
       ;;
     *netware*)
       suffix=nlm
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -shared -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_bettertime) -L$(top_builddir)/netware -lphp5lib $(TERTIME_SHARED_LIBADD)'
+      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -shared -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_posixclocks) -L$(top_builddir)/netware -lphp5lib $(TERTIME_SHARED_LIBADD)'
       ;;
     *)
       suffix=la
-      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_bettertime) $(BETTERTIME_SHARED_LIBADD)'
+      link_cmd='$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_posixclocks) $(POSIXCLOCKS_SHARED_LIBADD)'
       ;;
   esac
 
   if test "x" = "xyes"; then
-    PHP_ZEND_EX="$PHP_ZEND_EX \$(phplibdir)/bettertime.$suffix"
+    PHP_ZEND_EX="$PHP_ZEND_EX \$(phplibdir)/posixclocks.$suffix"
   else
-    PHP_MODULES="$PHP_MODULES \$(phplibdir)/bettertime.$suffix"
+    PHP_MODULES="$PHP_MODULES \$(phplibdir)/posixclocks.$suffix"
   fi
 
-  PHP_VAR_SUBST="$PHP_VAR_SUBST shared_objects_bettertime"
+  PHP_VAR_SUBST="$PHP_VAR_SUBST shared_objects_posixclocks"
 
   cat >>Makefile.objects<<EOF
-\$(phplibdir)/bettertime.$suffix: $ext_builddir/bettertime.$suffix
-	\$(LIBTOOL) --mode=install cp $ext_builddir/bettertime.$suffix \$(phplibdir)
+\$(phplibdir)/posixclocks.$suffix: $ext_builddir/posixclocks.$suffix
+	\$(LIBTOOL) --mode=install cp $ext_builddir/posixclocks.$suffix \$(phplibdir)
 
-$ext_builddir/bettertime.$suffix: \$(shared_objects_bettertime) \$(BETTERTIME_SHARED_DEPENDENCIES)
+$ext_builddir/posixclocks.$suffix: \$(shared_objects_posixclocks) \$(POSIXCLOCKS_SHARED_DEPENDENCIES)
 	$link_cmd
 
 EOF
@@ -4196,14 +4196,14 @@ EOF
       esac
 
 cat >>confdefs.h <<_ACEOF
-#define COMPILE_DL_BETTERTIME 1
+#define COMPILE_DL_POSIXCLOCKS 1
 _ACEOF
 
     fi
   fi
 
   if test "$ext_shared" != "shared" && test "$ext_shared" != "yes" && test "" = "cli"; then
-    PHP_BETTERTIME_SHARED=no
+    PHP_POSIXCLOCKS_SHARED=no
     case "$PHP_SAPI" in
       cgi|embed)
 
@@ -4226,7 +4226,7 @@ _ACEOF
 
 
   old_IFS=$IFS
-  for ac_src in bettertime.c; do
+  for ac_src in posixclocks.c; do
 
       IFS=.
       set $ac_src
@@ -4249,7 +4249,7 @@ EOF
   done
 
 
-        EXT_STATIC="$EXT_STATIC bettertime"
+        EXT_STATIC="$EXT_STATIC posixclocks"
         ;;
       *)
 
@@ -4272,7 +4272,7 @@ EOF
 
 
   old_IFS=$IFS
-  for ac_src in bettertime.c; do
+  for ac_src in posixclocks.c; do
 
       IFS=.
       set $ac_src
@@ -4297,7 +4297,7 @@ EOF
 
         ;;
     esac
-    EXT_CLI_STATIC="$EXT_CLI_STATIC bettertime"
+    EXT_CLI_STATIC="$EXT_CLI_STATIC posixclocks"
   fi
 
 
@@ -4306,7 +4306,7 @@ EOF
 
 
   if test "$ext_builddir" = "."; then
-    PHP_PECL_EXTENSION=bettertime
+    PHP_PECL_EXTENSION=posixclocks
 
   PHP_VAR_SUBST="$PHP_VAR_SUBST PHP_PECL_EXTENSION"
 

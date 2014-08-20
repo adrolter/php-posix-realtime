@@ -2,12 +2,12 @@
 // vim:ft=javascript
 
 // If your extension references something external, use ARG_WITH
-// ARG_WITH("bettertime", "for bettertime support", "no");
+// ARG_WITH("posixclocks", "for posixclocks support", "no");
 
 // Otherwise, use ARG_ENABLE
-// ARG_ENABLE("bettertime", "enable bettertime support", "no");
+// ARG_ENABLE("posixclocks", "enable posixclocks support", "no");
 
-if (PHP_BETTERTIME != "no") {
-	EXTENSION("bettertime", "bettertime.c");
+if (PHP_POSIXCLOCKS != "no") {
+	EXTENSION("posixclocks", "posixclocks.c");
 }
 
