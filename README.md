@@ -25,12 +25,6 @@ This extension provides access to **all** the clocks supported by your system,
 often with nanosecond resolution. See below for a list of common clocks
 and their PHP constants.
 
-**More info:**
-
-http://us3.php.net/manual/en/function.microtime.php#101628
-
-http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-time
-
 
 <br>
 ---
@@ -90,4 +84,13 @@ BOOTTIME | `Linux >= 2.6.39` Identical to `MONOTONIC`, except it also includes a
 More clocks may be implemented by the system, and can be used by passing the corresponding
 integer ID in place of a predefined constant. If a clock ID does not exist on the compiling
 system, its PHP POSIX_CLOCK_* equivalent will be undefined within the extension.
-  
+
+---
+
+http://man7.org/linux/man-pages/man2/clock_gettime.2.html
+
+http://pubs.opengroup.org/onlinepubs/7908799/xsh/time.h.html
+
+http://us3.php.net/manual/en/function.microtime.php#101628
+
+http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-time
