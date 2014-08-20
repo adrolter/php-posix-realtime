@@ -25,6 +25,7 @@ $ sudo php5enmod posixclocks
 ##### Other:
 Add the line `extension=posixclocks.so` to your php.ini
 
+-----
 
 ### But, what's wrong with `microtime()`, you ask? :confused:
 -----
