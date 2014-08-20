@@ -31,6 +31,10 @@ static int le_posixclocks;
 
 PHP_MINIT_FUNCTION(posixclocks)
 {
+  REGISTER_LONG_CONSTANT("POSIX_CLOCK_RET_TIMESPEC", PHP_POSIXCLOCKS_RETTYPE_TIMESPEC, CONST_CS | CONST_PERSISTENT);
+  REGISTER_LONG_CONSTANT("POSIX_CLOCK_RET_FLOAT", PHP_POSIXCLOCKS_RETTYPE_FLOAT, CONST_CS | CONST_PERSISTENT);
+  REGISTER_LONG_CONSTANT("POSIX_CLOCK_RET_STRING", PHP_POSIXCLOCKS_RETTYPE_STRING, CONST_CS | CONST_PERSISTENT);
+
   REGISTER_LONG_CONSTANT("POSIX_CLOCK_REALTIME", CLOCK_REALTIME, CONST_CS | CONST_PERSISTENT);
 
   #ifdef CLOCK_MONOTONIC
@@ -166,21 +170,22 @@ PHP_MINFO_FUNCTION(posixclocks)
 
 PHP_FUNCTION(posix_clock_gettime)
 {
-  long clkId = 0;
-  struct timespec currTime;
-  double dResult;
+  long clockId = CLOCK_REALTIME;
+  long returnType = PHP_POSIXCLOCKS_RETTYPE_TIMESPEC;
 
-  if (ZEND_NUM_ARGS() > 1) {
+  struct timespec clockVal;
+
+  if (ZEND_NUM_ARGS() > 2) {
     WRONG_PARAM_COUNT;
   }
 
-  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|l", &clkId) != SUCCESS) {
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|ll", &clockId, &retunType) != SUCCESS) {
     return;
   }
 
-  if (clock_gettime(clkId, &currTime) == -1) {
+  if (clock_gettime(clockId, &currTime) == -1) {
     if (errno == EINVAL) {
-      php_error_docref(NULL TSRMLS_CC, E_ERROR, "The POSIX clock ID '%ld' is not supported on this system", clkId);
+      php_error_docref(NULL TSRMLS_CC, E_ERROR, "The POSIX clock ID '%ld' is not supported on this system", clockId);
       return;
     }
     else if (errno == EFAULT) {
@@ -188,9 +193,23 @@ PHP_FUNCTION(posix_clock_gettime)
     }
   }
 
-  dResult = currTime.tv_sec + currTime.tv_nsec / 1000000000.0;
+  switch (returnType) {
+    case PHP_POSIXCLOCKS_RETTYPE_TIMESPEC:
+      break;
+    case PHP_POSIXCLOCKS_RETTYPE_FLOAT:
+      double retVal;
+      retVal = clockVal.tv_sec + clockVal.tv_nsec / 1000000000.0;
+      RETURN_DOUBLE(clockVal);
+      break;
+    case PHP_POSIXCLOCKS_RETTYPE_STRING:
+      break;
+    default:
+      php_error_docref(NULL TSRMLS_CC, E_ERROR, "Return type must be one of: POSIX_CLOCK_RET_TIMESPEC, "
+        "POSIX_CLOCK_RET_FLOAT, POSIX_CLOCK_RET_STRING");
+      return;
+  }
 
-  RETURN_DOUBLE(dResult);
+
 }
 
 

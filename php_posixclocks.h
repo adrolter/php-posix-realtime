@@ -21,6 +21,10 @@
 extern zend_module_entry posixclocks_module_entry;
 #define phpext_posixclocks_ptr &posixclocks_module_entry
 
+#define PHP_POSIXCLOCKS_RETTYPE_TIMESPEC = 0;
+#define PHP_POSIXCLOCKS_RETTYPE_FLOAT    = 1;
+#define PHP_POSIXCLOCKS_RETTYPE_STRING   = 2;
+
 
 #ifdef PHP_WIN32
 #  define PHP_POSIXCLOCKS_API __declspec(dllexport)
