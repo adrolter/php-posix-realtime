@@ -7,20 +7,20 @@ standard (e.g., Linux, BSD, Solaris, OS X, etc)
 
 ## Installation
 -----
-~~~
+```bash
 $ git clone https://github.com/adrianguenter/php-posix-clocks.git
 $ cd php-posix-clocks
 $ phpize
 $ ./configure
 $ make && make test
 $ sudo make install
-~~~
+```
 
 ##### Debian:
-~~~
+```bash
 $ sudo cp posixclocks.deb.ini /etc/php5/mods-available/posixclocks.ini
 $ sudo php5enmod posixclocks
-~~~
+```
 
 ##### Other:
 Add the line `extension=posixclocks.so` to your php.ini
@@ -72,11 +72,11 @@ clock (POSIX_CLOCK_REALTIME) which is guaranteed to be supported on all systems 
 clock_gettime(2) support. Sufficiently recent versions of GNU libc and the Linux
 kernel support the following clocks:
 
----
+---|---
 POSIX_CLOCK_REALTIME | System-wide clock that measures real (i.e., wall-clock) time. This clock is affected by discontinuous jumps in the system time (e.g., manual clock updates, NTP clock updates, etc).
----
+---|---
 POSIX_CLOCK_MONOTONIC | Clock that cannot be set and represents monotonic time since some unspecified starting point. This clock is not affected by discontinuous jumps in the system time.
----
+---|---
 
 * POSIX_CLOCK_PROCESS_CPUTIME_ID - High-resolution per-process timer from the CPU.
 
