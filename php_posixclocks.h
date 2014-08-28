@@ -27,13 +27,10 @@
   #define PHP_PSXCLK_RETTYPE_FLOAT    1
   #define PHP_PSXCLK_RETTYPE_STRING   2
 
-  #define PHP_PSXCLK_PRINTINFO_SUPPORTED(clock_id)                               \
-    clock_getres(CLOCK_ ## clock_id, &res);                                      \
-    snprintf(precision, 50, "%.0e", res.tv_sec + res.tv_nsec / 1000000000.0); \
-    php_info_print_table_row(3, #clock_id, "Yes", precision)
-  
-  #define PHP_PSXCLK_PRINTINFO_UNSUPPORTED(clock_id) \
-    php_info_print_table_row(3, #clock_id, "No", "")
+  #define PHP_PSXCLK_STRINGIFY(clock_id) #clock_id
+
+  #define PHP_PSXCLK_DEFINE_CLOCK(clock_id) \
+    REGISTER_LONG_CONSTANT(PHP_PSXCLK_STRINGIFY(PSXCLK_CLOCK_ ## clock_id), CLOCK_ ## clock_id, PHP_PSXCLK_CONSTFLAGS);
 
   #ifdef PHP_WIN32
     #define PHP_PSXCLK_API __declspec(dllexport)
