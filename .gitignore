@@ -27,6 +27,7 @@ Makefile.objects
 missing
 mkinstalldirs
 modules/
+posixclocks_ver.h
 run-tests.php
 tests/*/*.diff
 tests/*/*.out
