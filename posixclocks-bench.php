@@ -23,17 +23,17 @@ echo "=================================\n";
 define('ITERATIONS', 1000000);
 
 // posix_clock_gettime()
-$start = posix_clock_gettime(POSIX_CLOCK_MONOTONIC);
-for ($i = 0; $i < ITERATIONS; $i++) { $x = posix_clock_gettime(POSIX_CLOCK_MONOTONIC); }
-$gtTotal = (posix_clock_gettime(POSIX_CLOCK_MONOTONIC) - $start);
+$start = posix_clock_gettime(PSXCLK_CLOCK_MONOTONIC);
+for ($i = 0; $i < ITERATIONS; $i++) { $x = posix_clock_gettime(PSXCLK_CLOCK_MONOTONIC); }
+$gtTotal = (posix_clock_gettime(PSXCLK_CLOCK_MONOTONIC) - $start);
 
 // Take a break...
 sleep(3);
 
 // microtime()
-$start = posix_clock_gettime(POSIX_CLOCK_MONOTONIC);
+$start = posix_clock_gettime(PSXCLK_CLOCK_MONOTONIC);
 for ($i = 0; $i < ITERATIONS; $i++) { $x = microtime(true); }
-$mtTotal = (posix_clock_gettime(POSIX_CLOCK_MONOTONIC) - $start);
+$mtTotal = (posix_clock_gettime(PSXCLK_CLOCK_MONOTONIC) - $start);
 
 
 // Output

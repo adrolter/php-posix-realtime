@@ -17,13 +17,13 @@
 */
 
 echo "Clock times:\n";
-echo "CLOCK_REALTIME           " . posix_clock_gettime(POSIX_CLOCK_REALTIME) . "\n";
-echo "CLOCK_MONOTONIC          " . posix_clock_gettime(POSIX_CLOCK_MONOTONIC) . "\n";
-echo "CLOCK_PROCESS_CPUTIME_ID " . posix_clock_gettime(POSIX_CLOCK_PROCESS_CPUTIME_ID) . "\n";
-echo "CLOCK_THREAD_CPUTIME_ID  " . posix_clock_gettime(POSIX_CLOCK_THREAD_CPUTIME_ID) . "\n";
+echo "CLOCK_REALTIME           " . posix_clock_gettime(PSXCLK_CLOCK_REALTIME) . "\n";
+echo "CLOCK_MONOTONIC          " . posix_clock_gettime(PSXCLK_CLOCK_MONOTONIC) . "\n";
+echo "CLOCK_PROCESS_CPUTIME_ID " . posix_clock_gettime(PSXCLK_CLOCK_PROCESS_CPUTIME_ID) . "\n";
+echo "CLOCK_THREAD_CPUTIME_ID  " . posix_clock_gettime(PSXCLK_CLOCK_THREAD_CPUTIME_ID) . "\n";
 
 echo "\nClock resolutions:\n";
-echo "CLOCK_REALTIME           " . posix_clock_getres(POSIX_CLOCK_REALTIME) . "\n";
-echo "CLOCK_MONOTONIC          " . posix_clock_getres(POSIX_CLOCK_MONOTONIC) . "\n";
-echo "CLOCK_PROCESS_CPUTIME_ID " . posix_clock_getres(POSIX_CLOCK_PROCESS_CPUTIME_ID) . "\n";
-echo "CLOCK_THREAD_CPUTIME_ID  " . posix_clock_getres(POSIX_CLOCK_THREAD_CPUTIME_ID) . "\n";
+echo "CLOCK_REALTIME           " . posix_clock_getres(PSXCLK_CLOCK_REALTIME) . "\n";
+echo "CLOCK_MONOTONIC          " . posix_clock_getres(PSXCLK_CLOCK_MONOTONIC) . "\n";
+echo "CLOCK_PROCESS_CPUTIME_ID " . posix_clock_getres(PSXCLK_CLOCK_PROCESS_CPUTIME_ID) . "\n";
+echo "CLOCK_THREAD_CPUTIME_ID  " . posix_clock_getres(PSXCLK_CLOCK_THREAD_CPUTIME_ID) . "\n";

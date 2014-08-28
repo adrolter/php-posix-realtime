@@ -15,36 +15,31 @@
   limitations under the License.
 */
 
-#ifndef PHP_POSIXCLOCKS_H
-#define PHP_POSIXCLOCKS_H
+#ifndef PHP_PSXCLK_H
 
-extern zend_module_entry posixclocks_module_entry;
-#define phpext_posixclocks_ptr &posixclocks_module_entry
+  #define PHP_PSXCLK_H
 
-#define PHP_POSIXCLOCKS_RETTYPE_TIMESPEC 0
-#define PHP_POSIXCLOCKS_RETTYPE_FLOAT    1
-#define PHP_POSIXCLOCKS_RETTYPE_STRING   2
+  extern zend_module_entry posixclocks_module_entry;
+  #define phpext_posixclocks_ptr &posixclocks_module_entry
 
+  #define PHP_PSXCLK_RETTYPE_TIMESPEC 0
+  #define PHP_PSXCLK_RETTYPE_FLOAT    1
+  #define PHP_PSXCLK_RETTYPE_STRING   2
 
-#ifdef PHP_WIN32
-#  define PHP_POSIXCLOCKS_API __declspec(dllexport)
-#elif defined(__GNUC__) && __GNUC__ >= 4
-#  define PHP_POSIXCLOCKS_API __attribute__ ((visibility("default")))
-#else
-#  define PHP_POSIXCLOCKS_API
-#endif
+  #ifdef PHP_WIN32
+    #define PHP_PSXCLK_API __declspec(dllexport)
+  #elif defined(__GNUC__) && __GNUC__ >= 4
+    #define PHP_PSXCLK_API __attribute__ ((visibility("default")))
+  #else
+    #define PHP_PSXCLK_API
+  #endif
 
-
-#ifdef ZTS
-#include "TSRM.h"
-#endif
-
-
-#ifdef ZTS
-#define POSIXCLOCKS_G(v) TSRMG(posixclocks_globals_id, zend_posixclocks_globals *, v)
-#else
-#define POSIXCLOCKS_G(v) (posixclocks_globals.v)
-#endif
+  #ifdef ZTS
+    #include "TSRM.h"
+    #define POSIXCLOCKS_G(v) TSRMG(posixclocks_globals_id, zend_posixclocks_globals *, v)
+  #else
+    #define POSIXCLOCKS_G(v) (posixclocks_globals.v)
+  #endif
 
 #endif
 

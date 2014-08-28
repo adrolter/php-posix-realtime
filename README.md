@@ -55,21 +55,21 @@ Add the line `extension=posixclocks.so` to your php.ini
 ## Interface
 ---
 
-* double **posix_clock_gettime** ( int _$clock_id_ = _POSIX_CLOCK_REALTIME_ )
+* double **posix_clock_gettime** ( int _$clock_id_ = _PSXCLK_CLOCK_REALTIME_ )
     - Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/man2/clock_gettime.2.html)
     - Returns a double representing the clock's current value
  
-* double **posix_clock_getres** ( int _$clock_id_ = _POSIX_CLOCK_REALTIME_ )
+* double **posix_clock_getres** ( int _$clock_id_ = _PSXCLK_CLOCK_REALTIME_ )
     - Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man2/clock_getres.2.html)
     - Returns a double representing the clock's resolution/precision
 
 The supported clocks are implementation specific, except the system-wide realtime
-clock `POSIX_CLOCK_REALTIME` which is guaranteed to be supported on all systems with
+clock `PSXCLK_CLOCK_REALTIME` which is guaranteed to be supported on all systems with
 clock_gettime(2) support. Sufficiently recent versions of GNU libc and the Linux
 kernel support the following clocks:
 
 
-Clock ID (POSIX_CLOCK_&lt;_ID_&gt;) | Description
+Clock ID (PSXCLK_CLOCK_&lt;_ID_&gt;) | Description
 :-------:|------------
 `REALTIME` | System-wide clock that measures real (i.e., wall-clock) time. This clock is affected by discontinuous jumps in the system time (e.g., manual clock updates, NTP clock updates, etc).
 `MONOTONIC` | Clock that cannot be set and represents monotonic time since some unspecified starting point. This clock is not affected by discontinuous jumps in the system time.
@@ -82,7 +82,7 @@ Clock ID (POSIX_CLOCK_&lt;_ID_&gt;) | Description
 
 More clocks may be implemented by the system, and can be used by passing the corresponding
 integer ID in place of a predefined constant. If a clock ID does not exist on the compiling
-system, its equivalent PHP constant (POSIX_CLOCK_&lt;_ID_&gt;) will be undefined.
+system, its equivalent PHP constant (PSXCLK_CLOCK_&lt;_ID_&gt;) will be undefined.
 
 <br>
 ---
