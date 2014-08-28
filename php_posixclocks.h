@@ -22,6 +22,14 @@
   extern zend_module_entry posixclocks_module_entry;
   #define phpext_posixclocks_ptr &posixclocks_module_entry
 
+  #define PHP_PSXCLK_PRINTINFO_SUPPORTED(clock_id)                               \
+    clock_getres(CLOCK_ ## clock_id, &res);                                      \
+    snprintf(precision, 50, "%.0e", res.tv_sec + res.tv_nsec / 1000000000.0); \
+    php_info_print_table_row(3, #clock_id, "Yes", precision)
+  
+  #define PHP_PSXCLK_PRINTINFO_UNSUPPORTED(clock_id) \
+    php_info_print_table_row(3, #clock_id, "No", "")
+
   #define PHP_PSXCLK_RETTYPE_TIMESPEC 0
   #define PHP_PSXCLK_RETTYPE_FLOAT    1
   #define PHP_PSXCLK_RETTYPE_STRING   2
