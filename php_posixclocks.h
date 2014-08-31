@@ -36,12 +36,12 @@
     (ts.tv_sec + (ts.tv_nsec / BILLION_LD))
 
   #define PHP_PSXCLK_TSP_TO_DOUBLE(ts) \
-      (ts->tv_sec + (ts->tv_nsec / BILLION_LD))
+    (ts->tv_sec + (ts->tv_nsec / BILLION_LD))
 
   #define PHP_PSXCLK_STRINGIFY(str) #str
 
   #define PHP_PSXCLK_DEFINE_CLOCK(clock_id) \
-    REGISTER_LONG_CONSTANT(PHP_PSXCLK_STRINGIFY(PSXCLK_CLOCK_ ## clock_id), CLOCK_ ## clock_id, PHP_PSXCLK_CONSTFLAGS);
+    REGISTER_LONG_CONSTANT(PHP_PSXCLK_STRINGIFY(PSXCLK_CLOCK_ ## clock_id), CLOCK_ ## clock_id, PHP_PSXCLK_CONSTFLAGS)
 
   #ifdef PHP_WIN32
     #define PHP_PSXCLK_API __declspec(dllexport)
