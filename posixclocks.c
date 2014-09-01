@@ -60,11 +60,11 @@
 
 static int le_posixclocks;
 
-static char *timespec_to_string(struct timespec const *p_ts)
+static char * timespec_to_string(struct timespec const * p_ts)
 {
   // (char size * (digits in seconds + 1 for decimal point + 9 for nanoseconds)) + 1 for \0
   size_t const result_sz = (sizeof(char) * (INTLEN(p_ts->tv_sec) + 1 + 9)) + 1;
-  char *p_result = malloc(result_sz);
+  char * p_result = emalloc(result_sz);
 
   if (!p_result) {
     php_error_docref(NULL TSRMLS_CC, E_ERROR, "Failed to allocate memory [%s] (%s)", __func__, strerror(errno));
@@ -76,9 +76,9 @@ static char *timespec_to_string(struct timespec const *p_ts)
   return p_result;
 }
 
-static zval *timespec_to_zval(struct timespec const *p_ts)
+static zval * timespec_to_zval(struct timespec const * p_ts)
 {
-  zval *p_obj;
+  zval * p_obj;
 
   MAKE_STD_ZVAL(p_obj);
   object_init(p_obj);
