@@ -243,13 +243,13 @@ PHP_FUNCTION(posix_clock_gettime)
 
   switch (return_type) {
     case RETTYPE_TIMESPEC:
-      RETURN_ZVAL(timespec_to_zval(&clock_val), 1, 1);
+      RETURN_ZVAL(timespec_to_zval(&clock_val), 0, 1);
       break;
     case RETTYPE_FLOAT:
       RETURN_DOUBLE(TIMESPEC_TO_LDOUBLE(clock_val));
       break;
     case RETTYPE_STRING:
-      RETURN_STRING(timespec_to_string(&clock_val), 1);
+      RETURN_STRING(timespec_to_string(&clock_val), 0);
       break;
     default:
       php_error_docref(NULL TSRMLS_CC, E_ERROR, "Return type must be one of: PSXCLK_CLOCK_RET_TIMESPEC, "
