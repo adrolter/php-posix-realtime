@@ -205,34 +205,14 @@ PHP_FUNCTION(posix_clock_gettime)
 
   switch (return_type) {
     case PHP_PSXCLK_RETTYPE_TIMESPEC:
-    {
       RETURN_ZVAL(timespec_to_zval(&clock_val), 1, 1);
       break;
-    }
     case PHP_PSXCLK_RETTYPE_FLOAT:
       RETURN_DOUBLE(PHP_PSXCLK_TIMESPEC_TO_LDOUBLE(clock_val));
       break;
     case PHP_PSXCLK_RETTYPE_STRING:
-    {
-      // DEBUG
-      /*if (length != 0) {
-        zval *obj;
-        MAKE_STD_ZVAL(obj);
-        object_init(obj);
-
-        add_property_long(obj, "tv_sec", clock_val.tv_sec);
-        add_property_long(obj, "tv_sec_L", PHP_PSXCLK_NUMLEN(clock_val.tv_sec));
-        add_property_long(obj, "tv_nsec", clock_val.tv_nsec);
-        add_property_long(obj, "tv_nsec_L", PHP_PSXCLK_NUMLEN(clock_val.tv_nsec));
-        add_property_string(obj, "string", result, 1);
-        add_property_long(obj, "string_L", length);
-
-        RETURN_ZVAL(obj, 1, 1);
-      }*/
-
       RETURN_STRING(timespec_to_string(&clock_val), 1);
       break;
-    }
     default:
       php_error_docref(NULL TSRMLS_CC, E_ERROR, "Return type must be one of: PSXCLK_CLOCK_RET_TIMESPEC, "
         "PSXCLK_CLOCK_RET_FLOAT, PSXCLK_CLOCK_RET_STRING");
