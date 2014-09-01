@@ -14,7 +14,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
- 
+
+
+/*
+ * Includes
+ */
+
 #ifdef HAVE_CONFIG_H
   #include "config.h"
 #endif
@@ -25,12 +30,40 @@
 #include "php_posixclocks.h"
 #include "posixclocks_ver.h"
 
+
+/*
+ * Macros
+ */
+
+#define BILLION_LD  1000000000.0L
+
+#define CONSTFLAGS       CONST_CS | CONST_PERSISTENT
+#define RETTYPE_TIMESPEC 0
+#define RETTYPE_FLOAT    1
+#define RETTYPE_STRING   2
+
+#define INTLEN(val) \
+  ((val >= 0 && val < 10) ? 1 : floor(log10(abs(val))) + (val < 0 ? 2 : 1))
+
+#define TIMESPEC_TO_LDOUBLE(ts) \
+  (ts.tv_sec + (ts.tv_nsec / BILLION_LD))
+
+#define STRINGIFY(str) #str
+
+#define DEFINE_CLOCK(clock_id) \
+  REGISTER_LONG_CONSTANT(STRINGIFY(PSXCLK_CLOCK_ ## clock_id), CLOCK_ ## clock_id, CONSTFLAGS)
+
+
+/*
+ * Static globals
+ */
+
 static int le_posixclocks;
 
 static char * timespec_to_string(const struct timespec * p_ts)
 {
   // (char size * (digits in seconds + 1 for decimal point + 9 for nanoseconds)) + 1 for \0
-  size_t result_sz = (sizeof(char) * (PHP_PSXCLK_INTLEN(p_ts->tv_sec) + 1 + 9)) + 1;
+  size_t result_sz = (sizeof(char) * (INTLEN(p_ts->tv_sec) + 1 + 9)) + 1;
   char * p_result = malloc(result_sz);
 
   if (!p_result) {
@@ -54,7 +87,7 @@ static zval * timespec_to_zval(const struct timespec * p_ts)
     add_property_long(p_obj, "tv_sec", p_ts->tv_sec);
   }
   else {
-    char secstr[(size_t) (PHP_PSXCLK_INTLEN(p_ts->tv_sec) + 1)];
+    char secstr[(size_t) (INTLEN(p_ts->tv_sec) + 1)];
     snprintf(secstr, sizeof(secstr), "%d", p_ts->tv_sec);
     add_property_string(p_obj, "tv_sec", secstr, 1);
   }
@@ -64,40 +97,45 @@ static zval * timespec_to_zval(const struct timespec * p_ts)
   return p_obj;
 }
 
+
+/*
+ * PHP callbacks
+ */
+
 PHP_MINIT_FUNCTION(posixclocks)
 {
-  REGISTER_LONG_CONSTANT("PSXCLK_AS_TIMESPEC", PHP_PSXCLK_RETTYPE_TIMESPEC, PHP_PSXCLK_CONSTFLAGS);
-  REGISTER_LONG_CONSTANT("PSXCLK_AS_FLOAT", PHP_PSXCLK_RETTYPE_FLOAT, PHP_PSXCLK_CONSTFLAGS);
-  REGISTER_LONG_CONSTANT("PSXCLK_AS_STRING", PHP_PSXCLK_RETTYPE_STRING, PHP_PSXCLK_CONSTFLAGS);
+  REGISTER_LONG_CONSTANT("PSXCLK_AS_TIMESPEC", RETTYPE_TIMESPEC, CONSTFLAGS);
+  REGISTER_LONG_CONSTANT("PSXCLK_AS_FLOAT", RETTYPE_FLOAT, CONSTFLAGS);
+  REGISTER_LONG_CONSTANT("PSXCLK_AS_STRING", RETTYPE_STRING, CONSTFLAGS);
 
-  PHP_PSXCLK_DEFINE_CLOCK(REALTIME);
+  DEFINE_CLOCK(REALTIME);
 
   #ifdef CLOCK_MONOTONIC
-    PHP_PSXCLK_DEFINE_CLOCK(MONOTONIC);
+    DEFINE_CLOCK(MONOTONIC);
   #endif
 
   #ifdef CLOCK_PROCESS_CPUTIME_ID
-    PHP_PSXCLK_DEFINE_CLOCK(PROCESS_CPUTIME_ID);
+    DEFINE_CLOCK(PROCESS_CPUTIME_ID);
   #endif
 
   #ifdef CLOCK_THREAD_CPUTIME_ID
-    PHP_PSXCLK_DEFINE_CLOCK(THREAD_CPUTIME_ID);
+    DEFINE_CLOCK(THREAD_CPUTIME_ID);
   #endif
 
   #ifdef CLOCK_MONOTONIC_RAW
-    PHP_PSXCLK_DEFINE_CLOCK(MONOTONIC_RAW);
+    DEFINE_CLOCK(MONOTONIC_RAW);
   #endif
 
   #ifdef CLOCK_REALTIME_COARSE
-    PHP_PSXCLK_DEFINE_CLOCK(REALTIME_COARSE);
+    DEFINE_CLOCK(REALTIME_COARSE);
   #endif
 
   #ifdef CLOCK_MONOTONIC_COARSE
-    PHP_PSXCLK_DEFINE_CLOCK(MONOTONIC_COARSE);
+    DEFINE_CLOCK(MONOTONIC_COARSE);
   #endif
 
   #ifdef CLOCK_BOOTTIME
-    PHP_PSXCLK_DEFINE_CLOCK(BOOTTIME);
+    DEFINE_CLOCK(BOOTTIME);
   #endif
 
   return SUCCESS;
@@ -115,12 +153,12 @@ PHP_MINFO_FUNCTION(posixclocks)
   char precision[50];
   struct timespec clock_res;
 
-  #define PHP_PSXCLK_PRINTINFO_SUPPORTED(clock_id)                                \
+  #define PRINTINFO_SUPPORTED(clock_id)                                \
     clock_getres(CLOCK_ ## clock_id, &clock_res);                                 \
-    snprintf(precision, 50, "%.0le", PHP_PSXCLK_TIMESPEC_TO_LDOUBLE(clock_res));  \
+    snprintf(precision, 50, "%.0le", TIMESPEC_TO_LDOUBLE(clock_res));  \
     php_info_print_table_row(3, #clock_id, "Yes", precision)
 
-  #define PHP_PSXCLK_PRINTINFO_UNSUPPORTED(clock_id) \
+  #define PRINTINFO_UNSUPPORTED(clock_id) \
     php_info_print_table_row(3, #clock_id, "No", "")
 
   php_info_print_table_start();
@@ -131,48 +169,48 @@ PHP_MINFO_FUNCTION(posixclocks)
   php_info_print_table_start();
   php_info_print_table_header(3, "Clock", "Supported", "Precision");
 
-  PHP_PSXCLK_PRINTINFO_SUPPORTED(REALTIME);
+  PRINTINFO_SUPPORTED(REALTIME);
 
   #ifdef CLOCK_MONOTONIC
-    PHP_PSXCLK_PRINTINFO_SUPPORTED(MONOTONIC);
+    PRINTINFO_SUPPORTED(MONOTONIC);
   #else
-    PHP_PSXCLK_PRINTINFO_UNSUPPORTED(MONOTONIC);
+    PRINTINFO_UNSUPPORTED(MONOTONIC);
   #endif
 
   #ifdef CLOCK_PROCESS_CPUTIME_ID
-    PHP_PSXCLK_PRINTINFO_SUPPORTED(PROCESS_CPUTIME_ID);
+    PRINTINFO_SUPPORTED(PROCESS_CPUTIME_ID);
   #else
-    PHP_PSXCLK_PRINTINFO_UNSUPPORTED(PROCESS_CPUTIME_ID);
+    PRINTINFO_UNSUPPORTED(PROCESS_CPUTIME_ID);
   #endif
 
   #ifdef CLOCK_THREAD_CPUTIME_ID
-    PHP_PSXCLK_PRINTINFO_SUPPORTED(THREAD_CPUTIME_ID);
+    PRINTINFO_SUPPORTED(THREAD_CPUTIME_ID);
   #else
-    PHP_PSXCLK_PRINTINFO_UNSUPPORTED(THREAD_CPUTIME_ID);
+    PRINTINFO_UNSUPPORTED(THREAD_CPUTIME_ID);
   #endif
 
   #ifdef CLOCK_MONOTONIC_RAW
-    PHP_PSXCLK_PRINTINFO_SUPPORTED(MONOTONIC_RAW);
+    PRINTINFO_SUPPORTED(MONOTONIC_RAW);
   #else
-    PHP_PSXCLK_PRINTINFO_UNSUPPORTED(MONOTONIC_RAW);
+    PRINTINFO_UNSUPPORTED(MONOTONIC_RAW);
   #endif
 
   #ifdef CLOCK_REALTIME_COARSE
-    PHP_PSXCLK_PRINTINFO_SUPPORTED(REALTIME_COARSE);
+    PRINTINFO_SUPPORTED(REALTIME_COARSE);
   #else
-    PHP_PSXCLK_PRINTINFO_UNSUPPORTED(REALTIME_COARSE);
+    PRINTINFO_UNSUPPORTED(REALTIME_COARSE);
   #endif
 
   #ifdef CLOCK_MONOTONIC_COARSE
-    PHP_PSXCLK_PRINTINFO_SUPPORTED(MONOTONIC_COARSE);
+    PRINTINFO_SUPPORTED(MONOTONIC_COARSE);
   #else
-    PHP_PSXCLK_PRINTINFO_UNSUPPORTED(MONOTONIC_COARSE);
+    PRINTINFO_UNSUPPORTED(MONOTONIC_COARSE);
   #endif
 
   #ifdef CLOCK_BOOTTIME
-    PHP_PSXCLK_PRINTINFO_SUPPORTED(BOOTTIME);
+    PRINTINFO_SUPPORTED(BOOTTIME);
   #else
-    PHP_PSXCLK_PRINTINFO_UNSUPPORTED(BOOTTIME);
+    PRINTINFO_UNSUPPORTED(BOOTTIME);
   #endif
 
   php_info_print_table_end();
@@ -182,7 +220,7 @@ PHP_MINFO_FUNCTION(posixclocks)
 PHP_FUNCTION(posix_clock_gettime)
 {
   long clock_id     = CLOCK_REALTIME;
-  long return_type  = PHP_PSXCLK_RETTYPE_TIMESPEC;
+  long return_type  = RETTYPE_TIMESPEC;
   struct timespec clock_val;
 
   if (ZEND_NUM_ARGS() > 2) {
@@ -204,13 +242,13 @@ PHP_FUNCTION(posix_clock_gettime)
   }
 
   switch (return_type) {
-    case PHP_PSXCLK_RETTYPE_TIMESPEC:
+    case RETTYPE_TIMESPEC:
       RETURN_ZVAL(timespec_to_zval(&clock_val), 1, 1);
       break;
-    case PHP_PSXCLK_RETTYPE_FLOAT:
-      RETURN_DOUBLE(PHP_PSXCLK_TIMESPEC_TO_LDOUBLE(clock_val));
+    case RETTYPE_FLOAT:
+      RETURN_DOUBLE(TIMESPEC_TO_LDOUBLE(clock_val));
       break;
-    case PHP_PSXCLK_RETTYPE_STRING:
+    case RETTYPE_STRING:
       RETURN_STRING(timespec_to_string(&clock_val), 1);
       break;
     default:
@@ -245,7 +283,7 @@ PHP_FUNCTION(posix_clock_getres)
     }
   }
 
-  RETURN_DOUBLE(PHP_PSXCLK_TIMESPEC_TO_LDOUBLE(clock_res));
+  RETURN_DOUBLE(TIMESPEC_TO_LDOUBLE(clock_res));
 }
 
 

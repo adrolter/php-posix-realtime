@@ -22,24 +22,6 @@
   extern zend_module_entry posixclocks_module_entry;
   #define phpext_posixclocks_ptr &posixclocks_module_entry
 
-  #define BILLION_LD  1000000000.0L
-
-  #define PHP_PSXCLK_CONSTFLAGS       CONST_CS | CONST_PERSISTENT
-  #define PHP_PSXCLK_RETTYPE_TIMESPEC 0
-  #define PHP_PSXCLK_RETTYPE_FLOAT    1
-  #define PHP_PSXCLK_RETTYPE_STRING   2
-
-  #define PHP_PSXCLK_INTLEN(val) \
-    ((val >= 0 && val < 10) ? 1 : floor(log10(abs(val))) + (val < 0 ? 2 : 1))
-
-  #define PHP_PSXCLK_TIMESPEC_TO_LDOUBLE(ts) \
-    (ts.tv_sec + (ts.tv_nsec / BILLION_LD))
-
-  #define PHP_PSXCLK_STRINGIFY(str) #str
-
-  #define PHP_PSXCLK_DEFINE_CLOCK(clock_id) \
-    REGISTER_LONG_CONSTANT(PHP_PSXCLK_STRINGIFY(PSXCLK_CLOCK_ ## clock_id), CLOCK_ ## clock_id, PHP_PSXCLK_CONSTFLAGS)
-
   #ifdef PHP_WIN32
     #define PHP_PSXCLK_API __declspec(dllexport)
   #elif defined(__GNUC__) && __GNUC__ >= 4
