@@ -27,6 +27,42 @@
 
 static int le_posixclocks;
 
+static char * timespec_to_string(const struct timespec * p_ts)
+{
+  // (char size * (digits in seconds + 1 for decimal point + 9 for nanoseconds)) + 1 for \0
+  size_t result_sz = (sizeof(char) * (PHP_PSXCLK_INTLEN(p_ts->tv_sec) + 1 + 9)) + 1;
+  char * p_result = malloc(result_sz);
+
+  if (!p_result) {
+    php_error_docref(NULL TSRMLS_CC, E_ERROR, "Failed to allocate memory [%s] (%s)", __func__, strerror(errno));
+    return NULL;
+  }
+
+  snprintf(p_result, result_sz, "%jd.%.9ld", (intmax_t) p_ts->tv_sec, p_ts->tv_nsec);
+
+  return p_result;
+}
+
+static zval * timespec_to_zval(const struct timespec * p_ts)
+{
+  zval * p_obj;
+
+  MAKE_STD_ZVAL(p_obj);
+  object_init(p_obj);
+
+  if (sizeof(p_ts->tv_sec) <= SIZEOF_LONG) {
+    add_property_long(p_obj, "tv_sec", p_ts->tv_sec);
+  }
+  else {
+    char secstr[(size_t) (PHP_PSXCLK_INTLEN(p_ts->tv_sec) + 1)];
+    snprintf(secstr, sizeof(secstr), "%d", p_ts->tv_sec);
+    add_property_string(p_obj, "tv_sec", secstr, 1);
+  }
+
+  add_property_long(p_obj, "tv_nsec", p_ts->tv_nsec);
+
+  return p_obj;
+}
 
 PHP_MINIT_FUNCTION(posixclocks)
 {
@@ -80,7 +116,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   struct timespec clock_res;
 
   #define PHP_PSXCLK_PRINTINFO_SUPPORTED(clock_id)                                \
-    clock_getres(CLOCK_ ## clock_id, &res);                                       \
+    clock_getres(CLOCK_ ## clock_id, &clock_res);                                 \
     snprintf(precision, 50, "%.0le", PHP_PSXCLK_TIMESPEC_TO_LDOUBLE(clock_res));  \
     php_info_print_table_row(3, #clock_id, "Yes", precision)
 
@@ -170,20 +206,33 @@ PHP_FUNCTION(posix_clock_gettime)
   switch (return_type) {
     case PHP_PSXCLK_RETTYPE_TIMESPEC:
     {
-      zval *obj;
-      MAKE_STD_ZVAL(obj);
-      object_init(obj);
-      add_property_long(obj, "tv_sec", clockVal.tv_sec);
-      add_property_long(obj, "tv_nsec", clockVal.tv_nsec);
-      RETURN_ZVAL(obj, 1, 1);
+      RETURN_ZVAL(timespec_to_zval(&clock_val), 1, 1);
       break;
     }
     case PHP_PSXCLK_RETTYPE_FLOAT:
       RETURN_DOUBLE(PHP_PSXCLK_TIMESPEC_TO_LDOUBLE(clock_val));
       break;
     case PHP_PSXCLK_RETTYPE_STRING:
-      //
+    {
+      // DEBUG
+      /*if (length != 0) {
+        zval *obj;
+        MAKE_STD_ZVAL(obj);
+        object_init(obj);
+
+        add_property_long(obj, "tv_sec", clock_val.tv_sec);
+        add_property_long(obj, "tv_sec_L", PHP_PSXCLK_NUMLEN(clock_val.tv_sec));
+        add_property_long(obj, "tv_nsec", clock_val.tv_nsec);
+        add_property_long(obj, "tv_nsec_L", PHP_PSXCLK_NUMLEN(clock_val.tv_nsec));
+        add_property_string(obj, "string", result, 1);
+        add_property_long(obj, "string_L", length);
+
+        RETURN_ZVAL(obj, 1, 1);
+      }*/
+
+      RETURN_STRING(timespec_to_string(&clock_val), 1);
       break;
+    }
     default:
       php_error_docref(NULL TSRMLS_CC, E_ERROR, "Return type must be one of: PSXCLK_CLOCK_RET_TIMESPEC, "
         "PSXCLK_CLOCK_RET_FLOAT, PSXCLK_CLOCK_RET_STRING");
