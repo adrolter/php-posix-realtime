@@ -32,11 +32,8 @@
   #define PHP_PSXCLK_INTLEN(val) \
     ((val >= 0 && val < 10) ? 1 : floor(log10(abs(val))) + (val < 0 ? 2 : 1))
 
-  #define PHP_PSXCLK_TS_TO_DOUBLE(ts) \
+  #define PHP_PSXCLK_TIMESPEC_TO_LDOUBLE(ts) \
     (ts.tv_sec + (ts.tv_nsec / BILLION_LD))
-
-  #define PHP_PSXCLK_TSP_TO_DOUBLE(ts) \
-    (ts->tv_sec + (ts->tv_nsec / BILLION_LD))
 
   #define PHP_PSXCLK_STRINGIFY(str) #str
 
