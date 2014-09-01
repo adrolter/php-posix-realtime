@@ -43,7 +43,7 @@
 #define RETTYPE_STRING   2
 
 #define INTLEN(val) \
-  ((val >= 0 && val < 10) ? 1 : floor(log10(abs(val))) + (val < 0 ? 2 : 1))
+  (size_t) ((val >= 0 && val < 10) ? 1 : floor(log10(abs(val))) + (val < 0 ? 2 : 1))
 
 #define TIMESPEC_TO_LDOUBLE(ts) \
   (ts.tv_sec + (ts.tv_nsec / BILLION_LD))
@@ -60,11 +60,11 @@
 
 static int le_posixclocks;
 
-static char * timespec_to_string(const struct timespec * p_ts)
+static char *timespec_to_string(struct timespec const *p_ts)
 {
   // (char size * (digits in seconds + 1 for decimal point + 9 for nanoseconds)) + 1 for \0
-  size_t result_sz = (sizeof(char) * (INTLEN(p_ts->tv_sec) + 1 + 9)) + 1;
-  char * p_result = malloc(result_sz);
+  size_t const result_sz = (sizeof(char) * (INTLEN(p_ts->tv_sec) + 1 + 9)) + 1;
+  char *p_result = malloc(result_sz);
 
   if (!p_result) {
     php_error_docref(NULL TSRMLS_CC, E_ERROR, "Failed to allocate memory [%s] (%s)", __func__, strerror(errno));
@@ -76,9 +76,9 @@ static char * timespec_to_string(const struct timespec * p_ts)
   return p_result;
 }
 
-static zval * timespec_to_zval(const struct timespec * p_ts)
+static zval *timespec_to_zval(struct timespec const *p_ts)
 {
-  zval * p_obj;
+  zval *p_obj;
 
   MAKE_STD_ZVAL(p_obj);
   object_init(p_obj);
@@ -154,7 +154,7 @@ PHP_MINFO_FUNCTION(posixclocks)
   struct timespec clock_res;
 
   #define PRINTINFO_SUPPORTED(clock_id)                                \
-    clock_getres(CLOCK_ ## clock_id, &clock_res);                                 \
+    clock_getres(CLOCK_ ## clock_id, &clock_res);                      \
     snprintf(precision, 50, "%.0le", TIMESPEC_TO_LDOUBLE(clock_res));  \
     php_info_print_table_row(3, #clock_id, "Yes", precision)
 
