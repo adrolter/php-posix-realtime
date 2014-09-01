@@ -76,12 +76,12 @@ PHP_MSHUTDOWN_FUNCTION(posixclocks)
 
 PHP_MINFO_FUNCTION(posixclocks)
 {
-  struct timespec res;
   char precision[50];
+  struct timespec clock_res;
 
-  #define PHP_PSXCLK_PRINTINFO_SUPPORTED(clock_id)                            \
-    clock_getres(CLOCK_ ## clock_id, &res);                                   \
-    snprintf(precision, 50, "%.0e", res.tv_sec + res.tv_nsec / 1000000000.0); \
+  #define PHP_PSXCLK_PRINTINFO_SUPPORTED(clock_id)                                \
+    clock_getres(CLOCK_ ## clock_id, &res);                                       \
+    snprintf(precision, 50, "%.0le", PHP_PSXCLK_TIMESPEC_TO_LDOUBLE(clock_res));  \
     php_info_print_table_row(3, #clock_id, "Yes", precision)
 
   #define PHP_PSXCLK_PRINTINFO_UNSUPPORTED(clock_id) \
@@ -145,22 +145,21 @@ PHP_MINFO_FUNCTION(posixclocks)
 
 PHP_FUNCTION(posix_clock_gettime)
 {
-  long clockId = CLOCK_REALTIME;
-  long returnType = PHP_PSXCLK_RETTYPE_TIMESPEC;
-
-  struct timespec clockVal;
+  long clock_id     = CLOCK_REALTIME;
+  long return_type  = PHP_PSXCLK_RETTYPE_TIMESPEC;
+  struct timespec clock_val;
 
   if (ZEND_NUM_ARGS() > 2) {
     WRONG_PARAM_COUNT;
   }
 
-  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|ll", &clockId, &returnType) != SUCCESS) {
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|ll", &clock_id, &return_type) != SUCCESS) {
     return;
   }
 
-  if (clock_gettime(clockId, &clockVal) == -1) {
+  if (clock_gettime(clock_id, &clock_val) == -1) {
     if (errno == EINVAL) {
-      php_error_docref(NULL TSRMLS_CC, E_ERROR, "The POSIX clock ID '%ld' is not supported on this system", clockId);
+      php_error_docref(NULL TSRMLS_CC, E_ERROR, "The POSIX clock ID '%ld' is not supported on this system", clock_id);
       return;
     }
     else if (errno == EFAULT) {
@@ -168,7 +167,7 @@ PHP_FUNCTION(posix_clock_gettime)
     }
   }
 
-  switch (returnType) {
+  switch (return_type) {
     case PHP_PSXCLK_RETTYPE_TIMESPEC:
     {
       zval *obj;
@@ -180,7 +179,7 @@ PHP_FUNCTION(posix_clock_gettime)
       break;
     }
     case PHP_PSXCLK_RETTYPE_FLOAT:
-      RETURN_DOUBLE(clockVal.tv_sec + clockVal.tv_nsec / 1000000000.0);
+      RETURN_DOUBLE(PHP_PSXCLK_TIMESPEC_TO_LDOUBLE(clock_val));
       break;
     case PHP_PSXCLK_RETTYPE_STRING:
       //
@@ -195,21 +194,21 @@ PHP_FUNCTION(posix_clock_gettime)
 
 PHP_FUNCTION(posix_clock_getres)
 {
-  long clkId = 0;
-  struct timespec res;
-  double dResult;
+  long clock_id = CLOCK_REALTIME;
+  double result;
+  struct timespec clock_res;
 
   if (ZEND_NUM_ARGS() > 1) {
     WRONG_PARAM_COUNT;
   }
 
-  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|l", &clkId) != SUCCESS) {
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|l", &clock_id) != SUCCESS) {
     return;
   }
 
-  if (clock_getres(clkId, &res) == -1) {
+  if (clock_getres(clock_id, &clock_res) == -1) {
     if (errno == EINVAL) {
-      php_error_docref(NULL TSRMLS_CC, E_ERROR, "The POSIX clock ID '%ld' is not supported on this system", clkId);
+      php_error_docref(NULL TSRMLS_CC, E_ERROR, "The POSIX clock ID '%ld' is not supported on this system", clock_id);
       return;
     }
     else if (errno == EFAULT) {
@@ -217,9 +216,7 @@ PHP_FUNCTION(posix_clock_getres)
     }
   }
 
-  dResult = res.tv_sec + res.tv_nsec / 1000000000.0;
-
-  RETURN_DOUBLE(dResult);
+  RETURN_DOUBLE(PHP_PSXCLK_TIMESPEC_TO_LDOUBLE(clock_res));
 }
 
 
