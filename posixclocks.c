@@ -225,7 +225,7 @@ PHP_FUNCTION(posix_clock_gettime)
 {
     long clock_id = CLOCK_REALTIME;
     long clock_val_nsec_raw = -1;
-    ReturnType return_type = TIMESPEC;
+    long return_type = STRING;
     zend_bool apply_resolution = 0;
     struct timespec clock_val, clock_res;
 
