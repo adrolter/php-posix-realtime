@@ -35,23 +35,24 @@
  * Macros
  */
 
-#define BILLION_LD  1000000000.0L
-
+#define BILLION_LD       1000000000.0L
 #define CONSTFLAGS       CONST_CS | CONST_PERSISTENT
 #define RETTYPE_TIMESPEC 0
 #define RETTYPE_FLOAT    1
 #define RETTYPE_STRING   2
 
+#define STR(str) #str
+
 #define INTLEN(val) \
   (size_t) ((val >= 0 && val < 10) ? 1 : floor(log10(abs(val))) + (val < 0 ? 2 : 1))
 
-#define TIMESPEC_TO_LDOUBLE(ts) \
-  (ts.tv_sec + (ts.tv_nsec / BILLION_LD))
-
-#define STRINGIFY(str) #str
+#define TIMESPEC_TO_LDOUBLE(ts, res_nsec) \
+  (ts.tv_sec + ( \
+    (res_nsec > 1 ? (ts.tv_nsec - (ts.tv_nsec % res_nsec)) : ts.tv_nsec) / BILLION_LD \
+  ))
 
 #define DEFINE_CLOCK(clock_id) \
-  REGISTER_LONG_CONSTANT(STRINGIFY(PSXCLK_CLOCK_ ## clock_id), CLOCK_ ## clock_id, CONSTFLAGS)
+  REGISTER_LONG_CONSTANT(STR(PSXCLK_CLOCK_ ## clock_id), CLOCK_ ## clock_id, CONSTFLAGS)
 
 
 /*
@@ -60,41 +61,65 @@
 
 static int le_posixclocks;
 
-static char * timespec_to_string(struct timespec const * p_ts)
+static char * timespec_to_string(struct timespec const * ts_p, long const res_nsec)
 {
   // (char size * (digits in seconds + 1 for decimal point + 9 for nanoseconds)) + 1 for \0
-  size_t const result_sz = (sizeof(char) * (INTLEN(p_ts->tv_sec) + 1 + 9)) + 1;
-  char * p_result = emalloc(result_sz);
+  size_t const result_sz = (sizeof(char) * (INTLEN(ts_p->tv_sec) + 1 + 9)) + 1;
+  long decimal = ts_p->tv_nsec;
+  char * result_p;
 
-  if (!p_result) {
+  result_p = emalloc(result_sz);
+  if (!result_p) {
     php_error_docref(NULL TSRMLS_CC, E_ERROR, "Failed to allocate memory [%s] (%s)", __func__, strerror(errno));
     return NULL;
   }
 
-  snprintf(p_result, result_sz, "%jd.%.9ld", (intmax_t) p_ts->tv_sec, p_ts->tv_nsec);
+  // Apply resolution if provided
+  // Only apply if > 1 here as result would be unchanged for MOD(1)
+  if (res_nsec > 1) {
+    decimal -= decimal % res_nsec;
+  }
+  
+  // Remove trailing zeros for decimal string representation
+  while (decimal % 10 == 0) {
+    decimal /= 10;
+  }
 
-  return p_result;
+  snprintf(result_p, result_sz, "%jd.%ld", (intmax_t) ts_p->tv_sec, decimal);
+
+  return result_p;
 }
 
-static zval * timespec_to_zval(struct timespec const * p_ts)
+static zval * timespec_to_zval(struct timespec const * ts_p, long const res_nsec)
 {
-  zval * p_obj;
+  long nsec = ts_p->tv_nsec;
+  zval * obj_p;
 
-  MAKE_STD_ZVAL(p_obj);
-  object_init(p_obj);
+  MAKE_STD_ZVAL(obj_p);
+  object_init(obj_p);
 
-  if (sizeof(p_ts->tv_sec) <= SIZEOF_LONG) {
-    add_property_long(p_obj, "tv_sec", p_ts->tv_sec);
+  // Apply resolution if provided (res_nsec is greater than zero nanoseconds)
+  // Do even if resolution is 1ns so that extra properties are added to object
+  if (res_nsec > 0) {
+    if (res_nsec != 1) {
+      nsec -= nsec % res_nsec;
+    }
+    add_property_long(obj_p, "res_nsec", res_nsec);
+    add_property_long(obj_p, "tv_nsec_raw", ts_p->tv_nsec);
+  }
+
+  if (sizeof(ts_p->tv_sec) <= SIZEOF_LONG) {
+    add_property_long(obj_p, "tv_sec", ts_p->tv_sec);
   }
   else {
-    char secstr[(size_t) (INTLEN(p_ts->tv_sec) + 1)];
-    snprintf(secstr, sizeof(secstr), "%d", p_ts->tv_sec);
-    add_property_string(p_obj, "tv_sec", secstr, 1);
+    char secstr[(size_t) (INTLEN(ts_p->tv_sec) + 1)];
+    snprintf(secstr, sizeof(secstr), "%d", ts_p->tv_sec);
+    add_property_string(obj_p, "tv_sec", secstr, 0);
   }
 
-  add_property_long(p_obj, "tv_nsec", p_ts->tv_nsec);
+  add_property_long(obj_p, "tv_nsec", nsec);
 
-  return p_obj;
+  return obj_p;
 }
 
 
@@ -155,7 +180,7 @@ PHP_MINFO_FUNCTION(posixclocks)
 
   #define PRINTINFO_SUPPORTED(clock_id)                                \
     clock_getres(CLOCK_ ## clock_id, &clock_res);                      \
-    snprintf(precision, 50, "%.0le", TIMESPEC_TO_LDOUBLE(clock_res));  \
+    snprintf(precision, 50, "%.0le", TIMESPEC_TO_LDOUBLE(clock_res, 0));  \
     php_info_print_table_row(3, #clock_id, "Yes", precision)
 
   #define PRINTINFO_UNSUPPORTED(clock_id) \
@@ -219,37 +244,46 @@ PHP_MINFO_FUNCTION(posixclocks)
 
 PHP_FUNCTION(posix_clock_gettime)
 {
-  long clock_id     = CLOCK_REALTIME;
-  long return_type  = RETTYPE_TIMESPEC;
+  long clock_id              = CLOCK_REALTIME;
+  long return_type           = RETTYPE_TIMESPEC;
+  long resolution            = 0;
+  zend_bool apply_resolution = 0;
   struct timespec clock_val;
 
-  if (ZEND_NUM_ARGS() > 2) {
+  if (ZEND_NUM_ARGS() > 3) {
     WRONG_PARAM_COUNT;
   }
 
-  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|ll", &clock_id, &return_type) != SUCCESS) {
+  // TODO: Add boolean to decide whether or not to apply resolution to nanoseconds before returning
+  //  If so then do clock_getres and pass appropriately to conversion functions
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|llb", &clock_id, &return_type, &apply_resolution) != SUCCESS) {
     return;
   }
 
   if (clock_gettime(clock_id, &clock_val) == -1) {
     if (errno == EINVAL) {
       php_error_docref(NULL TSRMLS_CC, E_ERROR, "The POSIX clock ID '%ld' is not supported on this system", clock_id);
+    }
+    return;
+  }
+  
+  if (apply_resolution) {  
+    struct timespec clock_res;
+    if (clock_getres(clock_id, &clock_res) == -1) {
       return;
     }
-    else if (errno == EFAULT) {
-      return;
-    }
+    resolution = clock_res.tv_nsec;
   }
 
   switch (return_type) {
     case RETTYPE_TIMESPEC:
-      RETURN_ZVAL(timespec_to_zval(&clock_val), 0, 1);
+      RETURN_ZVAL(timespec_to_zval(&clock_val, resolution), 0, 1);
       break;
     case RETTYPE_FLOAT:
-      RETURN_DOUBLE(TIMESPEC_TO_LDOUBLE(clock_val));
+      RETURN_DOUBLE(TIMESPEC_TO_LDOUBLE(clock_val, resolution));
       break;
     case RETTYPE_STRING:
-      RETURN_STRING(timespec_to_string(&clock_val), 0);
+      RETURN_STRING(timespec_to_string(&clock_val, resolution), 0);
       break;
     default:
       php_error_docref(NULL TSRMLS_CC, E_ERROR, "Return type must be one of: PSXCLK_CLOCK_RET_TIMESPEC, "
@@ -283,7 +317,7 @@ PHP_FUNCTION(posix_clock_getres)
     }
   }
 
-  RETURN_DOUBLE(TIMESPEC_TO_LDOUBLE(clock_res));
+  RETURN_DOUBLE(TIMESPEC_TO_LDOUBLE(clock_res, 0));
 }
 
 
