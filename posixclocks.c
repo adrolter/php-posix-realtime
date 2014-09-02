@@ -63,20 +63,21 @@ static int le_posixclocks;
 
 static char * timespec_to_string(struct timespec const * ts_p)
 {
-    /* (char size * (digits in seconds + 1 for decimal point + 9 for nanoseconds)) + 1 for \0 */
-    size_t const result_sz = (sizeof (char) * (INTLEN(ts_p->tv_sec) + 1 + 9)) + 1;
     long decimal = ts_p->tv_nsec;
+    size_t result_sz;
     char * result_p;
+
+    /* Remove trailing zeros for decimal string representation */
+    while (decimal % 10 == 0) {
+        decimal /= 10;
+    }
+
+    result_sz = (sizeof (char) * (INTLEN(ts_p->tv_sec) + 1 + INTLEN(decimal))) + 1;
 
     result_p = emalloc(result_sz);
     if (!result_p) {
         php_error_docref(NULL TSRMLS_CC, E_ERROR, "Failed to allocate memory [%s] (%s)", __func__, strerror(errno));
         return NULL;
-    }
-
-    /* Remove trailing zeros for decimal string representation */
-    while (decimal % 10 == 0) {
-        decimal /= 10;
     }
 
     snprintf(result_p, result_sz, "%jd.%ld", (intmax_t) ts_p->tv_sec, decimal);
