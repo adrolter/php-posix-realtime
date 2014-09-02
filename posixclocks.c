@@ -37,9 +37,6 @@
 
 #define BILLION_LD       1000000000.0L
 #define CONSTFLAGS       CONST_CS | CONST_PERSISTENT
-#define RETTYPE_TIMESPEC 0
-#define RETTYPE_FLOAT    1
-#define RETTYPE_STRING   2
 
 #define STR(str) #str
 
@@ -48,8 +45,11 @@
 
 #define TIMESPEC_TO_LDOUBLE(ts) (ts.tv_sec + (ts.tv_nsec / BILLION_LD))
 
-#define DEFINE_CLOCK(clock_id) \
-  REGISTER_LONG_CONSTANT(STR(PSXCLK_CLOCK_ ## clock_id), CLOCK_ ## clock_id, CONSTFLAGS)
+#define DEFINE_CLOCK(id) \
+  REGISTER_LONG_CONSTANT(STR(PSXCLK_CLOCK_ ## id), CLOCK_ ## id, CONSTFLAGS)
+
+
+typedef enum { TIMESPEC = 10, FLOAT = 20, STRING = 30 } ReturnType;
 
 
 /*
@@ -60,7 +60,7 @@ static int le_posixclocks;
 
 static char * timespec_to_string(struct timespec const * ts_p)
 {
-  // (char size * (digits in seconds + 1 for decimal point + 9 for nanoseconds)) + 1 for \0
+  /* (char size * (digits in seconds + 1 for decimal point + 9 for nanoseconds)) + 1 for \0 */
   size_t const result_sz = (sizeof(char) * (INTLEN(ts_p->tv_sec) + 1 + 9)) + 1;
   long decimal = ts_p->tv_nsec;
   char * result_p;
@@ -71,7 +71,7 @@ static char * timespec_to_string(struct timespec const * ts_p)
     return NULL;
   }
   
-  // Remove trailing zeros for decimal string representation
+  /* Remove trailing zeros for decimal string representation */
   while (decimal % 10 == 0) {
     decimal /= 10;
   }
@@ -110,9 +110,9 @@ static zval * timespec_to_zval(struct timespec const * ts_p)
 
 PHP_MINIT_FUNCTION(posixclocks)
 {
-  REGISTER_LONG_CONSTANT("PSXCLK_AS_TIMESPEC", RETTYPE_TIMESPEC, CONSTFLAGS);
-  REGISTER_LONG_CONSTANT("PSXCLK_AS_FLOAT", RETTYPE_FLOAT, CONSTFLAGS);
-  REGISTER_LONG_CONSTANT("PSXCLK_AS_STRING", RETTYPE_STRING, CONSTFLAGS);
+  REGISTER_LONG_CONSTANT("PSXCLK_AS_TIMESPEC", TIMESPEC, CONSTFLAGS);
+  REGISTER_LONG_CONSTANT("PSXCLK_AS_FLOAT", FLOAT, CONSTFLAGS);
+  REGISTER_LONG_CONSTANT("PSXCLK_AS_STRING", STRING, CONSTFLAGS);
 
   DEFINE_CLOCK(REALTIME);
 
@@ -226,8 +226,8 @@ PHP_MINFO_FUNCTION(posixclocks)
 PHP_FUNCTION(posix_clock_gettime)
 {
   long clock_id              = CLOCK_REALTIME;
-  long return_type           = RETTYPE_TIMESPEC;
   long clock_val_nsec_raw    = -1;
+  ReturnType return_type     = TIMESPEC;
   zend_bool apply_resolution = 0;
   struct timespec clock_val, clock_res;
 
@@ -255,7 +255,7 @@ PHP_FUNCTION(posix_clock_gettime)
   }
 
   switch (return_type) {
-    case RETTYPE_TIMESPEC:
+    case TIMESPEC:
     {
       zval * obj_p = timespec_to_zval(&clock_val);
       if (apply_resolution) {
@@ -265,15 +265,15 @@ PHP_FUNCTION(posix_clock_gettime)
       RETURN_ZVAL(obj_p, 0, 1);
       break;
     }
-    case RETTYPE_FLOAT:
+    case FLOAT:
       RETURN_DOUBLE(TIMESPEC_TO_LDOUBLE(clock_val));
       break;
-    case RETTYPE_STRING:
+    case STRING:
       RETURN_STRING(timespec_to_string(&clock_val), 0);
       break;
     default:
-      php_error_docref(NULL TSRMLS_CC, E_ERROR, "Return type must be one of: PSXCLK_CLOCK_RET_TIMESPEC, "
-        "PSXCLK_CLOCK_RET_FLOAT, PSXCLK_CLOCK_RET_STRING");
+      php_error_docref(NULL TSRMLS_CC, E_ERROR, "Return type must be one of: PSXCLK_AS_TIMESPEC, "
+        "PSXCLK_AS_FLOAT, PSXCLK_AS_STRING");
       return;
   }
 }
