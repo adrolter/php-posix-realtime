@@ -299,7 +299,7 @@ PHP_FUNCTION(posix_clock_getres)
         }
     }
 
-    RETURN_DOUBLE(TIMESPEC_TO_LDOUBLE(clock_res));
+    RETURN_LONG(clock_res.tv_nsec);
 }
 
 
