@@ -46,10 +46,7 @@
 #define INTLEN(val) \
   (size_t) ((val >= 0 && val < 10) ? 1 : floor(log10(abs(val))) + (val < 0 ? 2 : 1))
 
-#define TIMESPEC_TO_LDOUBLE(ts, res_nsec) \
-  (ts.tv_sec + ( \
-    (res_nsec > 1 ? (ts.tv_nsec - (ts.tv_nsec % res_nsec)) : ts.tv_nsec) / BILLION_LD \
-  ))
+#define TIMESPEC_TO_LDOUBLE(ts) (ts.tv_sec + (ts.tv_nsec / BILLION_LD))
 
 #define DEFINE_CLOCK(clock_id) \
   REGISTER_LONG_CONSTANT(STR(PSXCLK_CLOCK_ ## clock_id), CLOCK_ ## clock_id, CONSTFLAGS)
@@ -61,7 +58,7 @@
 
 static int le_posixclocks;
 
-static char * timespec_to_string(struct timespec const * ts_p, long const res_nsec)
+static char * timespec_to_string(struct timespec const * ts_p)
 {
   // (char size * (digits in seconds + 1 for decimal point + 9 for nanoseconds)) + 1 for \0
   size_t const result_sz = (sizeof(char) * (INTLEN(ts_p->tv_sec) + 1 + 9)) + 1;
@@ -72,12 +69,6 @@ static char * timespec_to_string(struct timespec const * ts_p, long const res_ns
   if (!result_p) {
     php_error_docref(NULL TSRMLS_CC, E_ERROR, "Failed to allocate memory [%s] (%s)", __func__, strerror(errno));
     return NULL;
-  }
-
-  // Apply resolution if provided
-  // Only apply if > 1 here as result would be unchanged for MOD(1)
-  if (res_nsec > 1) {
-    decimal -= decimal % res_nsec;
   }
   
   // Remove trailing zeros for decimal string representation
@@ -90,23 +81,13 @@ static char * timespec_to_string(struct timespec const * ts_p, long const res_ns
   return result_p;
 }
 
-static zval * timespec_to_zval(struct timespec const * ts_p, long const res_nsec)
+static zval * timespec_to_zval(struct timespec const * ts_p)
 {
   long nsec = ts_p->tv_nsec;
   zval * obj_p;
 
   MAKE_STD_ZVAL(obj_p);
   object_init(obj_p);
-
-  // Apply resolution if provided (res_nsec is greater than zero nanoseconds)
-  // Do even if resolution is 1ns so that extra properties are added to object
-  if (res_nsec > 0) {
-    if (res_nsec != 1) {
-      nsec -= nsec % res_nsec;
-    }
-    add_property_long(obj_p, "res_nsec", res_nsec);
-    add_property_long(obj_p, "tv_nsec_raw", ts_p->tv_nsec);
-  }
 
   if (sizeof(ts_p->tv_sec) <= SIZEOF_LONG) {
     add_property_long(obj_p, "tv_sec", ts_p->tv_sec);
@@ -180,7 +161,7 @@ PHP_MINFO_FUNCTION(posixclocks)
 
   #define PRINTINFO_SUPPORTED(clock_id)                                \
     clock_getres(CLOCK_ ## clock_id, &clock_res);                      \
-    snprintf(precision, 50, "%.0le", TIMESPEC_TO_LDOUBLE(clock_res, 0));  \
+    snprintf(precision, 50, "%.0le", TIMESPEC_TO_LDOUBLE(clock_res));  \
     php_info_print_table_row(3, #clock_id, "Yes", precision)
 
   #define PRINTINFO_UNSUPPORTED(clock_id) \
@@ -246,16 +227,14 @@ PHP_FUNCTION(posix_clock_gettime)
 {
   long clock_id              = CLOCK_REALTIME;
   long return_type           = RETTYPE_TIMESPEC;
-  long resolution            = 0;
+  long clock_val_nsec_raw    = -1;
   zend_bool apply_resolution = 0;
-  struct timespec clock_val;
+  struct timespec clock_val, clock_res;
 
   if (ZEND_NUM_ARGS() > 3) {
     WRONG_PARAM_COUNT;
   }
 
-  // TODO: Add boolean to decide whether or not to apply resolution to nanoseconds before returning
-  //  If so then do clock_getres and pass appropriately to conversion functions
   if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|llb", &clock_id, &return_type, &apply_resolution) != SUCCESS) {
     return;
   }
@@ -267,23 +246,30 @@ PHP_FUNCTION(posix_clock_gettime)
     return;
   }
   
-  if (apply_resolution) {  
-    struct timespec clock_res;
+  if (apply_resolution) {
     if (clock_getres(clock_id, &clock_res) == -1) {
       return;
     }
-    resolution = clock_res.tv_nsec;
+    clock_val_nsec_raw = clock_val.tv_nsec;
+    clock_val.tv_nsec -= clock_val.tv_nsec % clock_res.tv_nsec;
   }
 
   switch (return_type) {
     case RETTYPE_TIMESPEC:
-      RETURN_ZVAL(timespec_to_zval(&clock_val, resolution), 0, 1);
+    {
+      zval * obj_p = timespec_to_zval(&clock_val);
+      if (apply_resolution) {
+        add_property_long(obj_p, "res_nsec", clock_res.tv_nsec);
+        add_property_long(obj_p, "tv_nsec_raw", clock_val_nsec_raw);
+      }
+      RETURN_ZVAL(obj_p, 0, 1);
       break;
+    }
     case RETTYPE_FLOAT:
-      RETURN_DOUBLE(TIMESPEC_TO_LDOUBLE(clock_val, resolution));
+      RETURN_DOUBLE(TIMESPEC_TO_LDOUBLE(clock_val));
       break;
     case RETTYPE_STRING:
-      RETURN_STRING(timespec_to_string(&clock_val, resolution), 0);
+      RETURN_STRING(timespec_to_string(&clock_val), 0);
       break;
     default:
       php_error_docref(NULL TSRMLS_CC, E_ERROR, "Return type must be one of: PSXCLK_CLOCK_RET_TIMESPEC, "
@@ -317,7 +303,7 @@ PHP_FUNCTION(posix_clock_getres)
     }
   }
 
-  RETURN_DOUBLE(TIMESPEC_TO_LDOUBLE(clock_res, 0));
+  RETURN_DOUBLE(TIMESPEC_TO_LDOUBLE(clock_res));
 }
 
 
