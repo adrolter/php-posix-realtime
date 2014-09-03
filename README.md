@@ -123,7 +123,7 @@ Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man
 <a name="interface-clock_getres-params"/>
 **-- Parameters --**
 
-**clock_id** The clock whose resolution should be retrieved; defaults to
+**_clock_id_**&nbsp;&nbsp;The clock whose resolution should be retrieved; defaults to
 `PSXCLK_CLOCK_REALTIME` if not provided.
 
 <a name="interface-clock_getres-retvals"/>
