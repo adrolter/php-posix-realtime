@@ -133,11 +133,19 @@ Returns an integer representing the requested clock's
 resolution/precision in nanoseconds.
 
 <a name="interface-clock_getres-examples"/>
-**-- Example --**
-
-`var_dump(posix_clock_getres(PSXCLK_CLOCK_MONOTONIC_COARSE));`
+**-- Examples --**
 
 ```
+// Get resolution of the real-time clock
+var_dump(posix_clock_getres());
+---
+int(1)
+```
+
+```
+// Get resolution of the coarse monotonic clock
+var_dump(posix_clock_getres(PSXCLK_CLOCK_MONOTONIC_COARSE));`
+---
 int(4000000)
 ```
 
