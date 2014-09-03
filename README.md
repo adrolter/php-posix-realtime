@@ -132,6 +132,15 @@ Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man
 Returns an integer representing the requested clock's
 resolution/precision in nanoseconds.
 
+<a name="interface-clock_getres-examples"/>
+**-- Example --**
+
+`var_dump(posix_clock_getres(PSXCLK_CLOCK_MONOTONIC_COARSE));`
+
+```
+int(4000000)
+```
+
 <br>
 <a name="clocks"/>
 ## Clocks
