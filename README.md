@@ -135,14 +135,14 @@ nanoseconds. Lower values indicate higher resolution.
 <a name="interface-clock_getres-examples"/>
 **-- Examples --**
 
-```
+```php
 // Get resolution of the real-time clock
 var_dump(posix_clock_getres());
 ---
 int(1)
 ```
 
-```
+```php
 // Get resolution of the coarse monotonic clock
 var_dump(posix_clock_getres(PSXCLK_CLOCK_MONOTONIC_COARSE));`
 ---
