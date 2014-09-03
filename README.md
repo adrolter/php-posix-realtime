@@ -90,6 +90,7 @@ the decimal value of the requested clock is returned.
 
 **`float`** If `return_as` = `PSXCLK_AS_FLOAT`, a float (double) representing
 the decimal value of the requested clock is returned.
+
 _**WARNING:** The floating point type is likely not large enough to represent
 certain time values or accurate to the last digit!_
 
