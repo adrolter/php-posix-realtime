@@ -63,7 +63,7 @@ Add the line `extension=posixclocks.so` to your php.ini
 `mixed` **`posix_clock_gettime`** ( [<br>
 &nbsp;&nbsp;`int` **`$clock_id = PSXCLK_CLOCK_REALTIME`** ,<br>
 &nbsp;&nbsp;`int` **`$return_as = PSXCLK_AS_STRING`** ,<br>
-&nbsp;&nbsp;`bool` **`round_to_res = false`**<br>
+&nbsp;&nbsp;`false|int` **`floor_to = false`**<br>
 ] )
 
 Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/man2/clock_gettime.2.html).
@@ -78,8 +78,10 @@ Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/ma
 section below. Defaults to `PSXCLK_AS_STRING`; other valid values are
 `PSXCLK_AS_FLOAT` and `PSXCLK_AS_TIMESPEC`.
 
-**_round_to_res_** Whether or not to round down (floor) the clock's value to the
-nearest multiple of its resolution. Defaults to `false`.
+**_floor_to_** Floor (round down) the clock's decimal fraction value to the
+nearest multiple of the given value in nanoseconds. If `PSXCLK_FLOOR_TO_CLOCKRES`
+is provided, the value will be floored to the nearest multiple of the clock's
+resolution. Defaults to `false`.
 
 <br>
 <a name="interface-clock_gettime-retvals"/>
@@ -130,13 +132,40 @@ double(1409731642.4453) // Lost significance!
 Get the value of the raw monotonic clock as an object:
 ```php
 <<<
-var_dump(posix_clock_gettime(PSXCLK_CLOCK_MONOTONIC, PSXCLK_AS_TIMESPEC));
+var_dump(posix_clock_gettime(PSXCLK_CLOCK_MONOTONIC_RAW, PSXCLK_AS_TIMESPEC));
 >>>
 class stdClass#1 (2) {
   public $tv_sec =>
   int(80617)
   public $tv_nsec =>
   int(356589916)
+}
+```
+
+Get the value of the real-time clock, floored to the nearest 250ms, as a float:
+```php
+<<<
+var_dump(posix_clock_gettime(PSXCLK_CLOCK_REALTIME, PSXCLK_AS_FLOAT, 250000000));
+>>>
+double(1409783196.75)
+```
+
+Get the value of the coarse monotonic clock, floored to the nearest multiple of
+its resolution, as an object:
+```php
+<<<
+var_dump(posix_clock_gettime(PSXCLK_CLOCK_MONOTONIC_COARSE, PSXCLK_AS_TIMESPEC, \
+PSXCLK_FLOOR_TO_CLOCKRES));
+>>>
+class stdClass#1 (4) {
+  public $tv_sec =>
+  int(4597)
+  public $tv_nsec =>
+  int(860000000)
+  public $floored_to_nsec =>
+  int(4000000)
+  public $tv_nsec_raw =>
+  int(863365061)
 }
 ```
 

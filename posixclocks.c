@@ -36,7 +36,8 @@
  */
 
 #define BILLION_D   1000000000.0
-#define BILLION_LD  1000000000.0L
+#define BILLION_LD  1000000000.
+#define FLOOR_TO_CLOCKRES -1
 #define CONSTFLAGS  CONST_CS | CONST_PERSISTENT
 
 #define STR(str) #str
@@ -119,6 +120,7 @@ PHP_MINIT_FUNCTION(posixclocks)
     REGISTER_LONG_CONSTANT("PSXCLK_AS_TIMESPEC", TIMESPEC, CONSTFLAGS);
     REGISTER_LONG_CONSTANT("PSXCLK_AS_FLOAT", FLOAT, CONSTFLAGS);
     REGISTER_LONG_CONSTANT("PSXCLK_AS_STRING", STRING, CONSTFLAGS);
+    REGISTER_LONG_CONSTANT("PSXCLK_FLOOR_TO_CLOCKRES", FLOOR_TO_CLOCKRES, CONSTFLAGS);
 
     DEFINE_CLOCK(REALTIME);
 
@@ -231,14 +233,14 @@ PHP_FUNCTION(posix_clock_gettime)
     long clock_id = CLOCK_REALTIME;
     long clock_val_nsec_raw = -1;
     long return_type = STRING;
-    zend_bool round_to_res = 0;
-    struct timespec clock_val, clock_res;
+    long floor_to_ns = 0;
+    struct timespec clock_val;
 
     if (ZEND_NUM_ARGS() > 3) {
         WRONG_PARAM_COUNT;
     }
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|llb", &clock_id, &return_type, &round_to_res) != SUCCESS) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|lll", &clock_id, &return_type, &floor_to_ns) != SUCCESS) {
         return;
     }
 
@@ -249,20 +251,24 @@ PHP_FUNCTION(posix_clock_gettime)
         return;
     }
 
-    if (round_to_res) {
-        if (clock_getres(clock_id, &clock_res) == -1) {
-            return;
+    if (floor_to_ns) {
+        if (floor_to_ns == FLOOR_TO_CLOCKRES) {
+            struct timespec clock_res;
+            if (clock_getres(clock_id, &clock_res) == -1) {
+                return;
+            }
+            floor_to_ns = clock_res.tv_nsec;
         }
         clock_val_nsec_raw = clock_val.tv_nsec;
-        clock_val.tv_nsec -= clock_val.tv_nsec % clock_res.tv_nsec;
+        clock_val.tv_nsec -= clock_val.tv_nsec % floor_to_ns;
     }
 
     switch (return_type) {
     case TIMESPEC:
     {
         zval * obj_p = timespec_to_zval(&clock_val);
-        if (round_to_res) {
-            add_property_long(obj_p, "res_nsec", clock_res.tv_nsec);
+        if (floor_to_ns) {
+            add_property_long(obj_p, "floored_to_nsec", floor_to_ns);
             add_property_long(obj_p, "tv_nsec_raw", clock_val_nsec_raw);
         }
         RETURN_ZVAL(obj_p, 0, 1);
