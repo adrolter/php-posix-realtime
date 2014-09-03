@@ -107,24 +107,27 @@ stdClass Object {
 <a name="interface-clock_gettime-examples"/>
 **-- Examples --**
 
+Get the value of the real-time clock as a decimal string:
 ```php
-// Get the value of the real-time clock as a decimal string
+<<<
 var_dump(posix_clock_gettime());
----
+>>>
 string(20) "1409731642.445375772"
 ```
 
+Get the value of the real-time as a float:
 ```php
-// Get the value of the real-time as a float 
+<<<
 var_dump(posix_clock_gettime(PSXCLK_CLOCK_REALTIME, PSXCLK_AS_FLOAT));
----
+>>>
 double(1409731642.4453) // Lost significance!
 ```
 
+Get the value of the raw monotonic clock as an object:
 ```php
-// Get the value of the raw monotonic clock as an object
+<<<
 var_dump(posix_clock_gettime(PSXCLK_CLOCK_MONOTONIC, PSXCLK_AS_TIMESPEC));
----
+>>>
 class stdClass#1 (2) {
   public $tv_sec =>
   int(80617)
@@ -164,17 +167,19 @@ nanoseconds. Lower values indicate higher resolution.
 <a name="interface-clock_getres-examples"/>
 **-- Examples --**
 
+Get resolution of the real-time clock:
 ```php
-// Get resolution of the real-time clock
+<<<
 var_dump(posix_clock_getres());
----
+>>>
 int(1)
 ```
 
+Get resolution of the coarse monotonic clock:
 ```php
-// Get resolution of the coarse monotonic clock
+<<<
 var_dump(posix_clock_getres(PSXCLK_CLOCK_MONOTONIC_COARSE));
----
+>>>
 int(4000000)
 ```
 
