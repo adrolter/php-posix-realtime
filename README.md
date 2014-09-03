@@ -104,6 +104,16 @@ stdClass Object {
 }
 ```
 
+<a name="interface-clock_gettime-examples"/>
+**-- Examples --**
+
+```php
+// Get the value of the real-time clock as a decimal string
+var_dump(posix_clock_gettime());
+---
+string(20) "1409731642.445375772"
+```
+
 <br>
 
 ---
@@ -144,7 +154,7 @@ int(1)
 
 ```php
 // Get resolution of the coarse monotonic clock
-var_dump(posix_clock_getres(PSXCLK_CLOCK_MONOTONIC_COARSE));`
+var_dump(posix_clock_getres(PSXCLK_CLOCK_MONOTONIC_COARSE));
 ---
 int(4000000)
 ```
