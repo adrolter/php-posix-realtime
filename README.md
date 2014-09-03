@@ -114,7 +114,7 @@ stdClass Object {
 
 ---
 
-<a href="interface-clock_getres"/>
+<a href="interface__clock_getres"/>
 ### posix_clock_getres
 
 <a href="interface-clock_getres-desc"/>
