@@ -50,14 +50,14 @@ Add the line `extension=posixclocks.so` to your php.ini
 
 
 <br>
-<a href="interface"/>
+<a name="interface"/>
 ## Interface
 ---
 
-<a href="interface-clock_gettime"/>
+<a name="interface-clock_gettime"/>
 ### posix_clock_gettime
 
-<a href="interface-clock_gettime-desc"/>
+<a name="interface-clock_gettime-desc"/>
 **Description**
 
 `mixed` **`posix_clock_gettime`** ( [ 
@@ -68,7 +68,7 @@ Add the line `extension=posixclocks.so` to your php.ini
 
 Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/man2/clock_gettime.2.html).
 
-<a href="interface-clock_gettime-params"/>
+<a name="interface-clock_gettime-params"/>
 **Parameters**
 
 ***clock_id***
@@ -86,7 +86,7 @@ section below. Defaults to `PSXCLK_AS_STRING`; other valid values are
 Whether or not to first apply the clock's resolution to the value before
 returning it. Defaults to `false`.
 
-<a href="interface-clock_gettime-retvals"/>
+<a name="interface-clock_gettime-retvals"/>
 **Return Values**
 
 **`string`:** By default (`return_as` = `PSXCLK_AS_STRING`) a string representing
@@ -114,10 +114,10 @@ stdClass Object {
 
 ---
 
-<a href="interface__clock_getres"/>
+<a name="interface-clock_getres"/>
 ### posix_clock_getres
 
-<a href="interface-clock_getres-desc"/>
+<a name="interface-clock_getres-desc"/>
 **Description**
 
 `int` **`posix_clock_getres`** ( [ 
@@ -126,7 +126,7 @@ stdClass Object {
 
 Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man2/clock_getres.2.html).
 
-<a href="interface-clock_getres-params"/>
+<a name="interface-clock_getres-params"/>
 **Parameters**
 
 ***clock_id***
@@ -134,15 +134,14 @@ Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man
 The clock whose resolution should be retrieved; defaults to `PSXCLK_CLOCK_REALTIME`
 if not provided.
 
-<a href="interface-clock_getres-retvals"/>
+<a name="interface-clock_getres-retvals"/>
 **Return Values**
 
 Returns an integer representing the requested clock's
 resolution/precision in nanoseconds.
 
-
 <br>
-<a href="clocks"/>
+<a name="clocks"/>
 ## Clocks
 ---
 
@@ -169,7 +168,8 @@ system, its equivalent PHP constant (PSXCLK_CLOCK_&lt;*ID*&gt;) will be undefine
 <br>
 
 ---
-<a href="references"/>
+
+<a name="references"/>
 
 http://man7.org/linux/man-pages/man2/clock_gettime.2.html
 
