@@ -71,27 +71,27 @@ Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/ma
 <a name="interface-clock_gettime-params"/>
 **-- Parameters --**
 
-_clock_id_: The clock to retrieve; defaults to `PSXCLK_CLOCK_REALTIME` if not provided.
+**_clock_id_** The clock to retrieve; defaults to `PSXCLK_CLOCK_REALTIME` if not provided.
 
-_return_as_: Defines the return value type as detailed in the [return values](#interface-clock_gettime-retvals)
+**_return_as** Defines the return value type as detailed in the [return values](#interface-clock_gettime-retvals)
 section below. Defaults to `PSXCLK_AS_STRING`; other valid values are
 `PSXCLK_AS_FLOAT` and `PSXCLK_AS_TIMESPEC`.
 
-_apply_resolution_: Whether or not to first apply the clock's resolution to
+**_apply_resolution_** Whether or not to first apply the clock's resolution to
 the value before returning it. Defaults to `false`.
 
 <a name="interface-clock_gettime-retvals"/>
 **-- Return Values --**
 
-**`string`:** By default (`return_as` = `PSXCLK_AS_STRING`) a string representing
+**`string`** By default (`return_as` = `PSXCLK_AS_STRING`) a string representing
 the decimal value of the requested clock is returned.
 
-**`float`**: If `return_as` = `PSXCLK_AS_FLOAT`, a float (double) representing
+**`float`** If `return_as` = `PSXCLK_AS_FLOAT`, a float (double) representing
 the decimal value of the requested clock is returned.
 _**WARNING:** The floating point type may not be large enough to represent
 certain time values._
 
-**`object`**:  If `return_as` = `PSXCLK_AS_TIMESPEC`, an object of class
+**`object`**  If `return_as` = `PSXCLK_AS_TIMESPEC`, an object of class
 `stdClass` representing the underlying C data structure ([`struct timespec`](http://pubs.opengroup.org/onlinepubs/7908799/xsh/time.h.html))
 is returned.
 
@@ -123,10 +123,8 @@ Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man
 <a name="interface-clock_getres-params"/>
 **-- Parameters --**
 
-***clock_id***
-
-The clock whose resolution should be retrieved; defaults to `PSXCLK_CLOCK_REALTIME`
-if not provided.
+**clock_id** The clock whose resolution should be retrieved; defaults to
+`PSXCLK_CLOCK_REALTIME` if not provided.
 
 <a name="interface-clock_getres-retvals"/>
 **-- Return Values --**
