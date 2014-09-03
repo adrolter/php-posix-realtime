@@ -61,9 +61,9 @@ Add the line `extension=posixclocks.so` to your php.ini
 **Description**
 
 `mixed` **`posix_clock_gettime`** ( [ 
-  `int` **`$clock_id = PSXCLK_CLOCK_REALTIME`** ,
-  `int` **`$return_as = PSXCLK_AS_STRING`** ,
-  `bool` **`$apply_resolution = false`**
+  <br>`int` **`$clock_id = PSXCLK_CLOCK_REALTIME`** ,
+  <br>`int` **`$return_as = PSXCLK_AS_STRING`** ,
+  <br>`bool` **`$apply_resolution = false`**
 ] )
 
 Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/man2/clock_gettime.2.html).
