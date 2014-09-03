@@ -60,10 +60,10 @@ Add the line `extension=posixclocks.so` to your php.ini
 <a name="interface-clock_gettime-desc"/>
 **Description**
 
-`mixed` **`posix_clock_gettime`** ( [ 
-  <br>`int` **`$clock_id = PSXCLK_CLOCK_REALTIME`** ,
-  <br>`int` **`$return_as = PSXCLK_AS_STRING`** ,
-  <br>`bool` **`$apply_resolution = false`**
+`mixed` **`posix_clock_gettime`** ( [<br>
+&nbsp;&nbsp;`int` **`$clock_id = PSXCLK_CLOCK_REALTIME`** ,<br>
+&nbsp;&nbsp;`int` **`$return_as = PSXCLK_AS_STRING`** ,<br>
+&nbsp;&nbsp;`bool` **`$apply_resolution = false`**<br>
 ] )
 
 Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/man2/clock_gettime.2.html).
