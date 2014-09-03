@@ -58,7 +58,7 @@ Add the line `extension=posixclocks.so` to your php.ini
 ### posix_clock_gettime
 
 <a name="interface-clock_gettime-desc"/>
-**Description**
+**[Description]**
 
 `mixed` **`posix_clock_gettime`** ( [<br>
 &nbsp;&nbsp;`int` **`$clock_id = PSXCLK_CLOCK_REALTIME`** ,<br>
@@ -69,7 +69,7 @@ Add the line `extension=posixclocks.so` to your php.ini
 Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/man2/clock_gettime.2.html).
 
 <a name="interface-clock_gettime-params"/>
-**Parameters**
+**[Parameters]**
 
 **_clock_id_:** The clock to retrieve; defaults to `PSXCLK_CLOCK_REALTIME` if not provided.
 
@@ -81,7 +81,7 @@ section below. Defaults to `PSXCLK_AS_STRING`; other valid values are
 the value before returning it. Defaults to `false`.
 
 <a name="interface-clock_gettime-retvals"/>
-**Return Values**
+**[Return Values]**
 
 **`string`:** By default (`return_as` = `PSXCLK_AS_STRING`) a string representing
 the decimal value of the requested clock is returned.
@@ -112,7 +112,7 @@ stdClass Object {
 ### posix_clock_getres
 
 <a name="interface-clock_getres-desc"/>
-**Description**
+**[Description]**
 
 `int` **`posix_clock_getres`** ( [ 
   `int` **`$clock_id = PSXCLK_CLOCK_REALTIME`**
@@ -121,7 +121,7 @@ stdClass Object {
 Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man2/clock_getres.2.html).
 
 <a name="interface-clock_getres-params"/>
-**Parameters**
+**[Parameters]**
 
 ***clock_id***
 
@@ -129,7 +129,7 @@ The clock whose resolution should be retrieved; defaults to `PSXCLK_CLOCK_REALTI
 if not provided.
 
 <a name="interface-clock_getres-retvals"/>
-**Return Values**
+**[Return Values]**
 
 Returns an integer representing the requested clock's
 resolution/precision in nanoseconds.
