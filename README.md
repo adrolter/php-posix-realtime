@@ -68,6 +68,7 @@ Add the line `extension=posixclocks.so` to your php.ini
 
 Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/man2/clock_gettime.2.html).
 
+<br>
 <a name="interface-clock_gettime-params"/>
 **-- Parameters --**
 
@@ -80,6 +81,7 @@ section below. Defaults to `PSXCLK_AS_STRING`; other valid values are
 **_round_to_res_** Whether or not to round down (floor) the clock's value to the
 nearest multiple of its resolution. Defaults to `false`.
 
+<br>
 <a name="interface-clock_gettime-retvals"/>
 **-- Return Values --**
 
@@ -104,6 +106,7 @@ stdClass Object {
 }
 ```
 
+<br>
 <a name="interface-clock_gettime-examples"/>
 **-- Examples --**
 
@@ -115,7 +118,7 @@ var_dump(posix_clock_gettime());
 string(20) "1409731642.445375772"
 ```
 
-Get the value of the real-time as a float:
+Get the value of the real-time clock as a float:
 ```php
 <<<
 var_dump(posix_clock_gettime(PSXCLK_CLOCK_REALTIME, PSXCLK_AS_FLOAT));
@@ -152,22 +155,25 @@ class stdClass#1 (2) {
 
 Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man2/clock_getres.2.html).
 
+<br>
 <a name="interface-clock_getres-params"/>
 **-- Parameters --**
 
 **_clock_id_** The clock whose resolution should be retrieved; defaults to
 `PSXCLK_CLOCK_REALTIME` if not provided.
 
+<br>
 <a name="interface-clock_getres-retvals"/>
 **-- Return Values --**
 
 Returns an integer representing the requested clock's resolution/precision in 
 nanoseconds. Lower values indicate higher resolution.
 
+<br>
 <a name="interface-clock_getres-examples"/>
 **-- Examples --**
 
-Get resolution of the real-time clock:
+Get the resolution of the real-time clock:
 ```php
 <<<
 var_dump(posix_clock_getres());
@@ -175,7 +181,7 @@ var_dump(posix_clock_getres());
 int(1)
 ```
 
-Get resolution of the coarse monotonic clock:
+Get the resolution of the coarse monotonic clock:
 ```php
 <<<
 var_dump(posix_clock_getres(PSXCLK_CLOCK_MONOTONIC_COARSE));
