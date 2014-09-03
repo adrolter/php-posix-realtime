@@ -35,6 +35,7 @@
  * Macros
  */
 
+#define BILLION_D   1000000000.0
 #define BILLION_LD  1000000000.0L
 #define CONSTFLAGS  CONST_CS | CONST_PERSISTENT
 
@@ -42,6 +43,8 @@
 
 #define INTLEN(val) \
     (size_t) ((val >= 0 && val < 10) ? 1 : floor(log10(abs(val))) + (val < 0 ? 2 : 1))
+
+#define TIMESPEC_TO_DOUBLE(ts) (ts.tv_sec + (ts.tv_nsec / BILLION_D))
 
 #define TIMESPEC_TO_LDOUBLE(ts) (ts.tv_sec + (ts.tv_nsec / BILLION_LD))
 
@@ -93,6 +96,7 @@ static zval * timespec_to_zval(struct timespec const * ts_p)
     MAKE_STD_ZVAL(obj_p);
     object_init(obj_p);
 
+    // TODO: Check value against LONG_MAX instead?
     if (sizeof (ts_p->tv_sec) <= SIZEOF_LONG) {
         add_property_long(obj_p, "tv_sec", ts_p->tv_sec);
     } else {
@@ -265,7 +269,7 @@ PHP_FUNCTION(posix_clock_gettime)
         break;
     }
     case FLOAT:
-        RETURN_DOUBLE(TIMESPEC_TO_LDOUBLE(clock_val));
+        RETURN_DOUBLE(TIMESPEC_TO_DOUBLE(clock_val));
         break;
     case STRING:
         RETURN_STRING(timespec_to_string(&clock_val), 0);
