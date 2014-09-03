@@ -16,10 +16,10 @@ The `microtime()` PHP function relies on the `gettimeofday(2)` system call,
 which is quite useful for pinpointing a certain moment in Earthling history.
 But, if this realtime system clock is adjusted (maybe by [NTP](https://en.wikipedia.org/wiki/Network_Time_Protocol),
 or maybe by your friendly neighborhood sysadmin) while you're trying
-to _measure time_...well, [you're gonna have a bad...you catch the drift](http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-time).
+to *measure time*...well, [you're gonna have a bad...you catch the drift](http://blog.habets.pp.se/2010/09/gettimeofday-should-never-be-used-to-measure-time).
 
 In this case you need access to your system's _monotonic_ clock, or better yet,
-its _raw_ monotonic clock, if available.
+its *raw* monotonic clock, if available.
 
 This extension provides access to **all** the clocks supported by your system,
 often with nanosecond resolution. See below for a list of common clocks
@@ -27,7 +27,6 @@ and their PHP constants.
 
 
 <br>
----
 ## Installation
 ---
 
@@ -51,22 +50,96 @@ Add the line `extension=posixclocks.so` to your php.ini
 
 
 <br>
----
 ## Interface
 ---
 
-* double **posix_clock_gettime** ( int _$clock_id_ = _PSXCLK_CLOCK_REALTIME_ )
-    - Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/man2/clock_gettime.2.html)
-    - Returns a double representing the clock's current value
- 
-* double **posix_clock_getres** ( int _$clock_id_ = _PSXCLK_CLOCK_REALTIME_ )
-    - Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man2/clock_getres.2.html)
-    - Returns a double representing the clock's resolution/precision
+### posix_clock_gettime
+
+**Description**
+
+`mixed` **`posix_clock_gettime`** ( [ 
+  `int` **`$clock_id = PSXCLK_CLOCK_REALTIME`** ,
+  `int` **`$return_as = PSXCLK_AS_STRING`** ,
+  `bool` **`$apply_resolution = false`**
+] )
+
+Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/man2/clock_gettime.2.html).
+
+**Parameters**
+
+***clock_id***
+
+The clock to retrieve; defaults to `PSXCLK_CLOCK_REALTIME` if not provided.
+
+***return_as***
+
+Defines the return value type as detailed in the [return values](#clock_gettime_return_values)
+section below. Defaults to `PSXCLK_AS_STRING`; other valid values are
+`PSXCLK_AS_FLOAT` and `PSXCLK_AS_TIMESPEC`.
+
+***apply_resolution***
+
+Whether or not to first apply the clock's resolution to the value before
+returning it. Defaults to `false`.
+
+**Return Values**
+
+**`string`:** By default (`return_as` = `PSXCLK_AS_STRING`) a string representing
+the decimal value of the requested clock is returned.
+
+**`float`**: If `return_as` = `PSXCLK_AS_FLOAT`, a float (double) representing
+the decimal value of the requested clock is returned.
+_**WARNING:** The floating point type may not be large enough to represent
+certain time values_
+
+**`object(stdClass)`**:  If `return_as` = `PSXCLK_AS_TIMESPEC`, an object of class
+`stdClass` representing the underlying C data structure ([`struct timespec`](http://pubs.opengroup.org/onlinepubs/7908799/xsh/time.h.html))
+is returned.
+
+```
+stdClass Object {
+   string|int  tv_sec        Seconds (string if value overflows integer)
+          int  tv_nsec       Nanoseconds
+  [       int  res_nsec   ]  Resolution in nanoseconds (if apply_resolution = true)
+  [       int  tv_nsec_raw]  Nanoseconds before applying resolution (if apply_resolution = true)
+}
+```
+
+<br>
+
+---
+
+### posix_clock_getres
+
+**Description**
+
+`int` **`posix_clock_getres`** ( [ 
+  `int` **`$clock_id = PSXCLK_CLOCK_REALTIME`**
+] )
+
+Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man2/clock_getres.2.html).
+
+**Parameters**
+
+***clock_id***
+
+The clock whose resolution should be retrieved; defaults to `PSXCLK_CLOCK_REALTIME`
+if not provided.
+
+**Return Values**
+
+Returns an integer representing the requested clock's
+resolution/precision in nanoseconds.
+
+
+<br>
+## Clocks
+---
 
 The supported clocks are implementation specific, except the system-wide realtime
-clock `PSXCLK_CLOCK_REALTIME` which is guaranteed to be supported on all systems with
-clock_gettime(2) support. Sufficiently recent versions of GNU libc and the Linux
-kernel support the following clocks:
+clock `PSXCLK_CLOCK_REALTIME` which is guaranteed to be supported on all systems
+with clock_gettime(2) support. Sufficiently recent versions of GNU libc and the
+Linux kernel support the following clocks:
 
 
 Clock ID (PSXCLK_CLOCK_&lt;_ID_&gt;) | Description
@@ -79,10 +152,10 @@ Clock ID (PSXCLK_CLOCK_&lt;_ID_&gt;) | Description
 `REALTIME_COARSE` | `Linux >= 2.6.32` A faster but less precise version of `REALTIME`. Use when you need very fast, but not fine-grained timestamps.
 `MONOTONIC_COARSE` | `Linux >= 2.6.32` A faster but less precise version of `MONOTONIC`. Use when you need very fast, but not fine-grained timestamps.
 `BOOTTIME` | `Linux >= 2.6.39` Identical to `MONOTONIC`, except it also includes any time that the system is suspended. This allows applications to get a suspend-aware monotonic clock.
-
+<a name="clock_gettime_return_values"/>
 More clocks may be implemented by the system, and can be used by passing the corresponding
 integer ID in place of a predefined constant. If a clock ID does not exist on the compiling
-system, its equivalent PHP constant (PSXCLK_CLOCK_&lt;_ID_&gt;) will be undefined.
+system, its equivalent PHP constant (PSXCLK_CLOCK_&lt;*ID*&gt;) will be undefined.
 
 <br>
 ---
