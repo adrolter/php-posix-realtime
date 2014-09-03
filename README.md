@@ -129,8 +129,8 @@ Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man
 <a name="interface-clock_getres-retvals"/>
 **-- Return Values --**
 
-Returns an integer representing the requested clock's
-resolution/precision in nanoseconds.
+Returns an integer representing the requested clock's resolution/precision in 
+nanoseconds. Lower values indicate higher resolution.
 
 <a name="interface-clock_getres-examples"/>
 **-- Examples --**
