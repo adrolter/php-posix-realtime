@@ -61,8 +61,8 @@ Add the line `extension=posixclocks.so` to your php.ini
 **-- Description --**
 
 `mixed` **`posix_clock_gettime`** ( [<br>
-&nbsp;&nbsp;`int      ` **`$clock_id = PSXCLK_CLOCK_REALTIME`** ,<br>
-&nbsp;&nbsp;`int      ` **`$return_as = PSXCLK_AS_STRING`** ,<br>
+&nbsp;&nbsp;`int` **`$clock_id = PSXCLK_CLOCK_REALTIME`** ,<br>
+&nbsp;&nbsp;`int` **`$return_as = PSXCLK_AS_STRING`** ,<br>
 &nbsp;&nbsp;`false|int` **`$floor_to = false`**<br>
 ] )
 
@@ -87,16 +87,16 @@ resolution. Defaults to `false`.
 <a name="interface-clock_gettime-retvals"/>
 **-- Return Values --**
 
-**`string`** By default (`return_as` = `PSXCLK_AS_STRING`) a string representing
+**`string`** (default, `return_as` = `PSXCLK_AS_STRING`): A string representing
 the decimal value of the requested clock is returned.
 
-**`float`** If `return_as` = `PSXCLK_AS_FLOAT`, a float (double) representing
+**`float`** (`return_as` = `PSXCLK_AS_FLOAT`): A float (double) representing
 the decimal value of the requested clock is returned.
 
-_**WARNING:** The floating point type is likely not large enough to represent
-certain time values or accurate to the last digit!_
+_**WARNING:** The floating point type is likely **not**: a) large enough to
+represent all time values, or b) accurate to the last digit_
 
-**`object`**  If `return_as` = `PSXCLK_AS_TIMESPEC`, an object of class
+**`object`** (`return_as` = `PSXCLK_AS_TIMESPEC`): An object of class
 `stdClass` representing the underlying C data structure ([`struct timespec`](http://pubs.opengroup.org/onlinepubs/7908799/xsh/time.h.html))
 is returned.
 
