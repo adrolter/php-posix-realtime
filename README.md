@@ -114,6 +114,13 @@ var_dump(posix_clock_gettime());
 string(20) "1409731642.445375772"
 ```
 
+```php
+// Get the value of the coarse monotonic clock as a float 
+var_dump(posix_clock_gettime(PSXCLK_CLOCK_MONOTONIC_COARSE, PSXCLK_AS_FLOAT));
+---
+double(79655.756377686)
+```
+
 <br>
 
 ---
