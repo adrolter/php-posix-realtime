@@ -93,8 +93,8 @@ the decimal value of the requested clock is returned.
 **`float`** (`return_as` = `PSXCLK_AS_FLOAT`): A float (double) representing
 the decimal value of the requested clock is returned.
 
-_**WARNING:** The floating point type is likely **not**:<br>a) large enough to
-represent all time values, or<br>b) accurate to the last digit_
+_**WARNING:** The floating point type is likely **not** large enough to
+represent all time values, or accurate to the last digit_
 
 **`object`** (`return_as` = `PSXCLK_AS_TIMESPEC`): An object of class
 `stdClass` representing the underlying C data structure ([`struct timespec`](http://pubs.opengroup.org/onlinepubs/7908799/xsh/time.h.html))
