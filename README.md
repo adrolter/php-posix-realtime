@@ -71,13 +71,13 @@ Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/ma
 <a name="interface-clock_gettime-params"/>
 **-- Parameters --**
 
-**clock_id**: The clock to retrieve; defaults to `PSXCLK_CLOCK_REALTIME` if not provided.
+_clock_id_: The clock to retrieve; defaults to `PSXCLK_CLOCK_REALTIME` if not provided.
 
-**return_as**: Defines the return value type as detailed in the [return values](#interface-clock_gettime-retvals)
+_return_as_: Defines the return value type as detailed in the [return values](#interface-clock_gettime-retvals)
 section below. Defaults to `PSXCLK_AS_STRING`; other valid values are
 `PSXCLK_AS_FLOAT` and `PSXCLK_AS_TIMESPEC`.
 
-**apply_resolution**: Whether or not to first apply the clock's resolution to
+_apply_resolution_: Whether or not to first apply the clock's resolution to
 the value before returning it. Defaults to `false`.
 
 <a name="interface-clock_gettime-retvals"/>
