@@ -63,7 +63,7 @@ Add the line `extension=posixclocks.so` to your php.ini
 `mixed` **`posix_clock_gettime`** ( [<br>
 &nbsp;&nbsp;`int` **`$clock_id = PSXCLK_CLOCK_REALTIME`** ,<br>
 &nbsp;&nbsp;`int` **`$return_as = PSXCLK_AS_STRING`** ,<br>
-&nbsp;&nbsp;`bool` **`$apply_resolution = false`**<br>
+&nbsp;&nbsp;`bool` **`round_to_res = false`**<br>
 ] )
 
 Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/man2/clock_gettime.2.html).
@@ -77,8 +77,8 @@ Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/ma
 section below. Defaults to `PSXCLK_AS_STRING`; other valid values are
 `PSXCLK_AS_FLOAT` and `PSXCLK_AS_TIMESPEC`.
 
-**_apply_resolution_** Whether or not to first apply the clock's resolution to
-the value before returning it. Defaults to `false`.
+**_round_to_res_** Whether or not to round down (floor) the clock's value to the
+nearest multiple of its resolution. Defaults to `false`.
 
 <a name="interface-clock_gettime-retvals"/>
 **-- Return Values --**
@@ -97,10 +97,10 @@ is returned.
 
 ```
 stdClass Object {
-   string|int  tv_sec        Seconds (string if value overflows integer)
-          int  tv_nsec       Nanoseconds
-  [       int  res_nsec   ]  Resolution in nanoseconds (if apply_resolution = true)
-  [       int  tv_nsec_raw]  Nanoseconds before applying resolution (if apply_resolution = true)
+   string|int tv_sec       Seconds (as string if value overflows integer)
+          int tv_nsec      Nanoseconds
+  [       int res_nsec   ] Resolution in nanoseconds (if round_to_res = true)
+  [       int tv_nsec_raw] Nanoseconds before rounding (if round_to_res = true)
 }
 ```
 

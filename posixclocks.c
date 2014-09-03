@@ -227,14 +227,14 @@ PHP_FUNCTION(posix_clock_gettime)
     long clock_id = CLOCK_REALTIME;
     long clock_val_nsec_raw = -1;
     long return_type = STRING;
-    zend_bool apply_resolution = 0;
+    zend_bool round_to_res = 0;
     struct timespec clock_val, clock_res;
 
     if (ZEND_NUM_ARGS() > 3) {
         WRONG_PARAM_COUNT;
     }
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|llb", &clock_id, &return_type, &apply_resolution) != SUCCESS) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|llb", &clock_id, &return_type, &round_to_res) != SUCCESS) {
         return;
     }
 
@@ -245,7 +245,7 @@ PHP_FUNCTION(posix_clock_gettime)
         return;
     }
 
-    if (apply_resolution) {
+    if (round_to_res) {
         if (clock_getres(clock_id, &clock_res) == -1) {
             return;
         }
@@ -257,7 +257,7 @@ PHP_FUNCTION(posix_clock_gettime)
     case TIMESPEC:
     {
         zval * obj_p = timespec_to_zval(&clock_val);
-        if (apply_resolution) {
+        if (round_to_res) {
             add_property_long(obj_p, "res_nsec", clock_res.tv_nsec);
             add_property_long(obj_p, "tv_nsec_raw", clock_val_nsec_raw);
         }
