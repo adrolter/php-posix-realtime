@@ -88,8 +88,8 @@ the decimal value of the requested clock is returned.
 
 **`float`** If `return_as` = `PSXCLK_AS_FLOAT`, a float (double) representing
 the decimal value of the requested clock is returned.
-_**WARNING:** The floating point type may not be large enough to represent
-certain time values._
+_**WARNING:** The floating point type is likely not large enough to represent
+certain time values or accurate to the last digit!_
 
 **`object`**  If `return_as` = `PSXCLK_AS_TIMESPEC`, an object of class
 `stdClass` representing the underlying C data structure ([`struct timespec`](http://pubs.opengroup.org/onlinepubs/7908799/xsh/time.h.html))
@@ -115,10 +115,22 @@ string(20) "1409731642.445375772"
 ```
 
 ```php
-// Get the value of the coarse monotonic clock as a float 
-var_dump(posix_clock_gettime(PSXCLK_CLOCK_MONOTONIC_COARSE, PSXCLK_AS_FLOAT));
+// Get the value of the real-time as a float 
+var_dump(posix_clock_gettime(PSXCLK_CLOCK_REALTIME, PSXCLK_AS_FLOAT));
 ---
-double(79655.756377686)
+double(1409731642.4453) // Lost significance!
+```
+
+```php
+// Get the value of the raw monotonic clock as an object
+var_dump(posix_clock_gettime(PSXCLK_CLOCK_MONOTONIC, PSXCLK_AS_TIMESPEC));
+---
+class stdClass#1 (2) {
+  public $tv_sec =>
+  int(80617)
+  public $tv_nsec =>
+  int(356589916)
+}
 ```
 
 <br>
