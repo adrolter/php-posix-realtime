@@ -61,7 +61,7 @@ Add the line `extension=posixclocks.so` to your php.ini
 **-- Description --**
 
 `mixed` **`posix_clock_gettime`** ( [<br>
-&nbsp;&nbsp;`int` **`$clock_id = PSXCLK_CLOCK_REALTIME`** ,<br>
+&nbsp;&nbsp;`int` **`$clock_id = PSXCLK_C_REALTIME`** ,<br>
 &nbsp;&nbsp;`int` **`$return_as = PSXCLK_AS_STRING`** ,<br>
 &nbsp;&nbsp;`false|int` **`$floor_to = false`**<br>
 ] )
@@ -72,7 +72,7 @@ Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/ma
 <a name="interface-clock_gettime-params"/>
 **-- Parameters --**
 
-**_clock_id_** The clock to retrieve; defaults to `PSXCLK_CLOCK_REALTIME` if not provided.
+**_clock_id_** The clock to retrieve; defaults to `PSXCLK_C_REALTIME` if not provided.
 
 **_return_as_** Defines the return value type as detailed in the [return values](#interface-clock_gettime-retvals)
 section below. Defaults to `PSXCLK_AS_STRING`; other valid values are
@@ -124,7 +124,7 @@ string(20) "1409731642.445375772"
 Get the value of the real-time clock as a float:
 ```php
 <<<
-var_dump(posix_clock_gettime(PSXCLK_CLOCK_REALTIME, PSXCLK_AS_FLOAT));
+var_dump(posix_clock_gettime(PSXCLK_C_REALTIME, PSXCLK_AS_FLOAT));
 >>>
 double(1409731642.4453) // Lost significance!
 ```
@@ -132,7 +132,7 @@ double(1409731642.4453) // Lost significance!
 Get the value of the raw monotonic clock as an object:
 ```php
 <<<
-var_dump(posix_clock_gettime(PSXCLK_CLOCK_MONOTONIC_RAW, PSXCLK_AS_TIMESPEC));
+var_dump(posix_clock_gettime(PSXCLK_C_MONOTONIC_RAW, PSXCLK_AS_TIMESPEC));
 >>>
 class stdClass#1 (2) {
   public $tv_sec =>
@@ -145,7 +145,7 @@ class stdClass#1 (2) {
 Get the value of the real-time clock, floored to the nearest 250ms, as a float:
 ```php
 <<<
-var_dump(posix_clock_gettime(PSXCLK_CLOCK_REALTIME, PSXCLK_AS_FLOAT, 250000000));
+var_dump(posix_clock_gettime(PSXCLK_C_REALTIME, PSXCLK_AS_FLOAT, 250000000));
 >>>
 double(1409783196.75)
 ```
@@ -154,7 +154,7 @@ Get the value of the coarse monotonic clock, floored to the nearest multiple of
 its resolution, as an object:
 ```php
 <<<
-var_dump(posix_clock_gettime(PSXCLK_CLOCK_MONOTONIC_COARSE, PSXCLK_AS_TIMESPEC, \
+var_dump(posix_clock_gettime(PSXCLK_C_MONOTONIC_COARSE, PSXCLK_AS_TIMESPEC, \
 PSXCLK_FLOOR_TO_CLOCKRES));
 >>>
 class stdClass#1 (4) {
@@ -180,7 +180,7 @@ class stdClass#1 (4) {
 **-- Description --**
 
 `int` **`posix_clock_getres`** ( [ 
-  `int` **`$clock_id = PSXCLK_CLOCK_REALTIME`**
+  `int` **`$clock_id = PSXCLK_C_REALTIME`**
 ] )
 
 Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man2/clock_getres.2.html).
@@ -190,7 +190,7 @@ Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man
 **-- Parameters --**
 
 **_clock_id_** The clock whose resolution should be retrieved; defaults to
-`PSXCLK_CLOCK_REALTIME` if not provided.
+`PSXCLK_C_REALTIME` if not provided.
 
 <br>
 <a name="interface-clock_getres-retvals"/>
@@ -214,7 +214,7 @@ int(1)
 Get the resolution of the coarse monotonic clock:
 ```php
 <<<
-var_dump(posix_clock_getres(PSXCLK_CLOCK_MONOTONIC_COARSE));
+var_dump(posix_clock_getres(PSXCLK_C_MONOTONIC_COARSE));
 >>>
 int(4000000)
 ```
@@ -225,12 +225,12 @@ int(4000000)
 ---
 
 The supported clocks are implementation specific, except the system-wide realtime
-clock `PSXCLK_CLOCK_REALTIME` which is guaranteed to be supported on all systems
+clock `PSXCLK_C_REALTIME` which is guaranteed to be supported on all systems
 with clock_gettime(2) support. Sufficiently recent versions of GNU libc and the
 Linux kernel support the following clocks:
 
 
-Clock ID (PSXCLK_CLOCK_&lt;_ID_&gt;) | Description
+Clock ID (PSXCLK_C_&lt;_ID_&gt;) | Description
 :-------:|------------
 `REALTIME` | System-wide clock that measures real (i.e., wall-clock) time. This clock is affected by discontinuous jumps in the system time (e.g., manual clock updates, NTP clock updates, etc).
 `MONOTONIC` | Clock that cannot be set and represents monotonic time since some unspecified starting point. This clock is not affected by discontinuous jumps in the system time.
@@ -243,7 +243,7 @@ Clock ID (PSXCLK_CLOCK_&lt;_ID_&gt;) | Description
 <a name="clock_gettime_return_values"/>
 More clocks may be implemented by the system, and can be used by passing the corresponding
 integer ID in place of a predefined constant. If a clock ID does not exist on the compiling
-system, its equivalent PHP constant (PSXCLK_CLOCK_&lt;*ID*&gt;) will be undefined.
+system, its equivalent PHP constant (PSXCLK_C_&lt;*ID*&gt;) will be undefined.
 <br>
 
 ---
