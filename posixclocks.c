@@ -50,7 +50,7 @@
 #define TIMESPEC_TO_LDOUBLE(ts) (ts.tv_sec + (ts.tv_nsec / BILLION_LD))
 
 #define DEFINE_CLOCK(id) \
-    REGISTER_LONG_CONSTANT(STR(PSXCLK_CLOCK_ ## id), CLOCK_ ## id, CONSTFLAGS)
+    REGISTER_LONG_CONSTANT(STR(PSXCLK_C_ ## id), CLOCK_ ## id, CONSTFLAGS)
 
 typedef enum {
     TIMESPEC = 10,
