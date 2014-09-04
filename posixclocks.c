@@ -36,7 +36,7 @@
  */
 
 #define BILLION_D   1000000000.0
-#define BILLION_LD  1000000000.
+#define BILLION_LD  1000000000.0L
 #define FLOOR_TO_CLOCKRES -1
 #define CONSTFLAGS  CONST_CS | CONST_PERSISTENT
 
@@ -165,9 +165,9 @@ PHP_MINFO_FUNCTION(posixclocks)
     char precision[50];
     struct timespec clock_res;
 
-#    define PRINTINFO_SUPPORTED(clock_id)                                \
+#    define PRINTINFO_SUPPORTED(clock_id)                              \
     clock_getres(CLOCK_ ## clock_id, &clock_res);                      \
-    snprintf(precision, 50, "%.0le", TIMESPEC_TO_LDOUBLE(clock_res));  \
+    snprintf(precision, 50, "%.0Le", TIMESPEC_TO_LDOUBLE(clock_res));  \
     php_info_print_table_row(3, #clock_id, "Yes", precision)
 
 #    define PRINTINFO_UNSUPPORTED(clock_id) \
