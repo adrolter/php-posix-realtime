@@ -22,8 +22,8 @@ In this case you need access to your system's _monotonic_ clock, or better yet,
 its *raw* monotonic clock, if available.
 
 This extension provides access to **all** the clocks supported by your system,
-often with nanosecond resolution. See below for a list of common clocks
-and their PHP constants.
+often with nanosecond resolution. See below for a [list of common clocks
+and their PHP constants](#clocks).
 
 
 <br>
