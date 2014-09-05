@@ -72,7 +72,7 @@ static char * timespec_to_string(struct timespec const * ts_p)
     char * result_p;
 
     /* Remove trailing zeros for decimal string representation */
-    while (decimal % 10 == 0) {
+    while (decimal > 0 && decimal % 10 == 0) {
         decimal /= 10;
     }
 
