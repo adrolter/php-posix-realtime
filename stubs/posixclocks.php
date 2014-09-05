@@ -50,7 +50,30 @@ define('PSXCLK_C_MONOTONIC_COARSE', 6);
  * any time that the system is suspended. This allows applications to get
  * a suspend-aware monotonic clock.
  */
-define ('PSXCLK_C_BOOTTIME', 7);
+define('PSXCLK_C_BOOTTIME', 7);
+
+/**
+ * An object of class stdClass representing the underlying C data structure
+ * (struct timespec) is returned.
+ */
+define('PSXCLK_AS_TIMESPEC', 10);
+
+/**
+ * A float (double) representing the decimal value of the requested clock is
+ * returned.
+ */
+define('PSXCLK_AS_FLOAT', 20);
+
+/**
+ * A string representing the decimal value of the requested clock is returned.
+ */
+define('PSXCLK_AS_STRING', 30);
+
+/**
+ * Floors the clock's decimal fraction value to the nearest multiple of the 
+ * clock's resolution.
+ */
+define('PSXCLK_FLOOR_TO_CLOCKRES', -1);
 
 /**
  * Determines whether or not the specified clock is supported on the system.
