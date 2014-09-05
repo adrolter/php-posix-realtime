@@ -4,15 +4,16 @@ dnl config.m4 for extension posixclocks
 PHP_ARG_ENABLE(posixclocks, whether to enable posixclocks support,
 [  --enable-posixclocks    Enable POSIX clock_gettime() support])
 
-if test -d "$srcdir/.git"; then
-  version=`git log -1 --pretty=format:'git#%h (%ci)'`
-else
-  version=`cat VERSION`
-fi
-
-`cat <<EOF > posixclocks_ver.h
+if test ! -f "$srcdir/posixclocks_ver.h"; then
+  if test -d "$srcdir/.git"; then
+	version=`git log -1 --pretty=format:'git#%h (%ci)'`
+  else
+    version=Unknown
+  fi
+  `cat <<EOF > posixclocks_ver.h
 #define PHP_PSXCLK_VERSION "$version"
 EOF`
+fi
 
 if test "$PHP_PSXCLK" != "no"; then
   AC_CHECK_HEADER(time.h, ,[echo "Error: The header <time.h> was not found"; exit 1])

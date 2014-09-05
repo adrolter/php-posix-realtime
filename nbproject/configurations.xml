@@ -8,34 +8,21 @@
                    displayName="Important Files"
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
-      <itemPath>Makefile</itemPath>
-      <itemPath>configure</itemPath>
+      <itemPath>config.m4</itemPath>
     </logicalFolder>
-    <logicalFolder name="ExternalFiles"
-                   displayName="Important Files"
-                   projectFiles="false"
-                   kind="IMPORTANT_FILES_FOLDER">
-      <itemPath>Makefile</itemPath>
-      <itemPath>configure</itemPath>
-    </logicalFolder>
-    <itemPath>C:/Users/aguenter/Projects/php-posix-clocks/TODO.md</itemPath>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <sourceRootList>
     <Elem>.</Elem>
-    <Elem>.</Elem>
   </sourceRootList>
-  <projectmakefile>Makefile</projectmakefile>
+  <projectmakefile></projectmakefile>
   <confs>
     <conf name="Default" type="0">
       <toolsSet>
-        <compilerSet>GNU|GNU</compilerSet>
+        <compilerSet>default</compilerSet>
         <dependencyChecking>false</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
-      <flagsDictionary>
-        <element flagsID="0" commonFlags="-g -O2 -fPIC"/>
-      </flagsDictionary>
       <codeAssistance>
       </codeAssistance>
       <makefileType>
