@@ -98,6 +98,10 @@ static char * timespec_to_string(struct timespec const * ts_p)
 
 static zval * timespec_to_zval(struct timespec const * ts_p)
 {
+#    ifdef ZTS
+    TSRMLS_FETCH();
+#    endif
+    
     long nsec = ts_p->tv_nsec;
     zval * obj_p;
 
