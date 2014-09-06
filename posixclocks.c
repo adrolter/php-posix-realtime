@@ -70,6 +70,10 @@ static int le_posixclocks;
 
 static char * timespec_to_string(struct timespec const * ts_p)
 {
+#    ifdef ZTS
+    TSRMLS_FETCH();
+#    endif
+
     long decimal = ts_p->tv_nsec;
     size_t result_sz;
     char * result_p;
