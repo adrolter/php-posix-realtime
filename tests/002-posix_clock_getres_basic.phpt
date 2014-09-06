@@ -1,5 +1,5 @@
 --TEST--
-Basic test for posixclocks_clock_getres()
+Basic test for posix_clock_getres()
 --SKIPIF--
 <?php if (!extension_loaded("posixclocks")) print "skip"; ?>
 --FILE--

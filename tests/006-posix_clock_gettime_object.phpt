@@ -1,5 +1,5 @@
 --TEST--
-Object output test for posixclocks_clock_gettime()
+Object output test for posix_clock_gettime()
 --SKIPIF--
 <?php if (!extension_loaded("posixclocks")) print "skip"; ?>
 --FILE--
