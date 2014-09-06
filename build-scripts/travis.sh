@@ -21,6 +21,6 @@ if [ "$?" != "0" ]; then
 	exit 1
 fi
 
-PSXRT_MAKE_TEST=$(echo "n" | make test) 
+export PSXRT_MAKE_TEST=$(echo "n" | make test) 
 
 echo "${PSXRT_MAKE_TEST}" | grep "Tests passed.*(100.0%)$"
