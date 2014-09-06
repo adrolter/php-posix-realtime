@@ -7,32 +7,32 @@ standard (e.g., Linux, BSD, Solaris, OS X, etc).
 ## Table of Contents
 ---
 
-- ###[Why not `microtime()`?](#why)
+- ####[Why not `microtime()`?](#why)
 
-- ###[Installation](#installation)
+- ####[Installation](#installation)
 
-- ###[Interface](#interface)
+- ####[Interface](#interface)
 
-	+ ####[posix_clock_gettime()](#interface-clock_gettime)
-		* #####[Parameters](#interface-clock_gettime-params)
-		* #####[Return Values](#interface-clock_gettime-retvals)
-		* #####[Examples](#interface-clock_gettime-examples)
+	+ **[posix_clock_gettime()](#interface-clock_gettime)**
+		* [Parameters](#interface-clock_gettime-params)
+		* [Return Values](#interface-clock_gettime-retvals)
+		* [Examples](#interface-clock_gettime-examples)
 
-	+ ####[posix_clock_getres()](#interface-clock_getres)
-		* #####[Parameters](#interface-clock_getres-params)
-		* #####[Return Values](#interface-clock_getres-retvals)
-		* #####[Examples](#interface-clock_getres-examples)
+	+ **[posix_clock_getres()](#interface-clock_getres)**
+		* [Parameters](#interface-clock_getres-params)
+		* [Return Values](#interface-clock_getres-retvals)
+		* [Examples](#interface-clock_getres-examples)
 
-	+ ####[posix_is_clock_supported()](#interface-is_clock_supported)
-		* #####[Parameters](#interface-is_clock_supported-params)
-		* #####[Return Values](#interface-is_clock_supported-retvals)
-		* #####[Examples](#interface-is_clock_supported-examples)
+	+ **[posix_is_clock_supported()](#interface-is_clock_supported)**
+		* [Parameters](#interface-is_clock_supported-params)
+		* [Return Values](#interface-is_clock_supported-retvals)
+		* [Examples](#interface-is_clock_supported-examples)
 
-- ###[Clocks](#clocks)
+- ####[Clocks](#clocks)
 
-- ###[Authors](#authors)
+- ####[Authors](#authors)
 
-- ###[References](#references)
+- ####[References](#references)
 
 <br>
 <a name="why"/>
