@@ -24,9 +24,12 @@
 #include "config.h"
 #endif
 
-#include "php.h"
-#include "php_ini.h"
-#include "ext/standard/info.h"
+#include <stdint.h>
+
+#include <php.h>
+#include <php_ini.h>
+#include <ext/standard/info.h>
+
 #include "php_posixclocks.h"
 #include "posixclocks_ver.h"
 
