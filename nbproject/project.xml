@@ -23,6 +23,8 @@
             </formatting>
         </data>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>clockId</word>
+            <word>CLOCKRES</word>
             <word>getres</word>
             <word>gettime</word>
             <word>gettimeofday</word>
