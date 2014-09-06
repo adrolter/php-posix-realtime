@@ -313,10 +313,32 @@ PHP_FUNCTION(posix_clock_getres)
     RETURN_LONG(clock_res.tv_nsec);
 }
 
+PHP_FUNCTION(posix_is_clock_supported)
+{
+    long clock_id;
+
+    if (ZEND_NUM_ARGS() > 1) {
+        WRONG_PARAM_COUNT;
+    }
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|l", &clock_id) != SUCCESS) {
+        return;
+    }
+
+    if (clock_getres(clock_id, NULL) == -1) {
+        if (errno == EINVAL) {
+            RETURN_FALSE;
+        }
+    }
+
+    RETURN_TRUE;
+}
+
 
 const zend_function_entry posixclocks_functions[] = {
     PHP_FE(posix_clock_gettime, NULL)
     PHP_FE(posix_clock_getres, NULL)
+    PHP_FE(posix_is_clock_supported, NULL)
     PHP_FE_END
 };
 

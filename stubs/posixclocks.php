@@ -20,7 +20,6 @@ define('PSXCLK_C_MONOTONIC', 1);
  */
 define('PSXCLK_C_PROCESS_CPUTIME_ID', 2);
 
-
 /**
  * Thread-specific CPU-time clock.
  */
@@ -76,13 +75,6 @@ define('PSXCLK_AS_STRING', 30);
 define('PSXCLK_FLOOR_TO_CLOCKRES', -1);
 
 /**
- * Determines whether or not the specified clock is supported on the system.
- * @param int $clock_id
- * @return bool
- */
-function posix_clock_available($clock_id) {}
-
-/**
  * Retrieves the value (time) of the specified clock.
  * @param int $clock_id
  * @param int $return_as
@@ -100,3 +92,10 @@ function posix_clock_gettime(
  * @return int
  */
 function posix_clock_getres($clock_id = PSXCLK_C_REALTIME) {}
+
+/**
+ * Determines whether or not the specified clock is supported on the system.
+ * @param int $clock_id
+ * @return bool
+ */
+function posix_is_clock_supported($clock_id) {}
