@@ -1,8 +1,8 @@
 # POSIX Clocks for PHP
 
 This project provides an interface to the real-time, monotonic, CPU-time,
-and various other clocks available on systems that implement the POSIX.1b
-standard (e.g., Linux, BSD, Solaris, OS X, etc).
+and various other clocks available on systems that implement and extend the
+POSIX.1b standard (e.g., Linux, BSD, Solaris, OS X, etc).
 
 ## Table of contents
 ---
@@ -128,8 +128,8 @@ the decimal value of the requested clock is returned.
 **`float`** (`return_as` = `PSXCLK_AS_FLOAT`): A float (double) representing
 the decimal value of the requested clock is returned.
 
-***WARNING:** The floating point type is likely **not** large enough to
-represent all time values, or accurate to the last digit.*
+_**WARNING:** The floating point type is likely **not** large enough to
+represent all time values, or accurate to the last digit._
 
 **`object`** (`return_as` = `PSXCLK_AS_TIMESPEC`): An object of class
 `stdClass` representing the underlying C data structure ([`struct timespec`](http://pubs.opengroup.org/onlinepubs/7908799/xsh/time.h.html))
