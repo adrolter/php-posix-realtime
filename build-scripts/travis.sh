@@ -21,6 +21,6 @@ if [ "$?" != "0" ]; then
 	exit 1
 fi
 
-PSXCLK_MAKE_TEST=$(echo "n" | make test) 
+PSXRT_MAKE_TEST=$(echo "n" | make test) 
 
-echo "${PSXCLK_MAKE_TEST}" | grep "Tests passed.*(100.0%)$"
+echo "${PSXRT_MAKE_TEST}" | grep "Tests passed.*(100.0%)$"

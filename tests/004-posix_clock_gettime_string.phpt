@@ -1,17 +1,17 @@
 --TEST--
 String output test for posix_clock_gettime()
 --SKIPIF--
-<?php if (!extension_loaded("posixclocks")) print "skip"; ?>
+<?php if (!extension_loaded("posixrealtime")) print "skip"; ?>
 --FILE--
 <?php
 // Test against a "coarse" clock if available for non-1ns resolution in tests
-$clockId = defined(PSXCLK_C_REALTIME_COARSE) ? PSXCLK_C_REALTIME_COARSE : PSXCLK_C_REALTIME;
-$returnAs = PSXCLK_AS_STRING;
+$clockId = defined(PSXRT_CLK_REALTIME_COARSE) ? PSXRT_CLK_REALTIME_COARSE : PSXRT_CLK_REALTIME;
+$returnAs = PSXRT_AS_STRING;
 $clockRes = posix_clock_getres($clockId);
 $a = posix_clock_gettime($clockId, $returnAs);
 $b = posix_clock_gettime($clockId, $returnAs, false);
 $c = posix_clock_gettime($clockId, $returnAs, (pow(10, 9) / 2));
-$d = posix_clock_gettime($clockId, $returnAs, PSXCLK_FLOOR_TO_CLOCKRES);
+$d = posix_clock_gettime($clockId, $returnAs, PSXRT_FLOOR_TO_CLOCKRES);
 $dParts = explode('.', $d);
 
 // A is a float string

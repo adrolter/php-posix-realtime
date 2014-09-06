@@ -1,7 +1,7 @@
 /*
   Copyright 2014 Adrian Guenter  <adrianguenter@gmail.com>
 
-  This file is part of php_posixclocks and licensed
+  This file is part of php_posixrealtime and licensed
   under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
@@ -30,8 +30,8 @@
 #include <php_ini.h>
 #include <ext/standard/info.h>
 
-#include "php_posixclocks.h"
-#include "posixclocks_ver.h"
+#include "php_posixrealtime.h"
+#include "posixrealtime_ver.h"
 
 
 /*
@@ -53,7 +53,7 @@
 #define TIMESPEC_TO_LDOUBLE(ts) (ts.tv_sec + (ts.tv_nsec / BILLION_LD))
 
 #define DEFINE_CLOCK(id) \
-    REGISTER_LONG_CONSTANT(STR(PSXCLK_C_ ## id), CLOCK_ ## id, CONSTFLAGS)
+    REGISTER_LONG_CONSTANT(STR(PSXRT_CLK_ ## id), CLOCK_ ## id, CONSTFLAGS)
 
 typedef enum {
     TIMESPEC = 10,
@@ -66,7 +66,7 @@ typedef enum {
  * Static globals
  */
 
-static int le_posixclocks;
+static int le_posixrealtime;
 
 static char * timespec_to_string(struct timespec const * ts_p)
 {
@@ -126,12 +126,12 @@ static zval * timespec_to_zval(struct timespec const * ts_p)
  * PHP callbacks
  */
 
-PHP_MINIT_FUNCTION(posixclocks)
+PHP_MINIT_FUNCTION(posixrealtime)
 {
-    REGISTER_LONG_CONSTANT("PSXCLK_AS_TIMESPEC", TIMESPEC, CONSTFLAGS);
-    REGISTER_LONG_CONSTANT("PSXCLK_AS_FLOAT", FLOAT, CONSTFLAGS);
-    REGISTER_LONG_CONSTANT("PSXCLK_AS_STRING", STRING, CONSTFLAGS);
-    REGISTER_LONG_CONSTANT("PSXCLK_FLOOR_TO_CLOCKRES", FLOOR_TO_CLOCKRES, CONSTFLAGS);
+    REGISTER_LONG_CONSTANT("PSXRT_AS_TIMESPEC", TIMESPEC, CONSTFLAGS);
+    REGISTER_LONG_CONSTANT("PSXRT_AS_FLOAT", FLOAT, CONSTFLAGS);
+    REGISTER_LONG_CONSTANT("PSXRT_AS_STRING", STRING, CONSTFLAGS);
+    REGISTER_LONG_CONSTANT("PSXRT_FLOOR_TO_CLOCKRES", FLOOR_TO_CLOCKRES, CONSTFLAGS);
 
     DEFINE_CLOCK(REALTIME);
 
@@ -166,12 +166,12 @@ PHP_MINIT_FUNCTION(posixclocks)
     return SUCCESS;
 }
 
-PHP_MSHUTDOWN_FUNCTION(posixclocks)
+PHP_MSHUTDOWN_FUNCTION(posixrealtime)
 {
     return SUCCESS;
 }
 
-PHP_MINFO_FUNCTION(posixclocks)
+PHP_MINFO_FUNCTION(posixrealtime)
 {
     char precision[50];
     struct timespec clock_res;
@@ -185,8 +185,8 @@ PHP_MINFO_FUNCTION(posixclocks)
     php_info_print_table_row(3, #clock_id, "No", "")
 
     php_info_print_table_start();
-    php_info_print_table_row(2, "POSIX Clocks Support", "enabled");
-    php_info_print_table_row(2, "Version", PHP_PSXCLK_VERSION);
+    php_info_print_table_row(2, "POSIX Realtime Support", "enabled");
+    php_info_print_table_row(2, "Version", PHP_PSXRT_VERSION);
     php_info_print_table_end();
 
     php_info_print_table_start();
@@ -292,8 +292,8 @@ PHP_FUNCTION(posix_clock_gettime)
         RETURN_STRING(timespec_to_string(&clock_val), 0);
         break;
     default:
-        php_error_docref(NULL TSRMLS_CC, E_ERROR, "Return type must be one of: PSXCLK_AS_TIMESPEC, "
-                "PSXCLK_AS_FLOAT, PSXCLK_AS_STRING");
+        php_error_docref(NULL TSRMLS_CC, E_ERROR, "Return type must be one of: PSXRT_AS_TIMESPEC, "
+                "PSXRT_AS_FLOAT, PSXRT_AS_STRING");
         return;
     }
 }
@@ -346,7 +346,7 @@ PHP_FUNCTION(posix_is_clock_supported)
 }
 
 
-const zend_function_entry posixclocks_functions[] = {
+const zend_function_entry posixrealtime_functions[] = {
     PHP_FE(posix_clock_gettime, NULL)
     PHP_FE(posix_clock_getres, NULL)
     PHP_FE(posix_is_clock_supported, NULL)
@@ -354,22 +354,22 @@ const zend_function_entry posixclocks_functions[] = {
 };
 
 
-zend_module_entry posixclocks_module_entry = {
+zend_module_entry posixrealtime_module_entry = {
     STANDARD_MODULE_HEADER,
-    "posixclocks",
-    posixclocks_functions,
-    PHP_MINIT(posixclocks),
-    PHP_MSHUTDOWN(posixclocks),
+    "posixrealtime",
+    posixrealtime_functions,
+    PHP_MINIT(posixrealtime),
+    PHP_MSHUTDOWN(posixrealtime),
     NULL, /* PHP_RINIT */
     NULL, /* PHP_RSHUTDOWN */
-    PHP_MINFO(posixclocks),
-    PHP_PSXCLK_VERSION,
+    PHP_MINFO(posixrealtime),
+    PHP_PSXRT_VERSION,
     STANDARD_MODULE_PROPERTIES
 };
 
 
-#ifdef COMPILE_DL_POSIXCLOCKS
-ZEND_GET_MODULE(posixclocks)
+#ifdef COMPILE_DL_POSIXREALTIME
+ZEND_GET_MODULE(posixrealtime)
 #endif
 
 /*

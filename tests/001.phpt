@@ -1,10 +1,10 @@
 --TEST--
-Check for posixclocks presence
+Check for posixrealtime presence
 --SKIPIF--
-<?php if (!extension_loaded("posixclocks")) print "skip"; ?>
+<?php if (!extension_loaded("posixrealtime")) print "skip"; ?>
 --FILE--
 <?php 
-echo "posixclocks extension is available";
+echo "posixrealtime extension is available";
 ?>
 --EXPECT--
-posixclocks extension is available
+posixrealtime extension is available

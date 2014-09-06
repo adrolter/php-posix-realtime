@@ -3,7 +3,7 @@
     <type>org.netbeans.modules.cnd.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>php-posix-clocks</name>
+            <name>php-posix-realtime</name>
             <c-extensions>c</c-extensions>
             <cpp-extensions/>
             <header-extensions>h</header-extensions>
@@ -31,19 +31,12 @@
             <word>CLOCKRES</word>
             <word>getres</word>
             <word>nanosecsInSec</word>
-            <word>gettime</word>
-            <word>gettimeofday</word>
-            <word>jd</word>
-            <word>ld</word>
-            <word>microtime</word>
             <word>nsec</word>
             <word>php</word>
             <word>posix</word>
-            <word>posixclocks</word>
-            <word>PSXCLK</word>
+            <word>posixrealtime</word>
+            <word>PSXRT</word>
             <word>returnAs</word>
-            <word>TIMESPEC</word>
-            <word>tv</word>
         </spellchecker-wordlist>
     </configuration>
 </project>

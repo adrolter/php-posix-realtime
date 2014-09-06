@@ -1,7 +1,7 @@
 --TEST--
 Object output test for posix_clock_gettime()
 --SKIPIF--
-<?php if (!extension_loaded("posixclocks")) print "skip"; ?>
+<?php if (!extension_loaded("posixrealtime")) print "skip"; ?>
 --FILE--
 <?php
 function test_xuWKgAe16e($obj, $floor_to, $clockRes)
@@ -44,7 +44,7 @@ function test_xuWKgAe16e($obj, $floor_to, $clockRes)
 			return false;
 		}
 
-		if ($floor_to === PSXCLK_FLOOR_TO_CLOCKRES) {
+		if ($floor_to === PSXRT_FLOOR_TO_CLOCKRES) {
 			// floored_to_nsec is equal to the clock's reported resolution
 			if ($obj->floored_to_nsec !== $clockRes) {
 				return false;
@@ -60,18 +60,18 @@ function test_xuWKgAe16e($obj, $floor_to, $clockRes)
 }
 
 // Test against a "coarse" clock if available for non-1ns resolution in tests
-$clockId = defined(PSXCLK_C_REALTIME_COARSE) ? PSXCLK_C_REALTIME_COARSE : PSXCLK_C_REALTIME;
-$returnAs = PSXCLK_AS_TIMESPEC;
+$clockId = defined(PSXRT_CLK_REALTIME_COARSE) ? PSXRT_CLK_REALTIME_COARSE : PSXRT_CLK_REALTIME;
+$returnAs = PSXRT_AS_TIMESPEC;
 $clockRes = posix_clock_getres($clockId);
 $a = posix_clock_gettime($clockId, $returnAs);
 $b = posix_clock_gettime($clockId, $returnAs, false);
-$d = posix_clock_gettime($clockId, $returnAs, PSXCLK_FLOOR_TO_CLOCKRES);
+$d = posix_clock_gettime($clockId, $returnAs, PSXRT_FLOOR_TO_CLOCKRES);
 
 var_dump(test_xuWKgAe16e($a, false, $clockRes));
 
 var_dump(test_xuWKgAe16e($b, false, $clockRes));
 
-var_dump(test_xuWKgAe16e($d, PSXCLK_FLOOR_TO_CLOCKRES, $clockRes));
+var_dump(test_xuWKgAe16e($d, PSXRT_FLOOR_TO_CLOCKRES, $clockRes));
 
 --EXPECTF--
 bool(true)

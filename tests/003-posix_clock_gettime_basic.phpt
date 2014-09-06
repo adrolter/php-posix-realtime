@@ -1,7 +1,7 @@
 --TEST--
 Basic test for posix_clock_gettime()
 --SKIPIF--
-<?php if (!extension_loaded("posixclocks")) print "skip"; ?>
+<?php if (!extension_loaded("posixrealtime")) print "skip"; ?>
 --FILE--
 <?php
 var_dump(function_exists('posix_clock_gettime'));

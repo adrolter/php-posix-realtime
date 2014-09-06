@@ -1,13 +1,13 @@
 --TEST--
 Basic test for posix_clock_getres()
 --SKIPIF--
-<?php if (!extension_loaded("posixclocks")) print "skip"; ?>
+<?php if (!extension_loaded("posixrealtime")) print "skip"; ?>
 --FILE--
 <?php
 var_dump(function_exists('posix_clock_getres'));
 
 $nanosecsInSec = pow(10, 9);
-$clockId = defined(PSXCLK_C_REALTIME_COARSE) ? PSXCLK_C_REALTIME_COARSE : PSXCLK_C_REALTIME;
+$clockId = defined(PSXRT_CLK_REALTIME_COARSE) ? PSXRT_CLK_REALTIME_COARSE : PSXRT_CLK_REALTIME;
 $a = posix_clock_getres();
 $b = posix_clock_getres($clockId);
 
@@ -24,7 +24,7 @@ var_dump($b);
 var_dump($b > 0 && $b < $nanosecsInSec);
 
 // A and B must be equal unless B is not the default clock (REALTIME)
-var_dump($a === $b || $clockId !== PSXCLK_C_REALTIME);
+var_dump($a === $b || $clockId !== PSXRT_CLK_REALTIME);
 
 --EXPECTF--
 bool(true)

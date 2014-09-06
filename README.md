@@ -1,11 +1,11 @@
-# POSIX Clocks for PHP
-&lt;&nbsp;[`master`](https://github.com/adrianguenter/php-posix-clocks/tree/master) [![Build Status](https://travis-ci.org/adrianguenter/php-posix-clocks.svg?branch=master)](https://travis-ci.org/adrianguenter/php-posix-clocks)&nbsp;&gt;
+# POSIX Realtime for PHP
+&lt;&nbsp;[`master`](https://github.com/adrianguenter/php-posix-realtime/tree/master) [![Build Status](https://travis-ci.org/adrianguenter/php-posix-realtime.svg?branch=master)](https://travis-ci.org/adrianguenter/php-posix-realtime)&nbsp;&gt;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&lt;&nbsp;[`develop`](https://github.com/adrianguenter/php-posix-clocks/tree/develop) [![Build Status](https://travis-ci.org/adrianguenter/php-posix-clocks.svg?branch=develop)](https://travis-ci.org/adrianguenter/php-posix-clocks)&nbsp;&gt;
+&lt;&nbsp;[`develop`](https://github.com/adrianguenter/php-posix-realtime/tree/develop) [![Build Status](https://travis-ci.org/adrianguenter/php-posix-realtime.svg?branch=develop)](https://travis-ci.org/adrianguenter/php-posix-realtime)&nbsp;&gt;
 
 This project provides an interface to the real-time, monotonic, CPU-time,
 and various other clocks available on systems that implement and extend the
-POSIX.1b standard (e.g., Linux, BSD, Solaris, OS X, etc).
+POSIX.1b (Realtime) standard (e.g., Linux, BSD, Solaris, OS X, etc).
 
 ## Table of contents
 ---
@@ -69,8 +69,8 @@ and their predefined PHP constants](#clocks).
 ---
 
 ```
-git clone https://github.com/adrianguenter/php-posix-clocks.git
-cd php-posix-clocks
+git clone https://github.com/adrianguenter/php-posix-realtime.git
+cd php-posix-realtime
 phpize
 ./configure
 make && make test
@@ -79,12 +79,12 @@ sudo make install
 
 ##### Enabling on Debian/Ubuntu:
 ```
-sudo cp posixclocks.deb.ini /etc/php5/mods-available/posixclocks.ini
-sudo php5enmod posixclocks
+sudo cp posixrealtime.deb.ini /etc/php5/mods-available/posixrealtime.ini
+sudo php5enmod posixrealtime
 ```
 
 ##### Enabling everywhere else:
-Add the line `extension=posixclocks.so` to your php.ini
+Add the line `extension=posixrealtime.so` to your php.ini
 
 
 <br>
@@ -99,8 +99,8 @@ Add the line `extension=posixclocks.so` to your php.ini
 **-- Description --**
 
 `mixed` **`posix_clock_gettime`** ( [<br>
-&nbsp;&nbsp;`int` **`$clock_id = PSXCLK_C_REALTIME`** ,<br>
-&nbsp;&nbsp;`int` **`$return_as = PSXCLK_AS_STRING`** ,<br>
+&nbsp;&nbsp;`int` **`$clock_id = PSXRT_CLK_REALTIME`** ,<br>
+&nbsp;&nbsp;`int` **`$return_as = PSXRT_AS_STRING`** ,<br>
 &nbsp;&nbsp;`false|int` **`$floor_to = false`**<br>
 ] )
 
@@ -110,14 +110,14 @@ Provides an interface to [`clock_gettime(2)`](http://man7.org/linux/man-pages/ma
 <a name="interface-clock_gettime-params"/>
 **-- Parameters --**
 
-***clock_id*** The clock to retrieve; defaults to `PSXCLK_C_REALTIME` if not provided.
+***clock_id*** The clock to retrieve; defaults to `PSXRT_CLK_REALTIME` if not provided.
 
 ***return_as*** Defines the return value type as detailed in the [return values](#interface-clock_gettime-retvals)
-section below. Defaults to `PSXCLK_AS_STRING`; other valid values are
-`PSXCLK_AS_FLOAT` and `PSXCLK_AS_TIMESPEC`.
+section below. Defaults to `PSXRT_AS_STRING`; other valid values are
+`PSXRT_AS_FLOAT` and `PSXRT_AS_TIMESPEC`.
 
 ***floor_to*** Floor (round down) the clock's decimal fraction value to the
-nearest multiple of the given value in nanoseconds. If `PSXCLK_FLOOR_TO_CLOCKRES`
+nearest multiple of the given value in nanoseconds. If `PSXRT_FLOOR_TO_CLOCKRES`
 is specified, the value will be floored to the nearest multiple of the clock's
 resolution. Defaults to `false`.
 
@@ -125,16 +125,16 @@ resolution. Defaults to `false`.
 <a name="interface-clock_gettime-retvals"/>
 **-- Return Values --**
 
-**`string`** (default, `return_as` = `PSXCLK_AS_STRING`): A string representing
+**`string`** (default, `return_as` = `PSXRT_AS_STRING`): A string representing
 the decimal value of the requested clock is returned.
 
-**`float`** (`return_as` = `PSXCLK_AS_FLOAT`): A float (double) representing
+**`float`** (`return_as` = `PSXRT_AS_FLOAT`): A float (double) representing
 the decimal value of the requested clock is returned.
 
 _**WARNING:** The floating point type is likely **not** large enough to
 represent all time values, or accurate to the last digit._
 
-**`object`** (`return_as` = `PSXCLK_AS_TIMESPEC`): An object of class
+**`object`** (`return_as` = `PSXRT_AS_TIMESPEC`): An object of class
 `stdClass` representing the underlying C data structure ([`struct timespec`](http://pubs.opengroup.org/onlinepubs/7908799/xsh/time.h.html))
 is returned.
 
@@ -162,7 +162,7 @@ string(20) "1409731642.445375772"
 Get the value of the real-time clock as a float:
 ```php
 <<<
-var_dump(posix_clock_gettime(PSXCLK_C_REALTIME, PSXCLK_AS_FLOAT));
+var_dump(posix_clock_gettime(PSXRT_CLK_REALTIME, PSXRT_AS_FLOAT));
 >>>
 double(1409731642.4453) // Lost significance!
 ```
@@ -170,7 +170,7 @@ double(1409731642.4453) // Lost significance!
 Get the value of the raw monotonic clock as an object:
 ```php
 <<<
-var_dump(posix_clock_gettime(PSXCLK_C_MONOTONIC_RAW, PSXCLK_AS_TIMESPEC));
+var_dump(posix_clock_gettime(PSXRT_CLK_MONOTONIC_RAW, PSXRT_AS_TIMESPEC));
 >>>
 class stdClass#1 (2) {
   public $tv_sec =>
@@ -183,7 +183,7 @@ class stdClass#1 (2) {
 Get the value of the real-time clock, floored to the nearest 250ms, as a float:
 ```php
 <<<
-var_dump(posix_clock_gettime(PSXCLK_C_REALTIME, PSXCLK_AS_FLOAT, 250000000));
+var_dump(posix_clock_gettime(PSXRT_CLK_REALTIME, PSXRT_AS_FLOAT, 250000000));
 >>>
 double(1409783196.75)
 ```
@@ -192,8 +192,8 @@ Get the value of the coarse monotonic clock, floored to the nearest multiple of
 its resolution, as an object:
 ```php
 <<<
-var_dump(posix_clock_gettime(PSXCLK_C_MONOTONIC_COARSE, PSXCLK_AS_TIMESPEC, \
-PSXCLK_FLOOR_TO_CLOCKRES));
+var_dump(posix_clock_gettime(PSXRT_CLK_MONOTONIC_COARSE, PSXRT_AS_TIMESPEC, \
+PSXRT_FLOOR_TO_CLOCKRES));
 >>>
 class stdClass#1 (4) {
   public $tv_sec =>
@@ -217,7 +217,7 @@ class stdClass#1 (4) {
 <a name="interface-clock_getres-desc"/>
 **-- Description --**
 
-`int` **`posix_clock_getres`** ( [ `int` **`$clock_id = PSXCLK_C_REALTIME`** ] )
+`int` **`posix_clock_getres`** ( [ `int` **`$clock_id = PSXRT_CLK_REALTIME`** ] )
 
 Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man2/clock_getres.2.html).
 
@@ -226,7 +226,7 @@ Provides an interface to [`clock_getres(2)`](http://man7.org/linux/man-pages/man
 **-- Parameters --**
 
 ***clock_id*** The clock whose resolution should be retrieved; defaults to
-`PSXCLK_C_REALTIME` if not provided.
+`PSXRT_CLK_REALTIME` if not provided.
 
 <br>
 <a name="interface-clock_getres-retvals"/>
@@ -250,7 +250,7 @@ int(1)
 Get the resolution of the coarse monotonic clock:
 ```php
 <<<
-var_dump(posix_clock_getres(PSXCLK_C_MONOTONIC_COARSE));
+var_dump(posix_clock_getres(PSXRT_CLK_MONOTONIC_COARSE));
 >>>
 int(4000000)
 ```
@@ -294,7 +294,7 @@ Returns boolean *true* if the clock ID is a supported clock on the system,
 
 Determine whether or not the clock ID "0" is supported:
 *Note: The clock ID "0" (system-wide realtime clock) is valid on every system
-with POSIX Clocks support.*
+with POSIX Realtime support.*
 ```php
 <<<
 var_dump(posix_is_clock_supported(0));
@@ -317,10 +317,10 @@ bool(false)
 ---
 
 The supported clocks are implementation and system specific, except the
-system-wide real-time clock `PSXCLK_C_REALTIME`, which is guaranteed to be
-supported on all systems with POSIX Clocks support.
+system-wide real-time clock `PSXRT_CLK_REALTIME`, which is guaranteed to be
+supported on all systems with POSIX Realtime support.
 
-Clock ID (PSXCLK_C_&#42;) | Description
+Clock ID (PSXRT_CLK_&#42;) | Description
 :-------:|------------
 `REALTIME` | System-wide clock that measures real (i.e., wall-clock) time. This clock is affected by discontinuous jumps in the system time (e.g., manual clock updates, NTP clock updates, etc).
 `MONOTONIC` | Clock that cannot be set and represents monotonic time since some unspecified starting point. This clock is not affected by discontinuous jumps in the system time.
@@ -334,7 +334,7 @@ Clock ID (PSXCLK_C_&#42;) | Description
 More clocks may be implemented by the system and can be used by passing the
 corresponding integer ID in place of a predefined constant. If a
 clock ID is not natively defined on the compiling system, its equivalent PHP
-constant (PSXCLK_C_&#42;) will be undefined as well.
+constant (PSXRT_CLK_&#42;) will be undefined as well.
 <br>
 
 

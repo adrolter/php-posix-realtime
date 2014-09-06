@@ -18,4 +18,4 @@ php:
 script: /usr/bin/env sh ./build-scripts/travis.sh
 
 after_failure:
-    - echo "${PSXCLK_MAKE_TEST}"
+    - echo "${PSXRT_MAKE_TEST}"

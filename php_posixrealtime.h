@@ -15,26 +15,26 @@
   limitations under the License.
  */
 
-#ifndef PHP_PSXCLK_H
+#ifndef PHP_PSXRT_H
 
-#    define PHP_PSXCLK_H
+#    define PHP_PSXRT_H
 
-extern zend_module_entry posixclocks_module_entry;
-#    define phpext_posixclocks_ptr &posixclocks_module_entry
+extern zend_module_entry posixrealtime_module_entry;
+#    define phpext_posixclocks_ptr &posixrealtime_module_entry
 
 #    ifdef PHP_WIN32
-#        define PHP_PSXCLK_API __declspec(dllexport)
+#        define PHP_PSXRT_API __declspec(dllexport)
 #    elif defined(__GNUC__) && __GNUC__ >= 4
-#        define PHP_PSXCLK_API __attribute__ ((visibility("default")))
+#        define PHP_PSXRT_API __attribute__ ((visibility("default")))
 #    else
-#        define PHP_PSXCLK_API
+#        define PHP_PSXRT_API
 #    endif
 
 #    ifdef ZTS
 #        include "TSRM.h"
-#        define POSIXCLOCKS_G(v) TSRMG(posixclocks_globals_id, zend_posixclocks_globals *, v)
+#        define POSIXCLOCKS_G(v) TSRMG(posixrealtime_globals_id, zend_posixrealtime_globals *, v)
 #    else
-#        define POSIXCLOCKS_G(v) (posixclocks_globals.v)
+#        define POSIXCLOCKS_G(v) (posixrealtime_globals.v)
 #    endif
 
 #endif

@@ -6,7 +6,7 @@
         <in>travis.sh</in>
       </df>
       <in>.travis.yml</in>
-      <in>posixclocks.c</in>
+      <in>posixrealtime.c</in>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -59,8 +59,6 @@
       </item>
       <item path="build-scripts/travis.sh" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="posixclocks.c" ex="false" tool="0" flavor2="2">
-      </item>
     </conf>
     <conf name="Travis" type="0">
       <toolsSet>
@@ -68,6 +66,9 @@
         <dependencyChecking>false</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0" commonFlags="-g -O2 -fPIC"/>
+      </flagsDictionary>
       <codeAssistance>
       </codeAssistance>
       <makefileType>
@@ -96,11 +97,9 @@
           </cTool>
         </makeTool>
       </makefileType>
-      <item path=".travis.yml" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="build-scripts/travis.sh" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="posixclocks.c" ex="false" tool="0" flavor2="2">
+      <item path="posixrealtime.c" ex="false" tool="0" flavor2="0">
+        <cTool flags="0">
+        </cTool>
       </item>
     </conf>
   </confs>
