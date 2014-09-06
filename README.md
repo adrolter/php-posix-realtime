@@ -1,4 +1,4 @@
-# POSIX Clocks for PHP
+# POSIX Clocks for PHP [![Build Status](https://travis-ci.org/adrianguenter/php-posix-clocks.svg?branch=master)](https://travis-ci.org/adrianguenter/php-posix-clocks)
 
 This project provides an interface to the real-time, monotonic, CPU-time,
 and various other clocks available on systems that implement and extend the
