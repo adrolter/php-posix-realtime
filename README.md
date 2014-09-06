@@ -7,7 +7,7 @@ standard (e.g., Linux, BSD, Solaris, OS X, etc).
 ## Table of Contents
 ---
 
-- ####[Why not `microtime()`?](#why)
+- #<span></span>###[Why not `microtime()`?](#why)
 
 - ####[Installation](#installation)
 
