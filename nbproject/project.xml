@@ -17,6 +17,10 @@
                     <name>Default</name>
                     <type>0</type>
                 </confElem>
+                <confElem>
+                    <name>Travis</name>
+                    <type>0</type>
+                </confElem>
             </confList>
             <formatting>
                 <project-formatting-style>false</project-formatting-style>
@@ -26,6 +30,7 @@
             <word>clockId</word>
             <word>CLOCKRES</word>
             <word>getres</word>
+            <word>nanosecsInSec</word>
             <word>gettime</word>
             <word>gettimeofday</word>
             <word>jd</word>
@@ -36,6 +41,7 @@
             <word>posix</word>
             <word>posixclocks</word>
             <word>PSXCLK</word>
+            <word>returnAs</word>
             <word>TIMESPEC</word>
             <word>tv</word>
         </spellchecker-wordlist>
