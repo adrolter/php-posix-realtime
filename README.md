@@ -1,6 +1,6 @@
 # POSIX Clocks for PHP
 &lt;&nbsp;[`master`](https://github.com/adrianguenter/php-posix-clocks/tree/master) [![Build Status](https://travis-ci.org/adrianguenter/php-posix-clocks.svg?branch=master)](https://travis-ci.org/adrianguenter/php-posix-clocks)&nbsp;&gt;
-&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &lt;&nbsp;[`develop`](https://github.com/adrianguenter/php-posix-clocks/tree/develop) [![Build Status](https://travis-ci.org/adrianguenter/php-posix-clocks.svg?branch=develop)](https://travis-ci.org/adrianguenter/php-posix-clocks)&nbsp;&gt;
 
 This project provides an interface to the real-time, monotonic, CPU-time,
@@ -16,17 +16,17 @@ POSIX.1b standard (e.g., Linux, BSD, Solaris, OS X, etc).
 
 - **[Interface](#interface)**
 
-	+ **[posix_clock_gettime()](#interface-clock_gettime)**
+	+ **[`posix_clock_gettime()`](#interface-clock_gettime)**
 		* [Parameters](#interface-clock_gettime-params)
 		* [Return Values](#interface-clock_gettime-retvals)
 		* [Examples](#interface-clock_gettime-examples)
 
-	+ **[posix_clock_getres()](#interface-clock_getres)**
+	+ **[`posix_clock_getres()`](#interface-clock_getres)**
 		* [Parameters](#interface-clock_getres-params)
 		* [Return Values](#interface-clock_getres-retvals)
 		* [Examples](#interface-clock_getres-examples)
 
-	+ **[posix_is_clock_supported()](#interface-is_clock_supported)**
+	+ **[`posix_is_clock_supported()`](#interface-is_clock_supported)**
 		* [Parameters](#interface-is_clock_supported-params)
 		* [Return Values](#interface-is_clock_supported-retvals)
 		* [Examples](#interface-is_clock_supported-examples)
