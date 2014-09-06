@@ -7,11 +7,11 @@ standard (e.g., Linux, BSD, Solaris, OS X, etc).
 ## Table of Contents
 ---
 
-- #<span></span>###[Why not `microtime()`?](#why)
+- **[Why not `microtime()`?](#why)**
 
-- ####[Installation](#installation)
+- **[Installation](#installation)**
 
-- ####[Interface](#interface)
+- **[Interface](#interface)**
 
 	+ **[posix_clock_gettime()](#interface-clock_gettime)**
 		* [Parameters](#interface-clock_gettime-params)
@@ -28,11 +28,11 @@ standard (e.g., Linux, BSD, Solaris, OS X, etc).
 		* [Return Values](#interface-is_clock_supported-retvals)
 		* [Examples](#interface-is_clock_supported-examples)
 
-- ####[Clocks](#clocks)
+- **[Clocks](#clocks)**
 
-- ####[Authors](#authors)
+- **[Authors](#authors)**
 
-- ####[References](#references)
+- **[References](#references)**
 
 <br>
 <a name="why"/>
