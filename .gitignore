@@ -1,5 +1,5 @@
 .deps
-.idea/
+# .idea/
 *.la
 *.lo
 .libs/
@@ -27,6 +27,8 @@ Makefile.objects
 missing
 mkinstalldirs
 modules/
+nbproject/private/
+posixrealtime_ver.h
 run-tests.php
 tests/*/*.diff
 tests/*/*.out
