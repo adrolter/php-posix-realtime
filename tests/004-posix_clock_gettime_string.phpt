@@ -14,8 +14,6 @@ $c = posix_clock_gettime($clockId, $returnAs, (pow(10, 9) / 2));
 $d = posix_clock_gettime($clockId, $returnAs, PSXRT_FLOOR_TO_CLOCKRES);
 $dParts = explode('.', $d);
 
-var_dump($clockId, $clockRes);
-
 // A is a float string
 var_dump($a);
 
@@ -33,11 +31,9 @@ var_dump($c);
 var_dump($d);
 
 // D is floored to nearest multiple of the clock's resolution
-var_dump($dParts[1] % $clockRes == 0);
+var_dump((int) sprintf('%0-9.9s', $dParts[1]) % $clockRes == 0);
 
 --EXPECTF--
-int(%d)
-int(%d)
 string(%d) "%d.%d"
 string(%d) "%d.%d"
 bool(true)
