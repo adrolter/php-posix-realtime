@@ -33,6 +33,10 @@
 #include "php_posixrealtime.h"
 #include "posixrealtime_ver.h"
 
+#ifndef PHP_PSXRT_VERSION
+#define PHP_PSXRT_VERSION "Unknown"
+#endif
+
 
 /*
  * Macros
