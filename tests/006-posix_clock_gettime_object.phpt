@@ -51,7 +51,7 @@ function test_xuWKgAe16e($obj, $floor_to, $clockRes)
 			}
 		}
 
-		if ($obj->tv_nsec_raw % $clockRes !== 0) {
+		if ($obj->tv_nsec % $obj->floored_to_nsec !== 0) {
 			return false;
 		}
 	}
