@@ -113,8 +113,6 @@
             flavor2="0">
       </item>
       <item path="posixrealtime.c" ex="false" tool="0" flavor2="0">
-        <cTool flags="0">
-        </cTool>
       </item>
     </conf>
   </confs>
