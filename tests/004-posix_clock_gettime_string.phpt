@@ -5,7 +5,7 @@ String output test for posix_clock_gettime()
 --FILE--
 <?php
 // Test against a "coarse" clock if available for non-1ns resolution in tests
-$clockId = defined(PSXRT_CLK_REALTIME_COARSE) ? PSXRT_CLK_REALTIME_COARSE : PSXRT_CLK_REALTIME;
+$clockId = defined('PSXRT_CLK_REALTIME_COARSE') ? PSXRT_CLK_REALTIME_COARSE : PSXRT_CLK_REALTIME;
 $returnAs = PSXRT_AS_STRING;
 $clockRes = posix_clock_getres($clockId);
 $a = posix_clock_gettime($clockId, $returnAs);
@@ -13,6 +13,8 @@ $b = posix_clock_gettime($clockId, $returnAs, false);
 $c = posix_clock_gettime($clockId, $returnAs, (pow(10, 9) / 2));
 $d = posix_clock_gettime($clockId, $returnAs, PSXRT_FLOOR_TO_CLOCKRES);
 $dParts = explode('.', $d);
+
+var_dump($clockId, $clockRes);
 
 // A is a float string
 var_dump($a);
@@ -34,6 +36,8 @@ var_dump($d);
 var_dump($dParts[1] % $clockRes == 0);
 
 --EXPECTF--
+int(%d)
+int(%d)
 string(%d) "%d.%d"
 string(%d) "%d.%d"
 bool(true)

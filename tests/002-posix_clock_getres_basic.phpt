@@ -7,7 +7,7 @@ Basic test for posix_clock_getres()
 var_dump(function_exists('posix_clock_getres'));
 
 $nanosecsInSec = pow(10, 9);
-$clockId = defined(PSXRT_CLK_REALTIME_COARSE) ? PSXRT_CLK_REALTIME_COARSE : PSXRT_CLK_REALTIME;
+$clockId = defined('PSXRT_CLK_REALTIME_COARSE') ? PSXRT_CLK_REALTIME_COARSE : PSXRT_CLK_REALTIME;
 $a = posix_clock_getres();
 $b = posix_clock_getres($clockId);
 

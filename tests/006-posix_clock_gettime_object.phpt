@@ -60,7 +60,7 @@ function test_xuWKgAe16e($obj, $floor_to, $clockRes)
 }
 
 // Test against a "coarse" clock if available for non-1ns resolution in tests
-$clockId = defined(PSXRT_CLK_REALTIME_COARSE) ? PSXRT_CLK_REALTIME_COARSE : PSXRT_CLK_REALTIME;
+$clockId = defined('PSXRT_CLK_REALTIME_COARSE') ? PSXRT_CLK_REALTIME_COARSE : PSXRT_CLK_REALTIME;
 $returnAs = PSXRT_AS_TIMESPEC;
 $clockRes = posix_clock_getres($clockId);
 $a = posix_clock_gettime($clockId, $returnAs);
