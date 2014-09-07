@@ -1,9 +1,7 @@
 #!/usr/bin/env sh
 
-printf '%s' "${PSXRT_MAKE_TEST}"
+find tests/ -type f -name "*.log" | while read file do; do
+	printf '\n%s << EOF\n%s\nEOF\n' "$file" "$(cat $file)"
+done
 
-printf '\n'
-
-#find tests/ -name "*.diff" | while read diffFile do; do
-#	printf '\n%s << EOF\n%s\nEOF\n' "$diffFile" "$(cat $diffFile)"
-#done
+return 1
