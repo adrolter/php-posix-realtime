@@ -3,7 +3,9 @@
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
       <df name="build-scripts">
-        <in>travis.sh</in>
+        <df name="travis">
+          <in>after_failure.sh</in>
+        </df>
       </df>
       <in>.travis.yml</in>
       <in>posixrealtime.c</in>
@@ -57,7 +59,10 @@
       </makefileType>
       <item path=".travis.yml" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="build-scripts/travis.sh" ex="false" tool="3" flavor2="0">
+      <item path="build-scripts/travis/after_failure.sh"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
     </conf>
     <conf name="Travis" type="0">
@@ -97,6 +102,11 @@
           </cTool>
         </makeTool>
       </makefileType>
+      <item path="build-scripts/travis/after_failure.sh"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="posixrealtime.c" ex="false" tool="0" flavor2="0">
         <cTool flags="0">
         </cTool>

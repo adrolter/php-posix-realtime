@@ -5,17 +5,13 @@ branches:
 #    - master
 #    - develop
 
-compiler:
-    - gcc
-    - clang
-
 php:
     - 5.6
     - 5.5
     - 5.4
     - 5.3
     
-script: source ./build-scripts/travis.sh
+script: source ./build-scripts/travis/main.sh
 
 after_failure:
-    - echo "${PSXRT_MAKE_TEST}"
+    - source ./build-scripts/travis/after_failure.sh
