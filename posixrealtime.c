@@ -87,7 +87,7 @@ static char * timespec_to_string(struct timespec const * ts_p)
 
     result_p = emalloc(result_sz);
     if (!result_p) {
-        php_error_docref(NULL TSRMLS_CC, E_ERROR, "Failed to allocate memory [%s] (%s)", __func__, strerror(errno));
+        php_error_docref(NULL TSRMLS_CC, E_ERROR, "'%s' when calling emalloc from %s", strerror(errno), __func__);
         return NULL;
     }
 
@@ -101,7 +101,7 @@ static zval * timespec_to_zval(struct timespec const * ts_p)
 #    ifdef ZTS
     TSRMLS_FETCH();
 #    endif
-    
+
     long nsec = ts_p->tv_nsec;
     zval * obj_p;
 
@@ -177,7 +177,11 @@ PHP_MINFO_FUNCTION(posixrealtime)
     struct timespec clock_res;
 
 #    define PRINTINFO_SUPPORTED(clock_id)                              \
-    clock_getres(CLOCK_ ## clock_id, &clock_res);                      \
+    if (clock_getres(CLOCK_ ## clock_id, &clock_res) == -1) {          \
+        php_error_docref(NULL TSRMLS_CC, E_ERROR, "'%s' when calling " \
+                "clock_getres", strerror(errno));                      \
+        return;                                                        \
+    }                                                                  \
     snprintf(precision, 50, "%.0Le", TIMESPEC_TO_LDOUBLE(clock_res));  \
     php_info_print_table_row(3, #clock_id, "Yes", precision)
 
@@ -257,8 +261,9 @@ PHP_FUNCTION(posix_clock_gettime)
 
     if (clock_gettime(clock_id, &clock_val) == -1) {
         if (errno == EINVAL) {
-            php_error_docref(NULL TSRMLS_CC, E_ERROR, "The POSIX clock ID '%ld' is not supported on this system", clock_id);
+            php_error_docref(NULL TSRMLS_CC, E_ERROR, "The clock ID '%ld' is not supported on this system", clock_id);
         }
+        php_error_docref(NULL TSRMLS_CC, E_ERROR, "'%s' when calling clock_gettime", strerror(errno));
         return;
     }
 
@@ -266,6 +271,7 @@ PHP_FUNCTION(posix_clock_gettime)
         if (floor_to_ns == FLOOR_TO_CLOCKRES) {
             struct timespec clock_res;
             if (clock_getres(clock_id, &clock_res) == -1) {
+                php_error_docref(NULL TSRMLS_CC, E_ERROR, "'%s' when calling clock_getres", strerror(errno));
                 return;
             }
             floor_to_ns = clock_res.tv_nsec;
@@ -301,7 +307,6 @@ PHP_FUNCTION(posix_clock_gettime)
 PHP_FUNCTION(posix_clock_getres)
 {
     long clock_id = CLOCK_REALTIME;
-    double result;
     struct timespec clock_res;
 
     if (ZEND_NUM_ARGS() > 1) {
@@ -314,11 +319,11 @@ PHP_FUNCTION(posix_clock_getres)
 
     if (clock_getres(clock_id, &clock_res) == -1) {
         if (errno == EINVAL) {
-            php_error_docref(NULL TSRMLS_CC, E_ERROR, "The POSIX clock ID '%ld' is not supported on this system", clock_id);
-            return;
-        } else if (errno == EFAULT) {
+            php_error_docref(NULL TSRMLS_CC, E_ERROR, "The clock ID '%ld' is not supported on this system", clock_id);
             return;
         }
+        php_error_docref(NULL TSRMLS_CC, E_ERROR, "'%s' when calling clock_getres", strerror(errno));
+        return;
     }
 
     RETURN_LONG(clock_res.tv_nsec);
@@ -340,6 +345,8 @@ PHP_FUNCTION(posix_is_clock_supported)
         if (errno == EINVAL) {
             RETURN_FALSE;
         }
+        php_error_docref(NULL TSRMLS_CC, E_ERROR, "'%s' when calling clock_getres", strerror(errno));
+        return;
     }
 
     RETURN_TRUE;
