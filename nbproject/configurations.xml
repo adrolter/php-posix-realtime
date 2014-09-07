@@ -6,6 +6,7 @@
         <df name="travis">
           <in>after_failure.sh</in>
         </df>
+        <in>fail.sh</in>
       </df>
       <in>.travis.yml</in>
       <in>posixrealtime.c</in>
@@ -59,6 +60,8 @@
       </makefileType>
       <item path=".travis.yml" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="build-scripts/fail.sh" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="build-scripts/travis/after_failure.sh"
             ex="false"
             tool="3"
@@ -102,6 +105,8 @@
           </cTool>
         </makeTool>
       </makefileType>
+      <item path="build-scripts/fail.sh" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="build-scripts/travis/after_failure.sh"
             ex="false"
             tool="3"
