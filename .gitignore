@@ -28,7 +28,7 @@ missing
 mkinstalldirs
 modules/
 nbproject/private/
-posixclocks_ver.h
+posixrealtime_ver.h
 run-tests.php
 tests/*/*.diff
 tests/*/*.out
