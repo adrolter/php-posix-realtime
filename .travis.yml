@@ -13,6 +13,5 @@ php:
     
 script: source ./build-scripts/travis/main.sh
 
-# Disable for now as main.sh has taken over previous functionality
-#after_failure:
-#    - source ./build-scripts/travis/after_failure.sh
+after_failure:
+    - source ./build-scripts/travis/after_failure.sh
