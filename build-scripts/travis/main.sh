@@ -3,24 +3,24 @@
 phpize
 
 if [ "$?" != "0" ]; then
-	echo "Phpize failed."
+	printf 'Phpize failed.'
 	exit 1
 fi
 
 ./configure
 
 if [ "$?" != "0" ]; then
-	echo "Configure failed."
+	printf 'Configure failed.'
 	exit 1
 fi
 
 make
 
 if [ "$?" != "0" ]; then
-	echo "Make failed."
+	printf 'Make failed.'
 	exit 1
 fi
 
 PSXRT_MAKE_TEST=$(echo "n" | make test)
 
-echo "${PSXRT_MAKE_TEST}" | grep "Tests passed.*(100.0%)$"
+printf '%s' "${PSXRT_MAKE_TEST}" | grep "Tests passed.*(100.0%)$"

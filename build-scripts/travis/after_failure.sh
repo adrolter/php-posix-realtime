@@ -1,7 +1,9 @@
 #!/usr/bin/env sh
 
-echo "${PSXRT_MAKE_TEST}"
+printf '%s' "${PSXRT_MAKE_TEST}"
 
-echo -e "\n"
+printf '\n'
 
-find tests/ -name "*.diff" -print | xargs sh -c 'for f; do echo -e "$f\n------" && cat "$f" && echo -e "\n------\n"; done' fnord
+find tests/ -name "*.diff" | while read diffFile do; do
+	printf '\n%s << EOF\n%s\nEOF\n' "$diffFile" "$(cat $diffFile)"
+done
