@@ -61,5 +61,8 @@ if test "$PHP_PSXCLK" != "no"; then
     fi
   ])
 
+  LDFLAGS="$LDFLAGS -lm"
+
   PHP_NEW_EXTENSION(posixrealtime, posixrealtime.c, $ext_shared)
+  PHP_EVAL_LIBLINE($LDFLAGS, POSIXREALTIME_SHARED_LIBADD)
 fi
