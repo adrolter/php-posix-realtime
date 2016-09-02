@@ -96,6 +96,7 @@ static char * timespec_to_string(struct timespec const * ts_p)
     return result_p;
 }
 
+#if PHP_MAJOR_VERSION < 7
 static zval * timespec_to_zval(struct timespec const * ts_p)
 {
 #    ifdef ZTS
@@ -121,6 +122,7 @@ static zval * timespec_to_zval(struct timespec const * ts_p)
 
     return obj_p;
 }
+#endif
 
 /*
  * PHP callbacks
@@ -277,19 +279,53 @@ PHP_FUNCTION(posix_clock_gettime)
     switch (return_type) {
     case TIMESPEC:
     {
+#if PHP_MAJOR_VERSION < 7
         zval * obj_p = timespec_to_zval(&clock_val);
         if (floor_to_ns) {
             add_property_long(obj_p, "floored_to_nsec", floor_to_ns);
             add_property_long(obj_p, "tv_nsec_raw", clock_val_nsec_raw);
         }
         RETURN_ZVAL(obj_p, 0, 1);
+#else
+        zval obj;
+        long nsec;
+
+#    ifdef ZTS
+        TSRMLS_FETCH();
+#    endif
+
+        nsec = clock_val.tv_nsec;
+
+        object_init(&obj);
+
+        // TODO: Check value against LONG_MAX instead?
+        if (sizeof (clock_val.tv_sec) <= SIZEOF_LONG) {
+            add_property_long(&obj, "tv_sec", clock_val.tv_sec);
+        } else {
+            char secstr[(size_t) (INTLEN(clock_val.tv_sec) + 1)];
+            snprintf(secstr, sizeof (secstr), "%d", clock_val.tv_sec);
+            add_property_string(&obj, "tv_sec", secstr);
+        }
+
+        add_property_long(&obj, "tv_nsec", nsec);
+
+        if (floor_to_ns) {
+            add_property_long(&obj, "floored_to_nsec", floor_to_ns);
+            add_property_long(&obj, "tv_nsec_raw", clock_val_nsec_raw);
+        }
+        RETURN_ZVAL(&obj, 1, 0);
+#endif
         break;
     }
     case FLOAT:
         RETURN_DOUBLE(TIMESPEC_TO_DOUBLE(clock_val));
         break;
     case STRING:
+#if PHP_MAJOR_VERSION >= 7
+        RETURN_STRING(timespec_to_string(&clock_val));
+#else
         RETURN_STRING(timespec_to_string(&clock_val), 0);
+#endif
         break;
     default:
         php_error_docref(NULL TSRMLS_CC, E_ERROR, "Return type must be one of: PSXRT_AS_TIMESPEC, "
