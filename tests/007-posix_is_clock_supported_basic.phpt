@@ -12,7 +12,7 @@ var_dump(posix_is_clock_supported(PSXRT_CLK_REALTIME));
 //	testing it
 var_dump(defined('PSXRT_CLK_MONOTONIC') && !posix_is_clock_supported(PSXRT_CLK_MONOTONIC));
 
-var_dump(posix_is_clock_supported(PHP_INT_MAX));
+var_dump(posix_is_clock_supported(42));
 
 --EXPECTF--
 bool(true)
