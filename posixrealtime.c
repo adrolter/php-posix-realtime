@@ -25,6 +25,7 @@
 #endif
 
 #include <stdint.h>
+#include <inttypes.h>
 
 #include <php.h>
 #include <php_ini.h>
@@ -37,6 +38,10 @@
 /*
  * Macros
  */
+
+#if PHP_MAJOR_VERSION >= 8
+#define TSRMLS_CC
+#endif
 
 #define BILLION_D   1000000000.0
 #define BILLION_LD  1000000000.0L
@@ -62,17 +67,13 @@ typedef enum {
 } ReturnType;
 
 
-/*
- * Static globals
- */
-
-static int le_posixrealtime;
-
 static char * timespec_to_string(struct timespec const * ts_p)
 {
+#if PHP_MAJOR_VERSION < 8
 #    ifdef ZTS
     TSRMLS_FETCH();
 #    endif
+#endif
 
     long decimal = ts_p->tv_nsec;
     size_t result_sz;
@@ -96,11 +97,14 @@ static char * timespec_to_string(struct timespec const * ts_p)
     return result_p;
 }
 
+#if PHP_MAJOR_VERSION < 7
 static zval * timespec_to_zval(struct timespec const * ts_p)
 {
+#if PHP_MAJOR_VERSION < 8
 #    ifdef ZTS
     TSRMLS_FETCH();
 #    endif
+#endif
     
     long nsec = ts_p->tv_nsec;
     zval * obj_p;
@@ -121,6 +125,7 @@ static zval * timespec_to_zval(struct timespec const * ts_p)
 
     return obj_p;
 }
+#endif
 
 /*
  * PHP callbacks
@@ -239,6 +244,12 @@ PHP_MINFO_FUNCTION(posixrealtime)
     php_info_print_table_end();
 }
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_clock_gettime, 0, 0, 3)
+    ZEND_ARG_INFO(0, value)
+    ZEND_ARG_INFO(0, value)
+    ZEND_ARG_INFO(0, value)
+ZEND_END_ARG_INFO()
+
 PHP_FUNCTION(posix_clock_gettime)
 {
     long clock_id = CLOCK_REALTIME;
@@ -277,19 +288,55 @@ PHP_FUNCTION(posix_clock_gettime)
     switch (return_type) {
     case TIMESPEC:
     {
+#if PHP_MAJOR_VERSION < 7
         zval * obj_p = timespec_to_zval(&clock_val);
         if (floor_to_ns) {
             add_property_long(obj_p, "floored_to_nsec", floor_to_ns);
             add_property_long(obj_p, "tv_nsec_raw", clock_val_nsec_raw);
         }
         RETURN_ZVAL(obj_p, 0, 1);
+#else
+        zval obj;
+        long nsec;
+
+#if PHP_MAJOR_VERSION < 8
+#    ifdef ZTS
+        TSRMLS_FETCH();
+#    endif
+#endif
+
+        nsec = clock_val.tv_nsec;
+
+        object_init(&obj);
+
+        // TODO: Check value against LONG_MAX instead?
+        if (sizeof (clock_val.tv_sec) <= SIZEOF_LONG) {
+            add_property_long(&obj, "tv_sec", clock_val.tv_sec);
+        } else {
+            char secstr[(size_t) (INTLEN(clock_val.tv_sec) + 1)];
+            snprintf(secstr, sizeof (secstr), "%" PRId64, (int64_t)clock_val.tv_sec);
+            add_property_string(&obj, "tv_sec", secstr);
+        }
+
+        add_property_long(&obj, "tv_nsec", nsec);
+
+        if (floor_to_ns) {
+            add_property_long(&obj, "floored_to_nsec", floor_to_ns);
+            add_property_long(&obj, "tv_nsec_raw", clock_val_nsec_raw);
+        }
+        RETURN_ZVAL(&obj, 1, 0);
+#endif
         break;
     }
     case FLOAT:
         RETURN_DOUBLE(TIMESPEC_TO_DOUBLE(clock_val));
         break;
     case STRING:
+#if PHP_MAJOR_VERSION >= 7
+        RETURN_STRING(timespec_to_string(&clock_val));
+#else
         RETURN_STRING(timespec_to_string(&clock_val), 0);
+#endif
         break;
     default:
         php_error_docref(NULL TSRMLS_CC, E_ERROR, "Return type must be one of: PSXRT_AS_TIMESPEC, "
@@ -298,10 +345,13 @@ PHP_FUNCTION(posix_clock_gettime)
     }
 }
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_clock_getres, 0, 0, 1)
+    ZEND_ARG_INFO(0, value)
+ZEND_END_ARG_INFO()
+
 PHP_FUNCTION(posix_clock_getres)
 {
     long clock_id = CLOCK_REALTIME;
-    double result;
     struct timespec clock_res;
 
     if (ZEND_NUM_ARGS() > 1) {
@@ -323,6 +373,10 @@ PHP_FUNCTION(posix_clock_getres)
 
     RETURN_LONG(clock_res.tv_nsec);
 }
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_is_clock_supported, 0, 0, 1)
+    ZEND_ARG_INFO(0, value)
+ZEND_END_ARG_INFO()
 
 PHP_FUNCTION(posix_is_clock_supported)
 {
@@ -347,9 +401,9 @@ PHP_FUNCTION(posix_is_clock_supported)
 
 
 const zend_function_entry posixrealtime_functions[] = {
-    PHP_FE(posix_clock_gettime, NULL)
-    PHP_FE(posix_clock_getres, NULL)
-    PHP_FE(posix_is_clock_supported, NULL)
+    PHP_FE(posix_clock_gettime, arginfo_clock_gettime)
+    PHP_FE(posix_clock_getres, arginfo_clock_getres)
+    PHP_FE(posix_is_clock_supported, arginfo_is_clock_supported)
     PHP_FE_END
 };
 
