@@ -381,6 +381,7 @@ ZEND_END_ARG_INFO()
 PHP_FUNCTION(posix_is_clock_supported)
 {
     long clock_id;
+	struct timespec tp;
 
     if (ZEND_NUM_ARGS() > 1) {
         WRONG_PARAM_COUNT;
@@ -390,10 +391,10 @@ PHP_FUNCTION(posix_is_clock_supported)
         return;
     }
 
-    if (clock_getres(clock_id, NULL) == -1) {
+    if (clock_getres(clock_id, &tp) == -1) {
         if (errno == EINVAL) {
             RETURN_FALSE;
-        }
+		}
     }
 
     RETURN_TRUE;
